@@ -1,6 +1,7 @@
 # 依赖目录
 frontend/node_modules/
 */node_modules/
+frontend/node_modules/
 
 # 构建输出
 dist/
