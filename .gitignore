@@ -5,12 +5,9 @@ frontend/node_modules/
 
 # 构建输出
 dist/
-build/
 */dist/
-*/build/
 
 # 前端构建文件
-frontend/build/
 frontend/dist/
 frontend/.next/
 frontend/out/
