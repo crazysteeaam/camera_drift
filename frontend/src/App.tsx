@@ -6,6 +6,7 @@ import Home from './pages/Home';
 import GroupDetail from './pages/GroupDetail';
 import RelayDetail from './pages/RelayDetail';
 import About from './pages/About';
+import PhotoTest from './pages/PhotoTest';
 import './App.css';
 
 function App() {
@@ -53,6 +54,16 @@ function App() {
                                 transition={{ duration: 0.5 }}
                             >
                                 <About />
+                            </motion.div>
+                        } />
+                        <Route path="/photo-test" element={
+                            <motion.div
+                                initial={{ opacity: 0, y: 20 }}
+                                animate={{ opacity: 1, y: 0 }}
+                                exit={{ opacity: 0, y: -20 }}
+                                transition={{ duration: 0.5 }}
+                            >
+                                <PhotoTest />
                             </motion.div>
                         } />
                     </Routes>
