@@ -1,6 +1,7 @@
 # 忽略照片文件夹
 frontend/public/photos/
 frontend/photos/
+frontend/build/
 
 # 忽略照片文件
 *.jpg

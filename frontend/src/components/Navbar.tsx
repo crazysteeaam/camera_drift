@@ -1,7 +1,7 @@
 import React, { useState } from 'react';
 import { Link, useLocation } from 'react-router-dom';
 import { motion } from 'framer-motion';
-import { Camera, Menu, X, Home, Users, MapPin, Info } from 'lucide-react';
+import { Camera, Menu, X, Home, Users, MapPin, Info, Map } from 'lucide-react';
 
 const Navbar: React.FC = () => {
     const [isOpen, setIsOpen] = useState(false);
@@ -9,6 +9,7 @@ const Navbar: React.FC = () => {
 
     const navItems = [
         { path: '/', label: '首页', icon: <Home className="h-4 w-4" /> },
+        { path: '/route-map', label: '路线图', icon: <Map className="h-4 w-4" /> },
         { path: '/about', label: '关于', icon: <Info className="h-4 w-4" /> },
     ];
 
