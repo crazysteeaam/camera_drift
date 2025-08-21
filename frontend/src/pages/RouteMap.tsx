@@ -111,6 +111,38 @@ const RouteMap: React.FC = () => {
                     transition={{ duration: 0.6, delay: 0.4 }}
                     className="bg-white rounded-xl p-6 shadow-lg mb-8"
                 >
+                    {/* 颜色图例 */}
+                    {showAllGroups && (
+                        <div className="mb-4 p-4 bg-gray-50 rounded-lg">
+                            <h4 className="text-sm font-semibold text-gray-700 mb-3">路线颜色图例</h4>
+                            <div className="flex flex-wrap gap-3">
+                                {projectData.map((group) => {
+                                    const groupColorMap: { [key: string]: string } = {
+                                        'A': '#FF0000', // 纯红色
+                                        'B': '#0000FF', // 纯蓝色
+                                        'C': '#FFA500', // 橙色
+                                        'D': '#800080', // 紫色
+                                        'E': '#008000', // 绿色
+                                        'F': '#FFD700', // 金色
+                                        'G': '#FF1493', // 深粉色
+                                        'H': '#00CED1', // 深青色
+                                        'I': '#FF4500', // 橙红色
+                                        'J': '#4B0082'  // 靛蓝色
+                                    };
+                                    const color = groupColorMap[group.id] || '#4C8BF0';
+                                    return (
+                                        <div key={group.id} className="flex items-center space-x-2">
+                                            <div 
+                                                className="w-4 h-4 rounded-full border border-gray-300"
+                                                style={{ backgroundColor: color }}
+                                            />
+                                            <span className="text-sm text-gray-600">{group.name}</span>
+                                        </div>
+                                    );
+                                })}
+                            </div>
+                        </div>
+                    )}
                     {showAllGroups ? (
                         <div>
                             <h3 className="text-xl font-semibold text-gray-900 mb-4 flex items-center">
@@ -122,6 +154,7 @@ const RouteMap: React.FC = () => {
                                 height={mapHeight}
                                 showRoute={true}
                                 showAllMarkers={true}
+                                groups={projectData}
                             />
                         </div>
                     ) : selectedGroup ? (
@@ -135,6 +168,7 @@ const RouteMap: React.FC = () => {
                                 height={mapHeight}
                                 showRoute={true}
                                 showAllMarkers={true}
+                                groups={[selectedGroup]}
                             />
                         </div>
                     ) : (

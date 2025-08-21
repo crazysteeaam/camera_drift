@@ -1,12 +1,11 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState } from 'react';
 import { useParams, Link } from 'react-router-dom';
 import { motion } from 'framer-motion';
-import { Camera, MapPin, Calendar, MessageCircle, ArrowLeft, Heart, Share2, Download, Film, ChevronLeft, ChevronRight } from 'lucide-react';
+import { MapPin, Calendar, MessageCircle, ArrowLeft, Heart, Download, ChevronLeft, ChevronRight } from 'lucide-react';
 import { projectData } from '../config/projectData';
 import AmapComponent from '../components/AmapComponent';
+import FullscreenPhotoViewer from '../components/FullscreenPhotoViewer';
 import { useNavigate } from "react-router-dom";
-
-
 
 // 下载工具函数
 const downloadImage = (url: string, filename: string) => {
@@ -53,6 +52,7 @@ const RelayDetail: React.FC = () => {
     const [isDownloading, setIsDownloading] = useState(false);
     const [downloadProgress, setDownloadProgress] = useState(0);
     const [showDownloadOptions, setShowDownloadOptions] = useState(false);
+    const [isFullscreenOpen, setIsFullscreenOpen] = useState(false);
     const navigate = useNavigate();
 
     // 添加类型检查
@@ -69,7 +69,6 @@ const RelayDetail: React.FC = () => {
 
 
 
-
     const nextPhoto = () => {
         const nextIndex = currentPhotoIndex + 1;
         if (nextIndex >= relay.photos.length) {
@@ -80,7 +79,7 @@ const RelayDetail: React.FC = () => {
                 
                 if (nextRelay) {
                     // 跳转到下一棒的第一张照片
-                    //window.location.href = `/group/${groupId}/relay/${nextRelay.id}`;
+                    // window.location.href = `/group/${groupId}/relay/${nextRelay.id}`;
                     navigate(`/group/${groupId}/relay/${nextRelay.id}`);
                     setCurrentPhotoIndex(0);
                 } else {
@@ -145,16 +144,25 @@ const RelayDetail: React.FC = () => {
                     >
                         {/* 主照片 */}
                         <div className="relative group">
-                            <div className="aspect-square overflow-hidden rounded-xl shadow-2xl">
+                            <div 
+                                className="aspect-square overflow-hidden rounded-xl shadow-2xl cursor-pointer"
+                                onClick={() => setIsFullscreenOpen(true)}
+                            >
                                 <img
                                     src={relay.photos[currentPhotoIndex]}
                                     alt={`${relay.name} - 照片 ${currentPhotoIndex + 1}`}
                                     className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-500"
                                 />
+                                {/* 点击提示 */}
+                                <div className="absolute inset-0 bg-black/0 group-hover:bg-black/20 transition-colors duration-300 flex items-center justify-center">
+                                    <div className="opacity-0 group-hover:opacity-100 transition-opacity duration-300 text-white text-lg font-medium">
+                                        点击查看大图
+                                    </div>
+                                </div>
                             </div>
 
                             {/* 照片导航 */}
-                            {relay.photos.length > 1 && (
+                            {relay.photos.length >= 1 && (
                                 <>
                                     <button
                                         onClick={prevPhoto}
@@ -277,18 +285,32 @@ const RelayDetail: React.FC = () => {
                                 <h3 className="text-lg font-semibold text-gray-900 mb-4">所有照片</h3>
                                 <div className="grid grid-cols-3 gap-3">
                                     {relay.photos.map((photo, index) => (
-                                        <button
-                                            key={index}
-                                            onClick={() => setCurrentPhotoIndex(index)}
-                                            className={`aspect-square overflow-hidden rounded-lg transition-all duration-200 ${index === currentPhotoIndex ? 'ring-2 ring-blue-500' : 'hover:scale-105'
-                                                }`}
-                                        >
-                                            <img
-                                                src={photo}
-                                                alt={`照片 ${index + 1}`}
-                                                className="w-full h-full object-cover"
-                                            />
-                                        </button>
+                                        <div key={index} className="relative group">
+                                            <button
+                                                onClick={() => setCurrentPhotoIndex(index)}
+                                                className={`aspect-square overflow-hidden rounded-lg transition-all duration-200 w-full ${index === currentPhotoIndex ? 'ring-2 ring-blue-500' : 'hover:scale-105'
+                                                    }`}
+                                            >
+                                                <img
+                                                    src={photo}
+                                                    alt={`照片 ${index + 1}`}
+                                                    className="w-full h-full object-cover"
+                                                />
+                                            </button>
+                                            {/* 全屏查看按钮 */}
+                                            <button
+                                                onClick={() => {
+                                                    setCurrentPhotoIndex(index);
+                                                    setIsFullscreenOpen(true);
+                                                }}
+                                                className="absolute top-1 right-1 p-1 bg-black/50 text-white rounded-full opacity-0 group-hover:opacity-100 transition-opacity duration-200 hover:bg-black/70"
+                                                title="全屏查看"
+                                            >
+                                                <svg className="w-3 h-3" fill="currentColor" viewBox="0 0 20 20">
+                                                    <path fillRule="evenodd" d="M3 4a1 1 0 011-1h4a1 1 0 010 2H6.414l2.293 2.293a1 1 0 11-1.414 1.414L5 6.414V8a1 1 0 01-2 0V4zm9 1a1 1 0 010-2h4a1 1 0 011 1v4a1 1 0 01-2 0V6.414l-2.293 2.293a1 1 0 11-1.414-1.414L13.586 5H12z" clipRule="evenodd" />
+                                                </svg>
+                                            </button>
+                                        </div>
                                     ))}
                                 </div>
                             </div>
@@ -510,6 +532,17 @@ const RelayDetail: React.FC = () => {
                         </div>
                     </motion.div>
                 )}
+
+                {/* 全屏照片查看器 */}
+                <FullscreenPhotoViewer
+                    photos={relay.photos}
+                    currentIndex={currentPhotoIndex}
+                    isOpen={isFullscreenOpen}
+                    onClose={() => setIsFullscreenOpen(false)}
+                    onIndexChange={setCurrentPhotoIndex}
+                    relayName={relay.name}
+                    participant={relay.participant}
+                />
             </div>
         </div>
     );
