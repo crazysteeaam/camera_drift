@@ -1,8 +1,12 @@
-import React from 'react';
+import React, { useState } from 'react';
 import { motion } from 'framer-motion';
-import { Camera, Heart, Users, Globe, Code, Award, Film, MapPin, ArrowRight } from 'lucide-react';
+import { Users, Globe, Film, MapPin, ArrowRight } from 'lucide-react';
+import MessageBoard from '../components/MessageBoard';
+import { sampleMessages } from '../data/messages';
+import type { Message } from '../components/MessageBoard';
 
 const About: React.FC = () => {
+    const [messages, setMessages] = useState<Message[]>(sampleMessages);
     const features = [
         {
             icon: <Film className="h-8 w-8" />,
@@ -50,23 +54,7 @@ const About: React.FC = () => {
         }
     ];
 
-    const team = [
-        {
-            name: '项目策划',
-            role: '创意总监',
-            description: '负责项目整体规划和创意设计，确保项目的艺术性和可执行性'
-        },
-        {
-            name: '技术开发',
-            role: '全栈工程师',
-            description: '负责网站开发和维护，确保用户体验的流畅性和功能的完整性'
-        },
-        {
-            name: '摄影指导',
-            role: '专业摄影师',
-            description: '为参与者提供摄影技术指导，确保照片质量和艺术价值'
-        }
-    ];
+
 
     return (
         <div className="min-h-screen bg-gradient-to-br from-purple-50 to-pink-100 py-8">
@@ -148,7 +136,7 @@ const About: React.FC = () => {
                                         <p className="text-gray-600">{item.description}</p>
                                     </div>
                                 </div>
-                                
+
                                 {index < process.length - 1 && (
                                     <div className="w-1/2 flex justify-center">
                                         <ArrowRight className={`h-8 w-8 text-purple-400 ${index % 2 === 0 ? '' : 'transform rotate-180'}`} />
@@ -159,92 +147,67 @@ const About: React.FC = () => {
                     </div>
                 </motion.div>
 
-                {/* 团队介绍 */}
+                {/* 点亮全国计划 */}
                 <motion.div
                     initial={{ opacity: 0, y: 20 }}
                     animate={{ opacity: 1, y: 0 }}
                     transition={{ delay: 0.5 }}
-                    className="mb-16"
+                    className="bg-white rounded-2xl p-8 shadow-xl mb-16"
                 >
-                    <h2 className="text-3xl font-bold text-gray-900 text-center mb-12">核心团队</h2>
-                    <div className="grid grid-cols-1 md:grid-cols-3 gap-8">
-                        {team.map((member, index) => (
-                            <motion.div
-                                key={index}
-                                initial={{ opacity: 0, y: 20 }}
-                                animate={{ opacity: 1, y: 0 }}
-                                transition={{ delay: 0.6 + index * 0.1 }}
-                                className="bg-white rounded-2xl p-6 shadow-lg hover:shadow-xl transition-all duration-300 text-center"
-                            >
-                                <div className="w-20 h-20 mx-auto mb-4 bg-gradient-to-br from-purple-500 to-pink-500 rounded-full flex items-center justify-center text-white text-2xl font-bold">
-                                    {member.name.charAt(0)}
-                                </div>
-                                <h3 className="text-xl font-semibold text-gray-900 mb-2">{member.name}</h3>
-                                <p className="text-purple-600 font-medium mb-3">{member.role}</p>
-                                <p className="text-gray-600">{member.description}</p>
-                            </motion.div>
-                        ))}
+                    <h2 className="text-3xl font-bold text-gray-900 text-center mb-8">点亮全国计划</h2>
+                    <div className="text-center mb-8">
+                        <p className="text-lg text-gray-600 leading-relaxed mb-6">
+                            继第一期成功举办后，我们正在启动第二期"点亮全国"胶片漂流计划。
+                            这一次，我们的目标是覆盖全国所有地级市，让胶片摄影的魅力传遍神州大地。
+                        </p>
+                        <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
+                            <div className="bg-green-50 p-6 rounded-xl border-2 border-green-200">
+                                <h3 className="text-xl font-semibold text-green-800 mb-2">浙江站</h3>
+                                <p className="text-green-700">已启动</p>
+                                <p className="text-sm text-green-600 mt-2">正在火热进行中</p>
+                            </div>
+                            <div className="bg-yellow-50 p-6 rounded-xl border-2 border-yellow-200">
+                                <h3 className="text-xl font-semibold text-yellow-800 mb-2">广东站 & 江苏站</h3>
+                                <p className="text-yellow-700">即将启动</p>
+                                <p className="text-sm text-yellow-600 mt-2">还差少部分地方</p>
+                            </div>
+                            <div className="bg-blue-50 p-6 rounded-xl border-2 border-blue-200">
+                                <h3 className="text-xl font-semibold text-blue-800 mb-2">其他地区</h3>
+                                <p className="text-blue-700">招募中</p>
+                                <p className="text-sm text-blue-600 mt-2">欢迎加入</p>
+                            </div>
+                        </div>
+                    </div>
+                    <div className="text-center">
+                        <p className="text-lg text-gray-600 mb-6">
+                            我们欢迎所有热爱摄影的朋友加入，不限参与者身份，共同记录城市变迁与人文风情，
+                            建立全国胶片摄影爱好者社区，举办线下交流活动与展览。
+                        </p>
+                        <button className="px-8 py-3 bg-purple-600 text-white rounded-lg hover:bg-purple-700 transition-colors duration-200">
+                            立即加入
+                        </button>
                     </div>
                 </motion.div>
 
-                {/* 技术架构 */}
+                {/* 留言板 */}
                 <motion.div
                     initial={{ opacity: 0, y: 20 }}
                     animate={{ opacity: 1, y: 0 }}
-                    transition={{ delay: 0.7 }}
-                    className="bg-white rounded-2xl p-8 shadow-xl mb-16"
+                    transition={{ delay: 0.6 }}
+                    className="mb-16"
                 >
-                    <h2 className="text-3xl font-bold text-gray-900 text-center mb-8">技术架构</h2>
-                    <div className="grid grid-cols-1 md:grid-cols-2 gap-8">
-                        <div>
-                            <h3 className="text-xl font-semibold text-gray-900 mb-4 flex items-center">
-                                <Code className="h-6 w-6 mr-2 text-purple-600" />
-                                前端技术
-                            </h3>
-                            <div className="space-y-3">
-                                <div className="flex items-center justify-between p-3 bg-gray-50 rounded-lg">
-                                    <span className="font-medium">React 18</span>
-                                    <span className="text-sm text-gray-500">最新版本</span>
-                                </div>
-                                <div className="flex items-center justify-between p-3 bg-gray-50 rounded-lg">
-                                    <span className="font-medium">TypeScript</span>
-                                    <span className="text-sm text-gray-500">类型安全</span>
-                                </div>
-                                <div className="flex items-center justify-between p-3 bg-gray-50 rounded-lg">
-                                    <span className="font-medium">Tailwind CSS</span>
-                                    <span className="text-sm text-gray-500">现代UI</span>
-                                </div>
-                                <div className="flex items-center justify-between p-3 bg-gray-50 rounded-lg">
-                                    <span className="font-medium">Framer Motion</span>
-                                    <span className="text-sm text-gray-500">流畅动画</span>
-                                </div>
-                            </div>
-                        </div>
-                        <div>
-                            <h3 className="text-xl font-semibold text-gray-900 mb-4 flex items-center">
-                                <Award className="h-6 w-6 mr-2 text-purple-600" />
-                                后端技术
-                            </h3>
-                            <div className="space-y-3">
-                                <div className="flex items-center justify-between p-3 bg-gray-50 rounded-lg">
-                                    <span className="font-medium">Spring Boot</span>
-                                    <span className="text-sm text-gray-500">企业级框架</span>
-                                </div>
-                                <div className="flex items-center justify-between p-3 bg-gray-50 rounded-lg">
-                                    <span className="font-medium">MySQL</span>
-                                    <span className="text-sm text-gray-500">关系型数据库</span>
-                                </div>
-                                <div className="flex items-center justify-between p-3 bg-gray-50 rounded-lg">
-                                    <span className="font-medium">Redis</span>
-                                    <span className="text-sm text-gray-500">缓存系统</span>
-                                </div>
-                                <div className="flex items-center justify-between p-3 bg-gray-50 rounded-lg">
-                                    <span className="font-medium">地图API</span>
-                                    <span className="text-sm text-gray-500">位置服务</span>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
+                    <MessageBoard 
+                        messages={messages}
+                        onAddMessage={(newMessage) => {
+                            const message: Message = {
+                                ...newMessage,
+                                id: Date.now().toString(),
+                                timestamp: new Date().toLocaleString('zh-CN'),
+                                status: 'pending'
+                            };
+                            setMessages([...messages, message]);
+                        }}
+                    />
                 </motion.div>
 
                 {/* 联系我们 */}

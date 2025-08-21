@@ -1,7 +1,7 @@
 {
     "name": "film-relay-frontend",
     "version": "1.0.0",
-    "description": "电影接力项目前端应用",
+    "description": "胶片漂流",
     "private": true,
     "dependencies": {
         "@types/node": "^18.17.0",
@@ -25,7 +25,9 @@
         "start": "react-scripts start",
         "build": "react-scripts build",
         "test": "react-scripts test",
-        "eject": "react-scripts eject"
+        "eject": "react-scripts eject",
+        "generate-photos": "node scripts/generatePhotoPaths.js",
+        "copy-photos": "node scripts/copyPhotosToPublic.js"
     },
     "eslintConfig": {
         "extends": [
