@@ -5,8 +5,12 @@ import Navbar from './components/Navbar';
 import Home from './pages/Home';
 import GroupDetail from './pages/GroupDetail';
 import RelayDetail from './pages/RelayDetail';
+import RouteMap from './pages/RouteMap';
 import About from './pages/About';
 import PhotoTest from './pages/PhotoTest';
+
+import MapTest from './pages/MapTest';
+
 import './App.css';
 
 function App() {
@@ -64,6 +68,37 @@ function App() {
                                 transition={{ duration: 0.5 }}
                             >
                                 <PhotoTest />
+                            </motion.div>
+                        } />
+
+                        <Route path="/route-map" element={
+                            <motion.div
+                                initial={{ opacity: 0, y: 20 }}
+                                animate={{ opacity: 1, y: 0 }}
+                                exit={{ opacity: 0, y: -20 }}
+                                transition={{ duration: 0.5 }}
+                            >
+                                <RouteMap />
+                            </motion.div>
+                        } />
+                        <Route path="/route-map/:groupId" element={
+                            <motion.div
+                                initial={{ opacity: 0, y: 20 }}
+                                animate={{ opacity: 1, y: 0 }}
+                                exit={{ opacity: 0, y: -20 }}
+                                transition={{ duration: 0.5 }}
+                            >
+                                <RouteMap />
+                            </motion.div>
+                        } />
+                        <Route path="/map-test" element={
+                            <motion.div
+                                initial={{ opacity: 0, y: 20 }}
+                                animate={{ opacity: 1, y: 0 }}
+                                exit={{ opacity: 0, y: -20 }}
+                                transition={{ duration: 0.5 }}
+                            >
+                                <MapTest />
                             </motion.div>
                         } />
                     </Routes>

@@ -1,8 +1,9 @@
 import React, { useState } from 'react';
 import { useParams, Link } from 'react-router-dom';
 import { motion } from 'framer-motion';
-import { Camera, MapPin, Calendar, MessageCircle, ArrowRight, Users, Compass } from 'lucide-react';
+import { Camera, MapPin, Calendar, MessageCircle, ArrowRight, Users, Compass, Map } from 'lucide-react';
 import { projectData } from '../config/projectData';
+import AmapComponent from '../components/AmapComponent';
 
 const GroupDetail: React.FC = () => {
     const { groupId } = useParams<{ groupId: string }>();
@@ -64,13 +65,34 @@ const GroupDetail: React.FC = () => {
                         <p className="text-lg text-gray-600">追踪每一棒的传递路径，感受地理的变迁</p>
                     </motion.div>
 
-                    {/* 地图占位符 */}
-                    <div className="bg-gray-100 rounded-xl p-8 text-center">
-                        <MapPin className="h-16 w-16 text-gray-400 mx-auto mb-4" />
-                        <p className="text-gray-500 text-lg">地图组件将在这里显示</p>
-                        <p className="text-gray-400 text-sm">包含接力路线、位置标记和箭头指向</p>
-                        <div className="mt-4 text-sm text-gray-400">
-                            <p>路线：{group.relays.map(r => r.location).join(' → ')}</p>
+                    {/* 地图组件 */}
+                    <div className="bg-white rounded-xl shadow-lg overflow-hidden">
+                        <div className="flex items-center justify-between p-6 border-b border-gray-200">
+                            <div className="flex items-center">
+                                <Map className="h-6 w-6 text-blue-500 mr-3" />
+                                <h3 className="text-lg font-semibold text-gray-900">接力路线图</h3>
+                            </div>
+                            <Link
+                                to={`/route-map/${groupId}`}
+                                className="inline-flex items-center px-4 py-2 bg-blue-600 text-white text-sm font-medium rounded-lg hover:bg-blue-700 transition-colors duration-200"
+                            >
+                                <Map className="h-4 w-4 mr-2" />
+                                查看完整路线
+                            </Link>
+                        </div>
+                        <div className="h-96">
+                            <AmapComponent
+                                relays={group.relays}
+                                height="100%"
+                                showRoute={true}
+                                showAllMarkers={true}
+                            />
+                        </div>
+                        <div className="p-4 bg-gray-50 border-t border-gray-200">
+                            <div className="flex items-center justify-between text-sm text-gray-600">
+                                <span>路线：{group.relays.map(r => r.location).join(' → ')}</span>
+                                <span>{group.relays.length} 个接力点</span>
+                            </div>
                         </div>
                     </div>
                 </div>
