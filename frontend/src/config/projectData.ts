@@ -1,3 +1,6 @@
+// 导入图片路径自动生成工具
+import { getAllPhotoConfig } from './photoConfig';
+
 // 项目数据配置文件
 export interface Relay {
     id: number;
@@ -44,8 +47,8 @@ export interface Phase2Preview {
 // 第二期预告数据
 export const phase2Preview: Phase2Preview = {
     title: "点亮全国 胶片漂流计划",
-    subtitle: "第二期即将启动",
-    description: "继第一期成功举办后，我们即将启动第二期胶片漂流计划。这一次，我们的目标是点亮全国所有地级市，让胶片摄影的魅力传遍神州大地。",
+    subtitle: "第二期招募中",
+    description: "继第一期成功举办后，我们正在招募第二期胶片漂流计划的参与者。这一次，我们的目标是点亮全国所有地级市，让胶片摄影的魅力传遍神州大地。",
     goal: "点亮全国所有地级市，记录每一个城市的独特魅力",
     features: [
         "覆盖全国333个地级市",
@@ -55,178 +58,45 @@ export const phase2Preview: Phase2Preview = {
         "举办线下交流活动与展览"
     ],
     startDate: "2024年3月",
-    status: "即将启动"
+    status: "招募中 - 浙江站已启动，广东站和江苏站即将启动"
 };
 
-// 图片路径配置 - 你可以直接替换这些路径
-const PHOTO_PATHS = {
-    // A组照片路径
-    A: {
-        1: [
-            '/photos/A1/000001.JPG',
-            '/photos/A1/000002.JPG',
-            '/photos/A1/000003.JPG'
-        ],
-        2: [
-            '/photos/A2/photo1.jpg',
-            '/photos/A2/photo2.jpg',
-            '/photos/A2/photo3.jpg'
-        ],
-        3: [
-            '/photos/A3/photo1.jpg',
-            '/photos/A3/photo2.jpg',
-            '/photos/A3/photo3.jpg'
-        ],
-        4: [
-            '/photos/A4/photo1.jpg',
-            '/photos/A4/photo2.jpg',
-            '/photos/A4/photo3.jpg'
-        ],
-        5: [
-            '/photos/A5/photo1.jpg',
-            '/photos/A5/photo2.jpg',
-            '/photos/A5/photo3.jpg'
-        ],
-        6: [
-            '/photos/A6/photo1.jpg',
-            '/photos/A6/photo2.jpg',
-            '/photos/A6/photo3.jpg'
-        ]
-    },
-    // B组照片路径
-    B: {
-        1: [
-            '/photos/B1/photo1.jpg',
-            '/photos/B1/photo2.jpg',
-            '/photos/B1/photo3.jpg'
-        ],
-        2: [
-            '/photos/B2/photo1.jpg',
-            '/photos/B2/photo2.jpg',
-            '/photos/B2/photo3.jpg'
-        ],
-        3: [
-            '/photos/B3/photo1.jpg',
-            '/photos/B3/photo2.jpg',
-            '/photos/B3/photo3.jpg'
-        ],
-        4: [
-            '/photos/B4/photo1.jpg',
-            '/photos/B4/photo2.jpg',
-            '/photos/B4/photo3.jpg'
-        ],
-        5: [
-            '/photos/B5/photo1.jpg',
-            '/photos/B5/photo2.jpg',
-            '/photos/B5/photo3.jpg'
-        ],
-        6: [
-            '/photos/B6/photo1.jpg',
-            '/photos/B6/photo2.jpg',
-            '/photos/B6/photo3.jpg'
-        ]
-    },
-    // C组照片路径
-    C: {
-        1: [
-            '/photos/C1/photo1.jpg',
-            '/photos/C1/photo2.jpg',
-            '/photos/C1/photo3.jpg'
-        ],
-        2: [
-            '/photos/C2/photo1.jpg',
-            '/photos/C2/photo2.jpg',
-            '/photos/C2/photo3.jpg'
-        ],
-        3: [
-            '/photos/C3/photo1.jpg',
-            '/photos/C3/photo2.jpg',
-            '/photos/C3/photo3.jpg'
-        ],
-        4: [
-            '/photos/C4/photo1.jpg',
-            '/photos/C4/photo2.jpg',
-            '/photos/C4/photo3.jpg'
-        ],
-        5: [
-            '/photos/C5/photo1.jpg',
-            '/photos/C5/photo2.jpg',
-            '/photos/C5/photo3.jpg'
-        ],
-        6: [
-            '/photos/C6/photo1.jpg',
-            '/photos/C6/photo2.jpg',
-            '/photos/C6/photo3.jpg'
-        ]
-    },
-    // D组照片路径
-    D: {
-        1: [
-            '/photos/D1/photo1.jpg',
-            '/photos/D1/photo2.jpg',
-            '/photos/D1/photo3.jpg'
-        ],
-        2: [
-            '/photos/D2/photo1.jpg',
-            '/photos/D2/photo2.jpg',
-            '/photos/D2/photo3.jpg'
-        ],
-        3: [
-            '/photos/D3/photo1.jpg',
-            '/photos/D3/photo2.jpg',
-            '/photos/D3/photo3.jpg'
-        ],
-        4: [
-            '/photos/D4/photo1.jpg',
-            '/photos/D4/photo2.jpg',
-            '/photos/D4/photo3.jpg'
-        ],
-        5: [
-            '/photos/D5/photo1.jpg',
-            '/photos/D5/photo2.jpg',
-            '/photos/D5/photo3.jpg'
-        ],
-        6: [
-            '/photos/D6/photo1.jpg',
-            '/photos/D6/photo2.jpg',
-            '/photos/D6/photo3.jpg'
-        ]
-    }
-};
+// 图片路径配置 - 自动生成，无需手动配置
+const PHOTO_PATHS = getAllPhotoConfig();
 
 // 留言内容配置
 const MESSAGES = {
     A: {
-        1: '在杭州的西湖边，我捕捉到了这座城市的诗意。湖光山色，亭台楼阁，每一处都充满了江南的韵味。清晨的阳光洒在湖面上，波光粼粼，让人心旷神怡。',
-        2: '衢州的古城墙诉说着历史的沧桑，老街上的青石板路承载着千年的记忆。在这里，我感受到了传统文化的厚重与深沉。',
-        3: '台州的海岸线绵延不绝，海浪拍打着礁石，发出阵阵轰鸣。海天一色的壮美景象，让人感叹大自然的鬼斧神工。',
-        4: '宁波的港口繁忙而有序，现代化的码头与古老的渔村形成鲜明对比。这里既有历史的沉淀，又有现代的活力。',
-        5: '上海的外滩夜景璀璨夺目，黄浦江两岸的现代建筑群展现了这座国际大都市的繁华与活力。',
-        6: '在上海的最后一站，我记录下了这座城市的现代与传统交融。从陆家嘴的摩天大楼到豫园的古典园林，上海的魅力无处不在。'
+        1: '杭州',
+        2: '衢州',
+        3: '台州',
+        4: '宁波',
+        5: '上海',
+        6: '上海'
     },
     B: {
-        1: '济南的泉水清澈见底，老城区的石板路承载着千年的历史，每一步都踏在时光的印记上。',
-        2: '长春的伪满皇宫见证了历史的变迁，这里的建筑风格独特，让人深思那段特殊的历史时期。',
-        3: '大同的云冈石窟气势恢宏，佛像雕刻精美绝伦，展现了古代工匠的卓越技艺。',
-        4: '北京的天安门广场庄严肃穆，故宫的红墙黄瓦诉说着皇家的辉煌，这里是中华文明的中心。',
-        5: '青岛的海滨风光令人陶醉，八大关的欧式建筑与碧海蓝天相映成趣，形成了独特的城市风貌。',
-        6: '在青岛的最后一站，我记录下了这座海滨城市的美丽与宁静。海风轻拂，让人心旷神怡。'
+        1: '济南',
+        2: '长春',
+        3: '大同',
+        4: '北京',
+        5: '青岛',
+        6: '青岛'
     },
     C: {
-        1: '佛山的岭南建筑独具特色，古村落保存完好，让人感受到了浓厚的岭南文化氛围。',
-        2: '广州的珠江夜景美不胜收，小蛮腰塔的灯光秀让人目不暇接，这里是南方的经济中心。',
-        3: '北海的银滩洁白如雪，海水清澈见底，是度假休闲的绝佳去处。',
-        4: '贵阳的山城风光独特，青岩古镇的古建筑保存完好，让人感受到了历史的厚重。',
-        5: '贵溪的龙虎山风景秀丽，道教文化底蕴深厚，是修身养性的好地方。',
-        6: '潮州的古城墙和牌坊街展现了这座城市的古老历史，潮汕文化在这里得到了很好的传承。'
+        1: '佛山',
+        2: '广州',
+        3: '北海',
+        4: '贵阳',
+        5: '贵溪',
+        6: '潮州'
     },
     D: {
-        1: '大连的海滨风光令人心旷神怡，星海广场的现代建筑与海天一色相映成趣。',
-        2: '在大连的第二站，我深入探索了这座城市的工业历史，老厂房的沧桑感让人深思。',
-        3: '哈尔滨的中央大街充满了异国情调，俄式建筑让人仿佛置身于欧洲小镇。',
-        4: '黄冈的黄梅戏文化底蕴深厚，这里的传统艺术得到了很好的保护和传承。',
-        5: '南宁的绿城风光让人印象深刻，南湖公园的湖光山色让人流连忘返。',
-        6: '乌鲁木齐的天山风光壮美无比，这里的自然景观让人感叹大自然的鬼斧神工。'
+        1: '大连',
+        2: '大连',
+        3: '哈尔滨',
+        4: '黄石',
+        5: '南宁',
+        6: '乌鲁木齐'
     }
 };
 
