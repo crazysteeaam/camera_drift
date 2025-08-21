@@ -1,7 +1,7 @@
 import React from 'react';
 import { motion } from 'framer-motion';
 import { Link } from 'react-router-dom';
-import { Camera, MapPin, Users, ArrowRight, Film, Compass } from 'lucide-react';
+import { Camera, MapPin, Users, ArrowRight, Film, Compass, Map } from 'lucide-react';
 import { projectData, phase2Preview } from '../config/projectData';
 
 const Home: React.FC = () => {
@@ -25,11 +25,22 @@ const Home: React.FC = () => {
                         <p className="text-xl md:text-2xl text-blue-200 mb-8">
                             第一期
                         </p>
-                        <p className="text-lg text-blue-100 max-w-3xl mx-auto leading-relaxed">
+                        <p className="text-lg text-blue-100 max-w-3xl mx-auto leading-relaxed mb-8">
                             这是一个跨越地域、连接心灵的摄影接力项目。四个小组，二十四位参与者，
                             用胶片记录旅途中的每一个瞬间，让每一张照片都承载着故事与情感，
                             在接力中传递着对美好生活的向往与追求。
                         </p>
+                        
+                        {/* 快速操作按钮 */}
+                        <div className="flex flex-wrap justify-center gap-4">
+                            <Link
+                                to="/route-map"
+                                className="inline-flex items-center px-6 py-3 bg-blue-600 text-white font-medium rounded-lg hover:bg-blue-700 transition-colors duration-200"
+                            >
+                                <Map className="h-5 w-5 mr-2" />
+                                查看路线图
+                            </Link>
+                        </div>
                     </motion.div>
                 </div>
             </section>

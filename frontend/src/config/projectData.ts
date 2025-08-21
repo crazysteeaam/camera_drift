@@ -177,7 +177,7 @@ export const projectData: Group[] = [
     {
         id: 'A',
         name: 'A组',
-        description: '从江南水乡出发，记录诗意生活的点滴',
+        description: '从江南水乡出发，记录诗意生活的点点滴滴',
         startLocation: '浙江省杭州市',
         endLocation: '上海',
         color: 'from-blue-500 to-blue-600',
