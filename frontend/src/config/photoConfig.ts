@@ -105,6 +105,7 @@ export const PHOTO_CONFIG: PhotoConfig = {
             "/photos/B6/000013000005.jpg",
             "/photos/B6/000013000006.jpg",
             "/photos/B6/000013000007.jpg",
+            "/photos/B6/000001.jpg",
             "/photos/B6/微信图片_20250820154504_81.jpg",
             "/photos/B6/微信图片_20250820154513_82.jpg",
             "/photos/B6/微信图片_20250820154519_83.jpg"
@@ -114,7 +115,6 @@ export const PHOTO_CONFIG: PhotoConfig = {
         "1": [
             "/photos/C1/000001.JPG",
             "/photos/C1/000002.JPG",
-            "/photos/C1/000003.JPG",
             "/photos/C1/000004.JPG",
             "/photos/C1/微信图片_20250820154723_84.jpg"
         ],
