@@ -183,7 +183,10 @@ const About: React.FC = () => {
                             我们欢迎所有热爱摄影的朋友加入，不限参与者身份，共同记录城市变迁与人文风情，
                             建立全国胶片摄影爱好者社区，举办线下交流活动与展览。
                         </p>
-                        <button className="px-8 py-3 bg-purple-600 text-white rounded-lg hover:bg-purple-700 transition-colors duration-200">
+                        <button 
+                            className="px-8 py-3 bg-purple-600 text-white rounded-lg hover:bg-purple-700 transition-colors duration-200"
+                            onClick={() => window.open('https://wj.qq.com/s2/23193149/e58c/', '_blank')}
+                        >
                             立即加入
                         </button>
                     </div>

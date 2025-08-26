@@ -38,16 +38,16 @@ const MessageBoard: React.FC<MessageBoardProps> = ({ messages, onAddMessage }) =
         <div className="bg-white rounded-2xl p-8 shadow-xl">
             <div className="flex justify-between items-center mb-6">
                 <h3 className="text-2xl font-bold text-gray-900">报名留言板</h3>
-                <button
+                {/* <button
                     onClick={() => setShowForm(!showForm)}
                     className="px-6 py-2 bg-purple-600 text-white rounded-lg hover:bg-purple-700 transition-colors duration-200"
                 >
                     {showForm ? '取消' : '我要报名'}
-                </button>
+                </button> */}
             </div>
 
             {/* 报名表单 */}
-            <AnimatePresence>
+            {/* <AnimatePresence>
                 {showForm && (
                     <motion.div
                         initial={{ opacity: 0, height: 0 }}
@@ -116,7 +116,7 @@ const MessageBoard: React.FC<MessageBoardProps> = ({ messages, onAddMessage }) =
                         </form>
                     </motion.div>
                 )}
-            </AnimatePresence>
+            </AnimatePresence> */}
 
             {/* 留言列表 */}
             <div className="space-y-4">
