@@ -196,6 +196,14 @@ export const PHOTO_CONFIG: PhotoConfig = {
     }
 };
 
+
+// 图片变体生成规则
+export const IMAGE_VARIANTS = {
+    thumbnail: '_thumb',
+    preview: '_preview',
+    original: ''  // 无后缀
+};
+
 /**
  * 获取指定组别和序号的图片路径
  * @param group 组别 (A, B, C, D)
