@@ -4,6 +4,7 @@ import { motion } from 'framer-motion';
 import { Camera, MapPin, Calendar, MessageCircle, ArrowRight, Users, Compass, Map } from 'lucide-react';
 import { projectData } from '../config/projectData';
 import AmapComponent from '../components/AmapComponent';
+import SmartImage from '../components/SmartImage';
 
 const GroupDetail: React.FC = () => {
     const { groupId } = useParams<{ groupId: string }>();
@@ -126,8 +127,9 @@ const GroupDetail: React.FC = () => {
                                     <div className="bg-white rounded-xl overflow-hidden shadow-lg hover:shadow-xl transition-all duration-300 transform hover:-translate-y-2">
                                         {/* 照片 */}
                                         <div className="aspect-square overflow-hidden">
-                                            <img
-                                                src={relay.photos[0]} // 显示第一张照片作为封面
+                                            <SmartImage
+                                                originalPath={relay.photos[0]} // 显示第一张照片作为封面
+                                                variant="thumbnail"
                                                 alt={relay.name}
                                                 className="w-full h-full object-cover group-hover:scale-110 transition-transform duration-300"
                                             />

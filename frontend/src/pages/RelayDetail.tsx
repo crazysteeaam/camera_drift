@@ -1,10 +1,12 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import { useParams, Link } from 'react-router-dom';
 import { motion } from 'framer-motion';
 import { MapPin, Calendar, MessageCircle, ArrowLeft, Heart, Download, ChevronLeft, ChevronRight } from 'lucide-react';
 import { projectData } from '../config/projectData';
 import AmapComponent from '../components/AmapComponent';
 import FullscreenPhotoViewer from '../components/FullscreenPhotoViewer';
+import SmartImage from '../components/SmartImage';
+import { ImagePathGenerator } from '../utils/imagePathgenerator';
 import { useNavigate } from "react-router-dom";
 
 // 下载工具函数
@@ -53,19 +55,31 @@ const RelayDetail: React.FC = () => {
     const [downloadProgress, setDownloadProgress] = useState(0);
     const [showDownloadOptions, setShowDownloadOptions] = useState(false);
     const [isFullscreenOpen, setIsFullscreenOpen] = useState(false);
+    const [processedPhotos, setProcessedPhotos] = useState<string[]>([]);
     const navigate = useNavigate();
+
+    // 获取数据
+    const group = projectData.find(g => g.id === groupId);
+    const relay = group?.relays.find(r => r.id === parseInt(relayId || '0'));
+
+    // 处理图片路径，生成预览图路径
+    useEffect(() => {
+        if (relay) {
+            // 直接使用原图路径，SmartImage 组件会自动处理变体
+            setProcessedPhotos(relay.photos);
+        }
+    }, [relay?.photos]);
 
     // 添加类型检查
     if (!groupId || !relayId) {
         return <div>参数错误</div>;
     }
 
-    const group = projectData.find(g => g.id === groupId);
-    const relay = group?.relays.find(r => r.id === parseInt(relayId));
-
     if (!relay) {
         return <div>接力棒不存在</div>;
     }
+
+
 
 
 
@@ -148,8 +162,9 @@ const RelayDetail: React.FC = () => {
                                 className="aspect-square overflow-hidden rounded-xl shadow-2xl cursor-pointer"
                                 onClick={() => setIsFullscreenOpen(true)}
                             >
-                                <img
-                                    src={relay.photos[currentPhotoIndex]}
+                                <SmartImage
+                                    originalPath={relay.photos[currentPhotoIndex]}
+                                    variant="preview"
                                     alt={`${relay.name} - 照片 ${currentPhotoIndex + 1}`}
                                     className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-500"
                                 />
@@ -221,7 +236,7 @@ const RelayDetail: React.FC = () => {
                                     <button 
                                         onClick={() => {
                                             if (relay.photos.length === 1) {
-                                                // 单张照片直接下载
+                                                // 单张照片直接下载原图
                                                 const filename = `${relay.name}_${relay.participant}.jpg`;
                                                 downloadImage(relay.photos[0], filename);
                                             } else {
@@ -291,8 +306,9 @@ const RelayDetail: React.FC = () => {
                                                 className={`aspect-square overflow-hidden rounded-lg transition-all duration-200 w-full ${index === currentPhotoIndex ? 'ring-2 ring-blue-500' : 'hover:scale-105'
                                                     }`}
                                             >
-                                                <img
-                                                    src={photo}
+                                                <SmartImage
+                                                    originalPath={photo}
+                                                    variant="thumbnail"
                                                     alt={`照片 ${index + 1}`}
                                                     className="w-full h-full object-cover"
                                                 />
