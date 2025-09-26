@@ -114,7 +114,7 @@ function WaterfallGallery<T extends PhotoItem>({ photos, onPhotoClick }: Waterfa
                                 <div className="relative overflow-hidden rounded-xl shadow-lg hover:shadow-2xl transition-all duration-300 transform hover:-translate-y-1">
                                     <SmartImage
                                         originalPath={photo.src}
-                                        variant="preview"
+                                        variant="thumbnail"
                                         alt={`${photo.relay.location} - ${photo.type === 'photo' ? '照片' : '留言'}`}
                                         className="w-full h-auto object-cover"
                                     />

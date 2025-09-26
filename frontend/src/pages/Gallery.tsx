@@ -232,7 +232,7 @@ const Gallery: React.FC = () => {
                                     <div className="relative flex-1 flex items-center justify-center bg-gray-100">
                                         <SmartImage
                                             originalPath={selectedPhoto.src}
-                                            variant="preview"
+                                            variant="original"
                                             alt={`${selectedPhoto.relay.participant} - ${selectedPhoto.type === 'photo' ? '照片' : '留言'}`}
                                             className="w-full h-full max-h-[60vh] object-contain"
                                         />
