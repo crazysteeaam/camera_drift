@@ -183,7 +183,7 @@ const Phase2Group: React.FC = () => {
                                     <Link to={`/phase2/group/${provinceId}/${groupId}/relay/${relay.id}`}>
                                         <div className="bg-white rounded-xl overflow-hidden shadow-lg hover:shadow-xl transition-all duration-300 transform hover:-translate-y-2">
                                             <div className="aspect-square overflow-hidden">
-                                                {relay.photos && relay.photos[0] ? (
+                                                {relay.photos && relay.photos[0] && typeof relay.photos[0] === 'string' ? (
                                                     <SmartImage originalPath={relay.photos[0]} variant="thumbnail" alt={relay.name} className="w-full h-full object-cover group-hover:scale-110 transition-transform duration-300" />
                                                 ) : (
                                                     <div className="w-full h-full bg-gray-100 flex items-center justify-center text-gray-400">无照片</div>

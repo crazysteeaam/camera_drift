@@ -15,6 +15,7 @@ import {
     Search
 } from 'lucide-react';
 import { getProvinceById } from '../config/phase2Data';
+import ProvinceMapComponent from '../components/ProvinceMapComponent';
 
 const Phase2Province: React.FC = () => {
     const { provinceId } = useParams<{ provinceId: string }>();
@@ -118,6 +119,41 @@ const Phase2Province: React.FC = () => {
                             <div className="text-sm text-gray-500">总参与者</div>
                         </div>
                     </div>
+                </div>
+            </section>
+
+            {/* 省份地图 */}
+            <section className="py-12 bg-gray-50">
+                <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+                    <motion.div
+                        initial={{ opacity: 0, y: 20 }}
+                        whileInView={{ opacity: 1, y: 0 }}
+                        transition={{ duration: 0.6 }}
+                        viewport={{ once: true }}
+                        className="text-center mb-8"
+                    >
+                        <h2 className="text-3xl font-bold text-gray-900 mb-4">地级市分布图</h2>
+                        <p className="text-lg text-gray-600 max-w-3xl mx-auto">
+                            探索{province.name}内各城市的接力情况，点击标记查看详细信息
+                        </p>
+                    </motion.div>
+                    
+                    <motion.div
+                        initial={{ opacity: 0, y: 20 }}
+                        whileInView={{ opacity: 1, y: 0 }}
+                        transition={{ duration: 0.8, delay: 0.2 }}
+                        viewport={{ once: true }}
+                        className="bg-white rounded-xl shadow-lg overflow-hidden"
+                    >
+                        <ProvinceMapComponent
+                            province={province}
+                            height="500px"
+                            onCityClick={(city) => {
+                                console.log('点击城市:', city);
+                                // 可以在这里添加城市点击的处理逻辑
+                            }}
+                        />
+                    </motion.div>
                 </div>
             </section>
 

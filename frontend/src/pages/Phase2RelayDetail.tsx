@@ -54,8 +54,12 @@ const Phase2RelayDetail: React.FC = () => {
 
     useEffect(() => {
         if (relay) {
-            setProcessedPhotos(relay.photos || []);
-            setMessagePhotos(relay.messageImages || []);
+            // 过滤掉 undefined 或空字符串的路径
+            const validPhotos = (relay.photos || []).filter(photo => photo && typeof photo === 'string' && photo.trim() !== '');
+            const validMessageImages = (relay.messageImages || []).filter(image => image && typeof image === 'string' && image.trim() !== '');
+            
+            setProcessedPhotos(validPhotos);
+            setMessagePhotos(validMessageImages);
         }
     }, [relay?.photos]);
 
@@ -183,12 +187,18 @@ const Phase2RelayDetail: React.FC = () => {
 
                         <div className="relative group">
                             <div className="aspect-square overflow-hidden rounded-xl shadow-2xl cursor-pointer" onClick={() => setIsFullscreenOpen(true)}>
-                                <SmartImage
-                                    originalPath={processedPhotos[currentPhotoIndex]}
-                                    variant="preview"
-                                    alt={`${relay.name} - 照片 ${currentPhotoIndex + 1}`}
-                                    className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-500"
-                                />
+                                {processedPhotos[currentPhotoIndex] ? (
+                                    <SmartImage
+                                        originalPath={processedPhotos[currentPhotoIndex]}
+                                        variant="preview"
+                                        alt={`${relay.name} - 照片 ${currentPhotoIndex + 1}`}
+                                        className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-500"
+                                    />
+                                ) : (
+                                    <div className="w-full h-full bg-gray-100 flex items-center justify-center text-gray-400">
+                                        暂无照片
+                                    </div>
+                                )}
                                 <div className="absolute inset-0 bg-black/0 group-hover:bg-black/20 transition-colors duration-300 flex items-center justify-center">
                                     <div className="opacity-0 group-hover:opacity-100 transition-opacity duration-300 text-white text-lg font-medium">点击查看大图</div>
                                 </div>
@@ -276,12 +286,18 @@ const Phase2RelayDetail: React.FC = () => {
                                 <h3 className="text-lg font-semibold text-gray-900 mb-4">留言图片</h3>
                                 <div className="relative group">
                                     <div className="aspect-square overflow-hidden rounded-xl shadow-2xl cursor-pointer" onClick={() => setIsMsgFullscreenOpen(true)}>
-                                        <SmartImage
-                                            originalPath={messagePhotos[msgCurrentIndex]}
-                                            variant="preview"
-                                            alt={`留言图片 ${msgCurrentIndex + 1}`}
-                                            className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-500"
-                                        />
+                                        {messagePhotos[msgCurrentIndex] ? (
+                                            <SmartImage
+                                                originalPath={messagePhotos[msgCurrentIndex]}
+                                                variant="preview"
+                                                alt={`留言图片 ${msgCurrentIndex + 1}`}
+                                                className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-500"
+                                            />
+                                        ) : (
+                                            <div className="w-full h-full bg-gray-100 flex items-center justify-center text-gray-400">
+                                                暂无留言图片
+                                            </div>
+                                        )}
                                         <div className="absolute inset-0 bg-black/0 group-hover:bg-black/20 transition-colors duration-300 flex items-center justify-center">
                                             <div className="opacity-0 group-hover:opacity-100 transition-opacity duration-300 text-white text-lg font-medium">点击查看大图</div>
                                         </div>

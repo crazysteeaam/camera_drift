@@ -16,6 +16,8 @@ import Phase2Province from './pages/Phase2Province';
 import Phase2Group from './pages/Phase2Group';
 import Phase2Test from './pages/Phase2Test';
 import Phase2RelayDetail from './pages/Phase2RelayDetail';
+import Gallery from './pages/Gallery';
+import Phase1Gallery from './pages/Phase1Gallery';
 
 import './App.css';
 
@@ -44,6 +46,16 @@ function App() {
                                 transition={{ duration: 0.5 }}
                             >
                                 <Home />
+                            </motion.div>
+                        } />
+                        <Route path="/phase1/gallery" element={
+                            <motion.div
+                                initial={{ opacity: 0, y: 20 }}
+                                animate={{ opacity: 1, y: 0 }}
+                                exit={{ opacity: 0, y: -20 }}
+                                transition={{ duration: 0.5 }}
+                            >
+                                <Phase1Gallery />
                             </motion.div>
                         } />
                         <Route path="/group/:groupId" element={
@@ -167,6 +179,16 @@ function App() {
                                 transition={{ duration: 0.5 }}
                             >
                                 <Phase2Test />
+                            </motion.div>
+                        } />
+                        <Route path="/phase2/gallery" element={
+                            <motion.div
+                                initial={{ opacity: 0, y: 20 }}
+                                animate={{ opacity: 1, y: 0 }}
+                                exit={{ opacity: 0, y: -20 }}
+                                transition={{ duration: 0.5 }}
+                            >
+                                <Gallery />
                             </motion.div>
                         } />
                     </Routes>

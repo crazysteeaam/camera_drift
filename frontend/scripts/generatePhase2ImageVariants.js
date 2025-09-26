@@ -7,31 +7,40 @@ const path = require('path');
  */
 async function generateVariantsForImage(sourceImagePath, targetFolder) {
     try {
-        const ext = path.extname(sourceImagePath);
-        const baseName = path.basename(sourceImagePath, ext);
+        const fileName = path.basename(sourceImagePath);
+        const targetThumbnailsDir = path.join(targetFolder, 'thumbnails');
+        const targetPreviewsDir = path.join(targetFolder, 'previews');
 
-        console.log(`处理图片: ${path.basename(sourceImagePath)}`);
+        console.log(`处理图片: ${fileName}`);
 
-        // 生成缩略图 (300px宽度)
-        const thumbnailPath = path.join(targetFolder, `${baseName}_thumb${ext}`);
+        // 确保 thumbnails 和 previews 目录存在
+        if (!fs.existsSync(targetThumbnailsDir)) {
+            fs.mkdirSync(targetThumbnailsDir, { recursive: true });
+        }
+        if (!fs.existsSync(targetPreviewsDir)) {
+            fs.mkdirSync(targetPreviewsDir, { recursive: true });
+        }
+
+        // 生成缩略图 (300px宽度) 到 thumbnails 目录
+        const thumbnailPath = path.join(targetThumbnailsDir, fileName);
         await sharp(sourceImagePath)
             .resize(300, null, { withoutEnlargement: true })
             .jpeg({ quality: 80 })
             .toFile(thumbnailPath);
-        console.log(`  ✓ 生成缩略图: ${path.basename(thumbnailPath)}`);
+        console.log(`  ✓ 生成缩略图: thumbnails/${fileName}`);
 
-        // 生成预览图 (1200px宽度)
-        const previewPath = path.join(targetFolder, `${baseName}_preview${ext}`);
+        // 生成预览图 (1200px宽度) 到 previews 目录
+        const previewPath = path.join(targetPreviewsDir, fileName);
         await sharp(sourceImagePath)
             .resize(1200, null, { withoutEnlargement: true })
             .jpeg({ quality: 85 })
             .toFile(previewPath);
-        console.log(`  ✓ 生成预览图: ${path.basename(previewPath)}`);
+        console.log(`  ✓ 生成预览图: previews/${fileName}`);
 
         // 复制原图到目标文件夹
-        const originalTargetPath = path.join(targetFolder, path.basename(sourceImagePath));
+        const originalTargetPath = path.join(targetFolder, fileName);
         fs.copyFileSync(sourceImagePath, originalTargetPath);
-        console.log(`  ✓ 复制原图: ${path.basename(sourceImagePath)}`);
+        console.log(`  ✓ 复制原图: ${fileName}`);
 
     } catch (error) {
         console.error(`处理图片失败 ${sourceImagePath}:`, error.message);
@@ -71,11 +80,18 @@ async function processFolder(sourceFolder, targetFolder) {
  * 主函数
  */
 async function main() {
-    const phase2PhotosDir = path.join(__dirname, '../public/photos/phase2');
+    const sourcePhase2PhotosDir = path.join(__dirname, '../photos/phase2');
+    const targetPhase2PhotosDir = path.join(__dirname, '../public/photos/phase2');
 
-    if (!fs.existsSync(phase2PhotosDir)) {
-        console.log('第二期图片目录不存在，请先运行 npm run update-photos 创建目录结构');
+    if (!fs.existsSync(sourcePhase2PhotosDir)) {
+        console.log('源第二期图片目录不存在: photos/phase2');
         return;
+    }
+
+    // 确保目标目录存在
+    if (!fs.existsSync(targetPhase2PhotosDir)) {
+        fs.mkdirSync(targetPhase2PhotosDir, { recursive: true });
+        console.log('创建目标目录: public/photos/phase2');
     }
 
     console.log('开始生成第二期图片变体...\n');
@@ -96,62 +112,59 @@ async function main() {
     let totalProcessed = 0;
 
     for (const provinceId of provinces) {
-        const provincePath = path.join(phase2PhotosDir, provinceId);
-        if (!fs.existsSync(provincePath)) continue;
+        const sourceProvincePath = path.join(sourcePhase2PhotosDir, provinceId);
+        const targetProvincePath = path.join(targetPhase2PhotosDir, provinceId);
+        
+        if (!fs.existsSync(sourceProvincePath)) continue;
 
         console.log(`\n处理省份: ${provinceId}`);
 
+        // 确保目标省份目录存在
+        if (!fs.existsSync(targetProvincePath)) {
+            fs.mkdirSync(targetProvincePath, { recursive: true });
+        }
+
         for (const groupId of groups[provinceId]) {
-            const groupPath = path.join(provincePath, groupId);
-            if (!fs.existsSync(groupPath)) continue;
+            const sourceGroupPath = path.join(sourceProvincePath, groupId);
+            const targetGroupPath = path.join(targetProvincePath, groupId);
+            
+            if (!fs.existsSync(sourceGroupPath)) continue;
 
             console.log(`\n处理组别: ${groupId}`);
 
-            // 处理主图片 (photos目录)
-            const photosPath = path.join(groupPath, 'photos');
-            if (fs.existsSync(photosPath)) {
-                await processFolder(photosPath, photosPath);
-
-                // 统计处理的图片数量
-                const files = fs.readdirSync(photosPath);
-                const imageFiles = files.filter(file =>
-                    /\.(jpg|jpeg|png|gif|bmp|tiff|webp)$/i.test(file) &&
-                    !file.includes('_thumb') &&
-                    !file.includes('_preview')
-                );
-                totalProcessed += imageFiles.length;
-            }
-
-            // 处理留言图片 (message目录)
-            const messagePath = path.join(groupPath, 'message');
-            if (fs.existsSync(messagePath)) {
-                await processFolder(messagePath, messagePath);
-
-                // 统计处理的图片数量
-                const files = fs.readdirSync(messagePath);
-                const imageFiles = files.filter(file =>
-                    /\.(jpg|jpeg|png|gif|bmp|tiff|webp)$/i.test(file) &&
-                    !file.includes('_thumb') &&
-                    !file.includes('_preview')
-                );
-                totalProcessed += imageFiles.length;
+            // 确保目标组别目录存在
+            if (!fs.existsSync(targetGroupPath)) {
+                fs.mkdirSync(targetGroupPath, { recursive: true });
             }
 
             // 处理A1, A2等目录结构
             for (let i = 1; i <= 6; i++) {
                 const photoDir = `${groupId}${i}`;
-                const photoDirPath = path.join(groupPath, photoDir);
+                const sourcePhotoDirPath = path.join(sourceGroupPath, photoDir);
+                const targetPhotoDirPath = path.join(targetGroupPath, photoDir);
 
-                if (fs.existsSync(photoDirPath)) {
+                if (fs.existsSync(sourcePhotoDirPath)) {
                     console.log(`\n处理目录: ${photoDir}`);
 
+                    // 确保目标子目录存在
+                    if (!fs.existsSync(targetPhotoDirPath)) {
+                        fs.mkdirSync(targetPhotoDirPath, { recursive: true });
+                    }
+
                     // 处理主图片
-                    const photosSubPath = path.join(photoDirPath, 'photos');
-                    if (fs.existsSync(photosSubPath)) {
-                        await processFolder(photosSubPath, photosSubPath);
+                    const sourcePhotosPath = path.join(sourcePhotoDirPath, 'photos');
+                    const targetPhotosPath = path.join(targetPhotoDirPath, 'photos');
+                    
+                    if (fs.existsSync(sourcePhotosPath)) {
+                        // 确保目标photos目录存在
+                        if (!fs.existsSync(targetPhotosPath)) {
+                            fs.mkdirSync(targetPhotosPath, { recursive: true });
+                        }
+                        
+                        await processFolder(sourcePhotosPath, targetPhotosPath);
 
                         // 统计处理的图片数量
-                        const files = fs.readdirSync(photosSubPath);
+                        const files = fs.readdirSync(sourcePhotosPath);
                         const imageFiles = files.filter(file =>
                             /\.(jpg|jpeg|png|gif|bmp|tiff|webp)$/i.test(file) &&
                             !file.includes('_thumb') &&
@@ -161,12 +174,19 @@ async function main() {
                     }
 
                     // 处理留言图片
-                    const messageSubPath = path.join(photoDirPath, 'message');
-                    if (fs.existsSync(messageSubPath)) {
-                        await processFolder(messageSubPath, messageSubPath);
+                    const sourceMessagePath = path.join(sourcePhotoDirPath, 'message');
+                    const targetMessagePath = path.join(targetPhotoDirPath, 'message');
+                    
+                    if (fs.existsSync(sourceMessagePath)) {
+                        // 确保目标message目录存在
+                        if (!fs.existsSync(targetMessagePath)) {
+                            fs.mkdirSync(targetMessagePath, { recursive: true });
+                        }
+                        
+                        await processFolder(sourceMessagePath, targetMessagePath);
 
                         // 统计处理的图片数量
-                        const files = fs.readdirSync(messageSubPath);
+                        const files = fs.readdirSync(sourceMessagePath);
                         const imageFiles = files.filter(file =>
                             /\.(jpg|jpeg|png|gif|bmp|tiff|webp)$/i.test(file) &&
                             !file.includes('_thumb') &&
@@ -181,9 +201,9 @@ async function main() {
 
     console.log(`\n✅ 第二期图片变体生成完成! 共处理了 ${totalProcessed} 张图片`);
     console.log('\n生成的文件结构:');
-    console.log('  - 原图: example.jpg');
-    console.log('  - 缩略图: example_thumb.jpg (300px宽度)');
-    console.log('  - 预览图: example_preview.jpg (1200px宽度)');
+    console.log('  - 原图: photos/example.jpg');
+    console.log('  - 缩略图: photos/thumbnails/example.jpg (300px宽度)');
+    console.log('  - 预览图: photos/previews/example.jpg (1200px宽度)');
     console.log('\n文件位置: public/photos/phase2/');
 }
 

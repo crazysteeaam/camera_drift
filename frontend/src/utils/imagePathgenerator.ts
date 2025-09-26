@@ -11,6 +11,12 @@ export class ImagePathGenerator {
      * 支持新的目录结构：thumbnails/ 和 previews/ 子目录
      */
     static generateVariantPath(originalPath: string, variant: 'thumbnail' | 'preview' | 'original'): string {
+        // 参数验证
+        if (!originalPath || typeof originalPath !== 'string') {
+            console.warn('ImagePathGenerator.generateVariantPath: originalPath is invalid:', originalPath);
+            return '';
+        }
+
         if (variant === 'original') {
             return originalPath;
         }
@@ -32,6 +38,10 @@ export class ImagePathGenerator {
      * 生成第二期图片的变体路径（基于目录结构）
      */
     private static generatePhase2VariantPath(originalPath: string, variant: 'thumbnail' | 'preview'): string {
+        if (!originalPath || typeof originalPath !== 'string') {
+            return '';
+        }
+
         const pathParts = originalPath.split('/');
         const fileName = pathParts.pop();
         const directory = pathParts.join('/');

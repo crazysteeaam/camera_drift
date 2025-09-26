@@ -141,7 +141,7 @@ const Phase2Home: React.FC = () => {
                     </motion.div>
 
                     {/* 地图容器 */}
-                    <div className="bg-white rounded-2xl p-8 shadow-lg">
+                    <div>
                         <Phase2MapComponent
                             provinces={provinces}
                             onProvinceClick={(province) => {
@@ -498,12 +498,12 @@ const Phase2Home: React.FC = () => {
 
                                 {/* 二维码预留位置 */}
                                 <div className="flex flex-col items-center">
-                                    <div className="w-32 h-32 bg-gray-100 rounded-lg flex items-center justify-center border-2 border-dashed border-gray-300">
-                                        <div className="text-center">
-                                            <Camera className="h-8 w-8 text-gray-400 mx-auto mb-2" />
-                                            <p className="text-xs text-gray-500">小红书二维码</p>
-                                            <p className="text-xs text-gray-400">预留位置</p>
-                                        </div>
+                                    <div className="w-36 h-36 bg-white rounded-xl shadow-inner border border-pink-200 overflow-hidden flex items-center justify-center">
+                                        <img
+                                            src="/scan.jpg"
+                                            alt="小红书二维码"
+                                            className="w-full h-full object-cover"
+                                        />
                                     </div>
                                     <p className="text-xs text-gray-500 mt-2">扫码关注</p>
                                 </div>

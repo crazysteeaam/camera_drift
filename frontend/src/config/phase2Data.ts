@@ -93,11 +93,17 @@ export const phase2Provinces: Phase2Province[] = [
                             '/photos/phase2/zhejiang/A/A1/photos/000001.JPG',
                             '/photos/phase2/zhejiang/A/A1/photos/000002.JPG',
                             '/photos/phase2/zhejiang/A/A1/photos/000003.JPG',
-                            '/photos/phase2/zhejiang/A/A1/photos/000004.JPG'
+                            '/photos/phase2/zhejiang/A/A1/photos/000004.JPG',
+                            '/photos/phase2/zhejiang/A/A1/photos/000005.JPG',
+                            '/photos/phase2/zhejiang/A/A1/photos/000006.JPG'
                         ],
                         message: '衢州古城的巷子里，有最温柔的风。',
                         messageImages: [
-                            '/photos/phase2/zhejiang/A/A1/message/aed00478f686ec8c43fa592149363528.jpg'
+                            '/photos/phase2/zhejiang/A/A1/message/1774e17c03e3efb4a2c70c7734f60de5.jpg',
+                            '/photos/phase2/zhejiang/A/A1/message/970d6e7d62e40e045f54e6393317bddb.jpg',
+                            '/photos/phase2/zhejiang/A/A1/message/a8c2e43757eee71d713600f7e08b7c4a.jpg',
+                            '/photos/phase2/zhejiang/A/A1/message/c6008cda639e47d72a4df6b3590fc0ce.jpg',
+                            '/photos/phase2/zhejiang/A/A1/message/c9f773b6f0bb6f91603bab07b8b3e05d.jpg'
                         ],
                         coordinates: { lat: 28.9701, lng: 118.8593 },
                         tags: ['古城', '巷子', '人间烟火'],
@@ -116,8 +122,16 @@ export const phase2Provinces: Phase2Province[] = [
                         weather: '多云',
                         camera: '富士一次性胶片机',
                         film: 'C400',
-                        photos: ['/photos/phase2/zhejiang/A/000002.JPG'],
+                        photos: [
+                            '/photos/phase2/zhejiang/A/A2/photos/000007.JPG',
+                            '/photos/phase2/zhejiang/A/A2/photos/000008.JPG',
+                            '/photos/phase2/zhejiang/A/A2/photos/000009.JPG',
+                            '/photos/phase2/zhejiang/A/A2/photos/000034.JPG'
+                        ],
                         message: '山水之城，绿意漫过了春天。',
+                        messageImages: [
+                            '/photos/phase2/zhejiang/A/A2/message/0ddcab47a2337753cbe3de1e7958cb42.jpg'
+                        ],
                         coordinates: { lat: 28.4676, lng: 119.9229 },
                         tags: ['山水', '绿意', '春天'],
                         nextLocation: '浙江省金华市',
@@ -135,8 +149,18 @@ export const phase2Provinces: Phase2Province[] = [
                         weather: '阴',
                         camera: '富士一次性胶片机',
                         film: 'C400',
-                        photos: ['/photos/phase2/zhejiang/A/000003.JPG'],
+                        photos: [
+                            '/photos/phase2/zhejiang/A/A3/photos/000011.JPG',
+                            '/photos/phase2/zhejiang/A/A3/photos/000013.JPG',
+                            '/photos/phase2/zhejiang/A/A3/photos/000014.JPG',
+                            '/photos/phase2/zhejiang/A/A3/photos/000015.JPG',
+                            '/photos/phase2/zhejiang/A/A3/photos/000016.JPG',
+                            '/photos/phase2/zhejiang/A/A3/photos/000035.JPG'
+                        ],
                         message: '城里的味道，是火腿与烟火。',
+                        messageImages: [
+                            '/photos/phase2/zhejiang/A/A3/message/6f3fb03b150d09c974b6390035717eda.jpg'
+                        ],
                         coordinates: { lat: 29.0791, lng: 119.6474 },
                         tags: ['火腿', '市井', '人情'],
                         nextLocation: '浙江省温州市',
@@ -154,8 +178,17 @@ export const phase2Provinces: Phase2Province[] = [
                         weather: '晴',
                         camera: '富士一次性胶片机',
                         film: 'C400',
-                        photos: ['/photos/phase2/zhejiang/A/000004.JPG'],
+                        photos: [
+                            '/photos/phase2/zhejiang/A/A4/photos/000017.JPG',
+                            '/photos/phase2/zhejiang/A/A4/photos/000018.JPG',
+                            '/photos/phase2/zhejiang/A/A4/photos/000019.JPG',
+                            '/photos/phase2/zhejiang/A/A4/photos/000036.JPG',
+                            '/photos/phase2/zhejiang/A/A4/photos/000037.JPG'
+                        ],
                         message: '海风吹过瓯越，灯塔在等晚潮。',
+                        messageImages: [
+                            '/photos/phase2/zhejiang/A/A4/message/306f3b3af2dada74fb53789cdba5b47f.jpg'
+                        ],
                         coordinates: { lat: 27.9949, lng: 120.6993 },
                         tags: ['海风', '灯塔', '晚潮'],
                         nextLocation: '浙江省台州市',
@@ -173,8 +206,18 @@ export const phase2Provinces: Phase2Province[] = [
                         weather: '晴',
                         camera: '富士一次性胶片机',
                         film: 'C400',
-                        photos: ['/photos/phase2/zhejiang/A/000005.JPG'],
+                        photos: [
+                            '/photos/phase2/zhejiang/A/A5/photos/000022.JPG',
+                            '/photos/phase2/zhejiang/A/A5/photos/000023.JPG',
+                            '/photos/phase2/zhejiang/A/A5/photos/000024.JPG',
+                            '/photos/phase2/zhejiang/A/A5/photos/000025.JPG',
+                            '/photos/phase2/zhejiang/A/A5/photos/000026.JPG',
+                            '/photos/phase2/zhejiang/A/A5/photos/000027.JPG'
+                        ],
                         message: '海岸线像一首舒展的歌。',
+                        messageImages: [
+                            '/photos/phase2/zhejiang/A/A5/message/bbf79bc4bf65e3ef36f4ae6fa8d77199.jpg'
+                        ],
                         coordinates: { lat: 28.6614, lng: 121.4330 },
                         tags: ['海岸线', '礁石', '浪花'],
                         nextLocation: '浙江省舟山市',
@@ -192,8 +235,19 @@ export const phase2Provinces: Phase2Province[] = [
                         weather: '多云',
                         camera: '富士一次性胶片机',
                         film: 'C400',
-                        photos: ['/photos/phase2/zhejiang/A/000006.JPG'],
+                        photos: [
+                            '/photos/phase2/zhejiang/A/A6/photos/000028.JPG',
+                            '/photos/phase2/zhejiang/A/A6/photos/000030.JPG',
+                            '/photos/phase2/zhejiang/A/A6/photos/000031.JPG',
+                            '/photos/phase2/zhejiang/A/A6/photos/000032.JPG',
+                            '/photos/phase2/zhejiang/A/A6/photos/000033.JPG',
+                            '/photos/phase2/zhejiang/A/A6/photos/000038.JPG'
+                        ],
                         message: '群岛与渔火，收尾于大海。',
+                        messageImages: [
+                            '/photos/phase2/zhejiang/A/A6/message/07caf3ecbcf3d99d3cb583ead26bb2eb.jpg',
+                            '/photos/phase2/zhejiang/A/A6/message/bef01e9690ea06ede4f0d07c9c773e5a.jpg'
+                        ],
                         coordinates: { lat: 29.9856, lng: 122.2070 },
                         tags: ['群岛', '渔火', '大海'],
                         nextLocation: '终点',
@@ -228,12 +282,23 @@ export const phase2Provinces: Phase2Province[] = [
                         camera: '富士一次性胶片机',
                         film: 'C400',
                         photos: [
-                            '/photos/phase2/zhejiang/A/A1/photos/000001_thumb.JPG',
-                            '/photos/phase2/zhejiang/A/A1/photos/000002.JPG',
-                            '/photos/phase2/zhejiang/A/A1/photos/000003_thumb.JPG',
-                            '/photos/phase2/zhejiang/A/A1/photos/000004.JPG'
+                            '/photos/phase2/zhejiang/B/B1/photos/000001.JPG',
+                            '/photos/phase2/zhejiang/B/B1/photos/000002.JPG',
+                            '/photos/phase2/zhejiang/B/B1/photos/000003.JPG',
+                            '/photos/phase2/zhejiang/B/B1/photos/000004.JPG'
                         ],
                         message: '海港与风帆，启程的方向。',
+                        messageImages: [
+                            '/photos/phase2/zhejiang/B/B1/message/微信图片_20250926103104_240_38.jpg',
+                            '/photos/phase2/zhejiang/B/B1/message/微信图片_20250926103104_241_38.jpg',
+                            '/photos/phase2/zhejiang/B/B1/message/微信图片_20250926133747_250_38.jpg',
+                            '/photos/phase2/zhejiang/B/B1/message/微信图片_20250926133751_251_38.jpg',
+                            '/photos/phase2/zhejiang/B/B1/message/微信图片_20250926133754_252_38.jpg',
+                            '/photos/phase2/zhejiang/B/B1/message/微信图片_20250926133756_253_38.jpg',
+                            '/photos/phase2/zhejiang/B/B1/message/微信图片_20250926133759_254_38.jpg',
+                            '/photos/phase2/zhejiang/B/B1/message/微信图片_20250926133802_255_38.jpg',
+                            '/photos/phase2/zhejiang/B/B1/message/微信图片_20250926133806_256_38.jpg'
+                        ],
                         coordinates: { lat: 29.8683, lng: 121.5440 },
                         tags: ['海港', '风帆'],
                         nextLocation: '浙江省绍兴市',
@@ -251,8 +316,21 @@ export const phase2Provinces: Phase2Province[] = [
                         weather: '多云',
                         camera: '富士一次性胶片机',
                         film: 'C400',
-                        photos: ['/photos/phase2/zhejiang/B/000002.JPG'],
+                        photos: [
+                            '/photos/phase2/zhejiang/B/B2/photos/000006.JPG',
+                            '/photos/phase2/zhejiang/B/B2/photos/000008.JPG',
+                            '/photos/phase2/zhejiang/B/B2/photos/000009.JPG',
+                            '/photos/phase2/zhejiang/B/B2/photos/000010.JPG',
+                            '/photos/phase2/zhejiang/B/B2/photos/000036.JPG'
+                        ],
                         message: '黄酒与乌篷船，摇过水乡。',
+                        messageImages: [
+                            '/photos/phase2/zhejiang/B/B2/message/微信图片_20250926133809_257_38.jpg',
+                            '/photos/phase2/zhejiang/B/B2/message/微信图片_20250926133813_258_38.jpg',
+                            '/photos/phase2/zhejiang/B/B2/message/微信图片_20250926133816_259_38.jpg',
+                            '/photos/phase2/zhejiang/B/B2/message/微信图片_20250926133819_260_38.jpg',
+                            '/photos/phase2/zhejiang/B/B2/message/微信图片_20250926133822_261_38.jpg'
+                        ],
                         coordinates: { lat: 30.0044, lng: 120.5853 },
                         tags: ['乌篷船', '黄酒'],
                         nextLocation: '浙江省嘉兴市',
@@ -270,8 +348,20 @@ export const phase2Provinces: Phase2Province[] = [
                         weather: '阴',
                         camera: '富士一次性胶片机',
                         film: 'C400',
-                        photos: ['/photos/phase2/zhejiang/B/000003.JPG'],
+                        photos: [
+                            '/photos/phase2/zhejiang/B/B3/photos/000011.JPG',
+                            '/photos/phase2/zhejiang/B/B3/photos/000012.JPG',
+                            '/photos/phase2/zhejiang/B/B3/photos/000013.JPG',
+                            '/photos/phase2/zhejiang/B/B3/photos/000014.JPG',
+                            '/photos/phase2/zhejiang/B/B3/photos/000015.JPG',
+                            '/photos/phase2/zhejiang/B/B3/photos/000016.JPG'
+                        ],
                         message: '南湖映红船，故事在继续。',
+                        messageImages: [
+                            '/photos/phase2/zhejiang/B/B3/message/微信图片_20250926133825_262_38.jpg',
+                            '/photos/phase2/zhejiang/B/B3/message/微信图片_20250926133828_263_38.jpg',
+                            '/photos/phase2/zhejiang/B/B3/message/微信图片_20250926133831_264_38.jpg'
+                        ],
                         coordinates: { lat: 30.7461, lng: 120.7540 },
                         tags: ['南湖', '红船'],
                         nextLocation: '浙江省杭州市',
@@ -289,8 +379,23 @@ export const phase2Provinces: Phase2Province[] = [
                         weather: '晴',
                         camera: '富士一次性胶片机',
                         film: 'C400',
-                        photos: ['/photos/phase2/zhejiang/B/000004.JPG'],
+                        photos: [
+                            '/photos/phase2/zhejiang/B/B4/photos/000017.JPG',
+                            '/photos/phase2/zhejiang/B/B4/photos/000018.JPG',
+                            '/photos/phase2/zhejiang/B/B4/photos/000019.JPG',
+                            '/photos/phase2/zhejiang/B/B4/photos/000020.JPG',
+                            '/photos/phase2/zhejiang/B/B4/photos/000021.JPG',
+                            '/photos/phase2/zhejiang/B/B4/photos/000022.JPG'
+                        ],
                         message: '湖山如画，城在诗里。',
+                        messageImages: [
+                            '/photos/phase2/zhejiang/B/B4/message/微信图片_20250926133833_265_38.jpg',
+                            '/photos/phase2/zhejiang/B/B4/message/微信图片_20250926133836_266_38.jpg',
+                            '/photos/phase2/zhejiang/B/B4/message/微信图片_20250926133838_267_38.jpg',
+                            '/photos/phase2/zhejiang/B/B4/message/微信图片_20250926133841_268_38.jpg',
+                            '/photos/phase2/zhejiang/B/B4/message/微信图片_20250926133844_269_38.jpg',
+                            '/photos/phase2/zhejiang/B/B4/message/微信图片_20250926133848_270_38.jpg'
+                        ],
                         coordinates: { lat: 30.2741, lng: 120.1551 },
                         tags: ['西湖', '诗画'],
                         nextLocation: '浙江省湖州市',
@@ -308,8 +413,18 @@ export const phase2Provinces: Phase2Province[] = [
                         weather: '多云',
                         camera: '富士一次性胶片机',
                         film: 'C400',
-                        photos: ['/photos/phase2/zhejiang/B/000005.JPG'],
+                        photos: [
+                            '/photos/phase2/zhejiang/B/B5/photos/000023.JPG',
+                            '/photos/phase2/zhejiang/B/B5/photos/000024.JPG',
+                            '/photos/phase2/zhejiang/B/B5/photos/000025.JPG',
+                            '/photos/phase2/zhejiang/B/B5/photos/000026.JPG',
+                            '/photos/phase2/zhejiang/B/B5/photos/000027.JPG'
+                        ],
                         message: '太湖之滨，风拂苇荡。',
+                        messageImages: [
+                            '/photos/phase2/zhejiang/B/B5/message/微信图片_20250926133851_271_38.jpg',
+                            '/photos/phase2/zhejiang/B/B5/message/微信图片_20250926133854_272_38.jpg'
+                        ],
                         coordinates: { lat: 30.8944, lng: 120.0869 },
                         tags: ['太湖', '苇荡'],
                         nextLocation: '浙江省嘉兴市',
@@ -327,8 +442,21 @@ export const phase2Provinces: Phase2Province[] = [
                         weather: '晴',
                         camera: '富士一次性胶片机',
                         film: 'C400',
-                        photos: ['/photos/phase2/zhejiang/B/000006.JPG'],
+                        photos: [
+                            '/photos/phase2/zhejiang/B/B6/photos/微信图片_20250926133321_242_38.jpg',
+                            '/photos/phase2/zhejiang/B/B6/photos/微信图片_20250926133326_243_38.jpg',
+                            '/photos/phase2/zhejiang/B/B6/photos/微信图片_20250926133332_244_38.jpg',
+                            '/photos/phase2/zhejiang/B/B6/photos/微信图片_20250926133339_245_38.jpg',
+                            '/photos/phase2/zhejiang/B/B6/photos/微信图片_20250926133346_246_38.jpg',
+                            '/photos/phase2/zhejiang/B/B6/photos/微信图片_20250926133354_247_38.jpg',
+                            '/photos/phase2/zhejiang/B/B6/photos/微信图片_20250926133358_248_38.jpg',
+                            '/photos/phase2/zhejiang/B/B6/photos/微信图片_20250926133359_249_38.jpg'
+                        ],
                         message: '回到起点，故事圆满。',
+                        messageImages: [
+                            '/photos/phase2/zhejiang/B/B6/message/微信图片_20250926133856_273_38.jpg',
+                            '/photos/phase2/zhejiang/B/B6/message/微信图片_20250926133859_274_38.jpg'
+                        ],
                         coordinates: { lat: 30.7461, lng: 120.7540 },
                         tags: ['圆满', '归来'],
                         nextLocation: '终点',
