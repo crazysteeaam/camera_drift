@@ -25,6 +25,16 @@ const SmartImage: React.FC<SmartImageProps> = ({
 
     useEffect(() => {
         const loadImage = async () => {
+            // 参数验证
+            if (!originalPath || typeof originalPath !== 'string') {
+                console.warn('SmartImage: originalPath is invalid:', originalPath);
+                setHasError(true);
+                if (fallback) {
+                    setImagePath(fallback);
+                }
+                return;
+            }
+
             // setIsLoading(true);
             setHasError(false);
 

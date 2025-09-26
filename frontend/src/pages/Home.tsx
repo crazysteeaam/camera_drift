@@ -1,10 +1,21 @@
-import React from 'react';
+import React, { useState } from 'react';
 import { motion } from 'framer-motion';
 import { Link } from 'react-router-dom';
-import { Camera, MapPin, Users, ArrowRight, Film, Compass, Map } from 'lucide-react';
+import { Camera, MapPin, Users, ArrowRight, Film, Compass, Map, Filter } from 'lucide-react';
 import { projectData, phase2Preview } from '../config/projectData';
+import AmapComponent from '../components/AmapComponent';
 
 const Home: React.FC = () => {
+    const [selectedGroup, setSelectedGroup] = useState<string>('all');
+
+    const handleGroupSelect = (group: string) => {
+        setSelectedGroup(group);
+    };
+
+    const filteredProjectData = selectedGroup === 'all' 
+        ? projectData 
+        : projectData.filter(group => group.id === selectedGroup);
+
     return (
         <div className="min-h-screen">
             {/* Hero Section */}
@@ -30,17 +41,90 @@ const Home: React.FC = () => {
                             用胶片记录旅途中的每一个瞬间，让每一张照片都承载着故事与情感，
                             在接力中传递着对美好生活的向往与追求。
                         </p>
-                        
-                        {/* 快速操作按钮 */}
                         <div className="flex flex-wrap justify-center gap-4">
                             <Link
-                                to="/route-map"
+                                to="/phase1/gallery"
                                 className="inline-flex items-center px-6 py-3 bg-blue-600 text-white font-medium rounded-lg hover:bg-blue-700 transition-colors duration-200"
                             >
-                                <Map className="h-5 w-5 mr-2" />
-                                查看路线图
+                                <Camera className="h-5 w-5 mr-2" />
+                                浏览作品集
                             </Link>
                         </div>
+                    </motion.div>
+                </div>
+            </section>
+
+            {/* 路线图 */}
+            <section className="py-16 bg-gray-50">
+                <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+                    <motion.div
+                        initial={{ opacity: 0, y: 20 }}
+                        whileInView={{ opacity: 1, y: 0 }}
+                        transition={{ duration: 0.6 }}
+                        viewport={{ once: true }}
+                        className="text-center mb-8"
+                    >
+                        <h2 className="text-3xl font-bold text-gray-900 mb-4">接力路线图</h2>
+                        <p className="text-lg text-gray-600 max-w-3xl mx-auto">
+                            探索胶片漂流计划的完整路线，见证每一棒的精彩瞬间
+                        </p>
+                    </motion.div>
+
+                    {/* 筛选组件 */}
+                    <motion.div
+                        initial={{ opacity: 0, y: 20 }}
+                        whileInView={{ opacity: 1, y: 0 }}
+                        transition={{ duration: 0.6, delay: 0.1 }}
+                        viewport={{ once: true }}
+                        className="mb-8"
+                    >
+                        <div className="bg-white rounded-lg shadow-sm border border-gray-200 p-4">
+                            <div className="flex items-center justify-center gap-2 mb-4">
+                                <Filter className="h-5 w-5 text-gray-600" />
+                                <span className="text-sm font-medium text-gray-700">筛选小组</span>
+                            </div>
+                            <div className="flex flex-wrap justify-center gap-3">
+                                <button
+                                    onClick={() => handleGroupSelect('all')}
+                                    className={`px-4 py-2 rounded-lg font-medium transition-all duration-200 ${
+                                        selectedGroup === 'all'
+                                            ? 'bg-blue-500 text-white shadow-md'
+                                            : 'bg-gray-100 text-gray-700 hover:bg-gray-200'
+                                    }`}
+                                >
+                                    全部显示
+                                </button>
+                                {['A', 'B', 'C', 'D'].map((group) => (
+                                    <button
+                                        key={group}
+                                        onClick={() => handleGroupSelect(group)}
+                                        className={`px-4 py-2 rounded-lg font-medium transition-all duration-200 ${
+                                            selectedGroup === group
+                                                ? 'bg-blue-500 text-white shadow-md'
+                                                : 'bg-gray-100 text-gray-700 hover:bg-gray-200'
+                                        }`}
+                                    >
+                                        小组 {group}
+                                    </button>
+                                ))}
+                            </div>
+                        </div>
+                    </motion.div>
+                    
+                    <motion.div
+                        initial={{ opacity: 0, y: 20 }}
+                        whileInView={{ opacity: 1, y: 0 }}
+                        transition={{ duration: 0.8, delay: 0.2 }}
+                        viewport={{ once: true }}
+                        className="bg-white rounded-xl shadow-lg overflow-hidden"
+                    >
+                        <AmapComponent
+                            relays={filteredProjectData.flatMap(group => group.relays)}
+                            height="500px"
+                            showRoute={true}
+                            showAllMarkers={true}
+                            groups={filteredProjectData}
+                        />
                     </motion.div>
                 </div>
             </section>

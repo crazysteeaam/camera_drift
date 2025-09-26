@@ -1,0 +1,211 @@
+{
+  "type": "FeatureCollection",
+  "features": [
+    {
+      "type": "Feature",
+      "properties": {
+        "name": "浙江省",
+        "shortName": "浙江"
+      },
+      "geometry": {
+        "type": "Polygon",
+        "coordinates": [[
+          [118.0, 30.0],
+          [123.0, 30.0],
+          [123.0, 28.0],
+          [120.0, 27.0],
+          [118.0, 28.0],
+          [118.0, 30.0]
+        ]]
+      }
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "name": "江苏省",
+        "shortName": "江苏"
+      },
+      "geometry": {
+        "type": "Polygon",
+        "coordinates": [[
+          [116.0, 35.0],
+          [122.0, 35.0],
+          [122.0, 30.0],
+          [118.0, 30.0],
+          [116.0, 32.0],
+          [116.0, 35.0]
+        ]]
+      }
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "name": "广东省",
+        "shortName": "广东"
+      },
+      "geometry": {
+        "type": "Polygon",
+        "coordinates": [[
+          [109.0, 25.0],
+          [117.0, 25.0],
+          [117.0, 20.0],
+          [109.0, 20.0],
+          [109.0, 25.0]
+        ]]
+      }
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "name": "山东省",
+        "shortName": "山东"
+      },
+      "geometry": {
+        "type": "Polygon",
+        "coordinates": [[
+          [114.0, 38.0],
+          [123.0, 38.0],
+          [123.0, 34.0],
+          [114.0, 34.0],
+          [114.0, 38.0]
+        ]]
+      }
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "name": "河南省",
+        "shortName": "河南"
+      },
+      "geometry": {
+        "type": "Polygon",
+        "coordinates": [[
+          [110.0, 36.0],
+          [117.0, 36.0],
+          [117.0, 31.0],
+          [110.0, 31.0],
+          [110.0, 36.0]
+        ]]
+      }
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "name": "四川省",
+        "shortName": "四川"
+      },
+      "geometry": {
+        "type": "Polygon",
+        "coordinates": [[
+          [97.0, 34.0],
+          [109.0, 34.0],
+          [109.0, 26.0],
+          [97.0, 26.0],
+          [97.0, 34.0]
+        ]]
+      }
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "name": "湖北省",
+        "shortName": "湖北"
+      },
+      "geometry": {
+        "type": "Polygon",
+        "coordinates": [[
+          [108.0, 33.0],
+          [117.0, 33.0],
+          [117.0, 29.0],
+          [108.0, 29.0],
+          [108.0, 33.0]
+        ]]
+      }
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "name": "湖南省",
+        "shortName": "湖南"
+      },
+      "geometry": {
+        "type": "Polygon",
+        "coordinates": [[
+          [108.0, 30.0],
+          [114.0, 30.0],
+          [114.0, 24.0],
+          [108.0, 24.0],
+          [108.0, 30.0]
+        ]]
+      }
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "name": "安徽省",
+        "shortName": "安徽"
+      },
+      "geometry": {
+        "type": "Polygon",
+        "coordinates": [[
+          [114.0, 35.0],
+          [120.0, 35.0],
+          [120.0, 29.0],
+          [114.0, 29.0],
+          [114.0, 35.0]
+        ]]
+      }
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "name": "河北省",
+        "shortName": "河北"
+      },
+      "geometry": {
+        "type": "Polygon",
+        "coordinates": [[
+          [113.0, 42.0],
+          [120.0, 42.0],
+          [120.0, 36.0],
+          [113.0, 36.0],
+          [113.0, 42.0]
+        ]]
+      }
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "name": "福建省",
+        "shortName": "福建"
+      },
+      "geometry": {
+        "type": "Polygon",
+        "coordinates": [[
+          [115.0, 28.0],
+          [121.0, 28.0],
+          [121.0, 23.0],
+          [115.0, 23.0],
+          [115.0, 28.0]
+        ]]
+      }
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "name": "江西省",
+        "shortName": "江西"
+      },
+      "geometry": {
+        "type": "Polygon",
+        "coordinates": [[
+          [113.0, 30.0],
+          [118.0, 30.0],
+          [118.0, 24.0],
+          [113.0, 24.0],
+          [113.0, 30.0]
+        ]]
+      }
+    }
+  ]
+}

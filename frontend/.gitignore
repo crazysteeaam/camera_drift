@@ -23,10 +23,10 @@ yarn-debug.log*
 yarn-error.log*
 
 # 忽略照片文件夹 - 这些文件太大且会频繁变化
-/public/photos/
-/public/photos/*
+public/photos/
+public/photos/**
 
-# 忽略照片文件
+# 忽略所有图片文件（但保留必要的示例图片）
 *.jpg
 *.jpeg
 *.png
@@ -35,6 +35,8 @@ yarn-error.log*
 *.tiff
 *.webp
 
-# 但保留文件夹结构
-!/public/photos/
-!/public/photos/*/
+# 保留必要的示例图片和文件夹结构
+!public/photos/
+!public/photos/*/
+!public/photos/**/
+!public/favicon.ico

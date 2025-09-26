@@ -63,11 +63,11 @@ const AmapComponent: React.FC<AmapComponentProps> = ({
                 const script = document.createElement('script');
                 script.src = `https://webapi.amap.com/maps?v=2.0&key=${AMAP_KEY}&plugin=${MAP_CONFIG.PLUGINS.join(',')}`;
                 script.async = true;
-                
+
                 script.onload = () => {
                     // @ts-ignore
                     const AMap = window.AMap;
-                    
+
                     const map = new AMap.Map(mapRef.current!, {
                         zoom: MAP_CONFIG.DEFAULT_ZOOM,
                         center: MAP_CONFIG.DEFAULT_CENTER,
@@ -77,7 +77,7 @@ const AmapComponent: React.FC<AmapComponentProps> = ({
                     // 添加控件
                     map.addControl(new AMap.ToolBar());
                     map.addControl(new AMap.Scale());
-                    map.addControl(new AMap.HawkEye({isOpen: true}));
+                    map.addControl(new AMap.HawkEye({ isOpen: true }));
                     map.addControl(new AMap.MapType());
                     map.addControl(new AMap.Geolocation());
 
@@ -117,26 +117,26 @@ const AmapComponent: React.FC<AmapComponentProps> = ({
         relays.forEach((relay, index) => {
             // @ts-ignore
             const AMap = window.AMap;
-            
+
             // 获取组的颜色
             const relayGroup = getRelayGroup(relay);
             const groupColor = relayGroup ? getGroupColor(relayGroup.id) : '#4C8BF0';
-            
+
             // 生成SVG图标
-            const svgIcon = relay.id === currentRelayId 
-                ? `data:image/svg+xml;base64,${btoa(`
+            const svgIcon = relay.id === currentRelayId
+                ? `data:image/svg+xml;charset=utf-8,${encodeURIComponent(`
                     <svg width="32" height="32" viewBox="0 0 32 32" fill="none" xmlns="http://www.w3.org/2000/svg">
                         <circle cx="16" cy="16" r="14" fill="#E64444" stroke="#FFF" stroke-width="2"/>
                         <text x="16" y="20" font-family="Arial" font-size="12" fill="#FFF" text-anchor="middle">${relay.id}</text>
                     </svg>
                 `)}`
-                : `data:image/svg+xml;base64,${btoa(`
+                : `data:image/svg+xml;charset=utf-8,${encodeURIComponent(`
                     <svg width="32" height="32" viewBox="0 0 32 32" fill="none" xmlns="http://www.w3.org/2000/svg">
                         <circle cx="16" cy="16" r="14" fill="${groupColor}" stroke="#FFF" stroke-width="2"/>
                         <text x="16" y="20" font-family="Arial" font-size="12" fill="#FFF" text-anchor="middle">${relay.id}</text>
                     </svg>
                 `)}`;
-            
+
             const marker = new AMap.Marker({
                 position: [relay.coordinates.lng, relay.coordinates.lat],
                 title: relay.name,
@@ -186,17 +186,17 @@ const AmapComponent: React.FC<AmapComponentProps> = ({
         if (showRoute && groups.length > 0) {
             // @ts-ignore
             const AMap = window.AMap;
-            
+
             // 按组绘制路线
             groups.forEach(group => {
                 // 直接使用组的接力棒数据，而不是从relays中过滤
                 if (group.relays.length > 1) {
-                    const groupPath = group.relays.map(relay => 
+                    const groupPath = group.relays.map(relay =>
                         [relay.coordinates.lng, relay.coordinates.lat]
                     );
-                    
+
                     const groupColor = getGroupColor(group.id);
-                    
+
                     const polyline = new AMap.Polyline({
                         path: groupPath,
                         strokeColor: groupColor,
@@ -232,7 +232,7 @@ const AmapComponent: React.FC<AmapComponentProps> = ({
     if (!isAmapKeyConfigured()) {
         return (
             <div className="relative1">
-                <div 
+                <div
                     style={{ height, width: '100%' }}
                     className="rounded-lg shadow-lg bg-gray-100 flex items-center justify-center"
                 >
@@ -251,8 +251,8 @@ const AmapComponent: React.FC<AmapComponentProps> = ({
 
     return (
         <div className="relative1">
-            <div 
-                ref={mapRef} 
+            <div
+                ref={mapRef}
                 style={{ height, width: '100%' }}
                 className="rounded-lg shadow-lg"
             />

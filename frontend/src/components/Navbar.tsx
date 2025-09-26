@@ -1,15 +1,15 @@
 import React, { useState } from 'react';
 import { Link, useLocation } from 'react-router-dom';
 import { motion } from 'framer-motion';
-import { Camera, Menu, X, Home, Users, MapPin, Info, Map } from 'lucide-react';
+import { Camera, Menu, X, Home, Info, Star } from 'lucide-react';
 
 const Navbar: React.FC = () => {
     const [isOpen, setIsOpen] = useState(false);
     const location = useLocation();
 
     const navItems = [
-        { path: '/', label: '首页', icon: <Home className="h-4 w-4" /> },
-        { path: '/route-map', label: '路线图', icon: <Map className="h-4 w-4" /> },
+        { path: '/', label: '第二期', icon: <Star className="h-4 w-4" /> },
+        { path: '/phase1', label: '第一期', icon: <Home className="h-4 w-4" /> },
         { path: '/about', label: '关于', icon: <Info className="h-4 w-4" /> },
     ];
 
@@ -37,11 +37,10 @@ const Navbar: React.FC = () => {
                                 <Link
                                     key={item.path}
                                     to={item.path}
-                                    className={`px-3 py-2 rounded-md text-sm font-medium transition-colors duration-200 ${
-                                        isActive(item.path)
-                                            ? 'bg-blue-600 text-white'
-                                            : 'text-blue-200 hover:text-white hover:bg-blue-700'
-                                    }`}
+                                    className={`px-3 py-2 rounded-md text-sm font-medium transition-colors duration-200 ${isActive(item.path)
+                                        ? 'bg-blue-600 text-white'
+                                        : 'text-blue-200 hover:text-white hover:bg-blue-700'
+                                        }`}
                                 >
                                     <span className="mr-2">{item.icon}</span>
                                     {item.label}
@@ -75,11 +74,10 @@ const Navbar: React.FC = () => {
                             key={item.path}
                             to={item.path}
                             onClick={() => setIsOpen(false)}
-                            className={`block px-3 py-2 rounded-md text-base font-medium transition-colors duration-200 ${
-                                isActive(item.path)
-                                    ? 'bg-blue-600 text-white'
-                                    : 'text-blue-200 hover:text-white hover:bg-blue-700'
-                            }`}
+                            className={`block px-3 py-2 rounded-md text-base font-medium transition-colors duration-200 ${isActive(item.path)
+                                ? 'bg-blue-600 text-white'
+                                : 'text-blue-200 hover:text-white hover:bg-blue-700'
+                                }`}
                         >
                             <span className="mr-2">{item.icon}</span>
                             {item.label}

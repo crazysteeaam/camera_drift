@@ -9,6 +9,16 @@ import RouteMap from './pages/RouteMap';
 import About from './pages/About';
 import PhotoTest from './pages/PhotoTest';
 import MapTest from './pages/MapTest';
+
+// 第二期页面
+import Phase2Home from './pages/Phase2Home';
+import Phase2Province from './pages/Phase2Province';
+import Phase2Group from './pages/Phase2Group';
+import Phase2Test from './pages/Phase2Test';
+import Phase2RelayDetail from './pages/Phase2RelayDetail';
+import Gallery from './pages/Gallery';
+import Phase1Gallery from './pages/Phase1Gallery';
+
 import './App.css';
 
 function App() {
@@ -25,7 +35,27 @@ function App() {
                                 exit={{ opacity: 0 }}
                                 transition={{ duration: 0.5 }}
                             >
+                                <Phase2Home />
+                            </motion.div>
+                        } />
+                        <Route path="/phase1" element={
+                            <motion.div
+                                initial={{ opacity: 0 }}
+                                animate={{ opacity: 1 }}
+                                exit={{ opacity: 0 }}
+                                transition={{ duration: 0.5 }}
+                            >
                                 <Home />
+                            </motion.div>
+                        } />
+                        <Route path="/phase1/gallery" element={
+                            <motion.div
+                                initial={{ opacity: 0, y: 20 }}
+                                animate={{ opacity: 1, y: 0 }}
+                                exit={{ opacity: 0, y: -20 }}
+                                transition={{ duration: 0.5 }}
+                            >
+                                <Phase1Gallery />
                             </motion.div>
                         } />
                         <Route path="/group/:groupId" element={
@@ -68,6 +98,7 @@ function App() {
                                 <PhotoTest />
                             </motion.div>
                         } />
+
                         <Route path="/route-map" element={
                             <motion.div
                                 initial={{ opacity: 0, y: 20 }}
@@ -96,6 +127,68 @@ function App() {
                                 transition={{ duration: 0.5 }}
                             >
                                 <MapTest />
+                            </motion.div>
+                        } />
+
+                        {/* 第二期路由 */}
+                        <Route path="/phase2" element={
+                            <motion.div
+                                initial={{ opacity: 0 }}
+                                animate={{ opacity: 1 }}
+                                exit={{ opacity: 0 }}
+                                transition={{ duration: 0.5 }}
+                            >
+                                <Phase2Home />
+                            </motion.div>
+                        } />
+                        <Route path="/phase2/province/:provinceId" element={
+                            <motion.div
+                                initial={{ opacity: 0, y: 20 }}
+                                animate={{ opacity: 1, y: 0 }}
+                                exit={{ opacity: 0, y: -20 }}
+                                transition={{ duration: 0.5 }}
+                            >
+                                <Phase2Province />
+                            </motion.div>
+                        } />
+                        <Route path="/phase2/province/:provinceId/group/:groupId" element={
+                            <motion.div
+                                initial={{ opacity: 0, y: 20 }}
+                                animate={{ opacity: 1, y: 0 }}
+                                exit={{ opacity: 0, y: -20 }}
+                                transition={{ duration: 0.5 }}
+                            >
+                                <Phase2Group />
+                            </motion.div>
+                        } />
+                        <Route path="/phase2/group/:provinceId/:groupId/relay/:relayId" element={
+                            <motion.div
+                                initial={{ opacity: 0, y: 20 }}
+                                animate={{ opacity: 1, y: 0 }}
+                                exit={{ opacity: 0, y: -20 }}
+                                transition={{ duration: 0.5 }}
+                            >
+                                <Phase2RelayDetail />
+                            </motion.div>
+                        } />
+                        <Route path="/phase2/test" element={
+                            <motion.div
+                                initial={{ opacity: 0, y: 20 }}
+                                animate={{ opacity: 1, y: 0 }}
+                                exit={{ opacity: 0, y: -20 }}
+                                transition={{ duration: 0.5 }}
+                            >
+                                <Phase2Test />
+                            </motion.div>
+                        } />
+                        <Route path="/phase2/gallery" element={
+                            <motion.div
+                                initial={{ opacity: 0, y: 20 }}
+                                animate={{ opacity: 1, y: 0 }}
+                                exit={{ opacity: 0, y: -20 }}
+                                transition={{ duration: 0.5 }}
+                            >
+                                <Gallery />
                             </motion.div>
                         } />
                     </Routes>

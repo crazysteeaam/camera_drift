@@ -32,7 +32,10 @@
         "generate-photos": "node scripts/generatePhotoPaths.js",
         "copy-photos": "node scripts/copyPhotosToPublic.js",
         "generate-variants": "node scripts/generateImageVariants.js",
-        "add-photos": "npm run generate-variants"
+        "generate-phase2-variants": "node scripts/generatePhase2ImageVariants.js",
+        "reorganize-phase2-images": "node scripts/reorganizePhase2Images.js",
+        "add-photos": "npm run generate-variants",
+        "update-photos": "node scripts/updatePhase2Photos.js"
     },
     "eslintConfig": {
         "extends": [
