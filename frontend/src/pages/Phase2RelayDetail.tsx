@@ -1,7 +1,7 @@
 import React, { useEffect, useState } from 'react';
 import { useParams, Link, useNavigate } from 'react-router-dom';
 import { motion } from 'framer-motion';
-import { MapPin, Calendar, MessageCircle, ArrowLeft, Heart, Download, ChevronLeft, ChevronRight, ArrowRight } from 'lucide-react';
+import { MapPin, Calendar, MessageCircle, ArrowLeft, Heart, Download, ChevronLeft, ChevronRight, ArrowRight, Eye } from 'lucide-react';
 import { getGroupById, Phase2Relay } from '../config/phase2Data';
 import AmapComponent from '../components/AmapComponent';
 import FullscreenPhotoViewer from '../components/FullscreenPhotoViewer';
@@ -167,6 +167,20 @@ const Phase2RelayDetail: React.FC = () => {
 
                 <div className="grid grid-cols-1 lg:grid-cols-2 gap-12">
                     <motion.div initial={{ opacity: 0, x: -20 }} animate={{ opacity: 1, x: 0 }} transition={{ duration: 0.8 }} className="space-y-6">
+                        <div className="bg-white rounded-xl p-6 shadow-lg">
+                            <h3 className="text-xl font-semibold text-gray-900 mb-4">拍摄信息</h3>
+                            <div className="grid grid-cols-2 gap-4">
+                                <div>
+                                    <span className="text-sm text-gray-500">相机型号</span>
+                                    <p className="font-medium">{relay.camera}</p>
+                                </div>
+                                <div>
+                                    <span className="text-sm text-gray-500">胶片类型</span>
+                                    <p className="font-medium">{relay.film}</p>
+                                </div>
+                            </div>
+                        </div>
+
                         <div className="relative group">
                             <div className="aspect-square overflow-hidden rounded-xl shadow-2xl cursor-pointer" onClick={() => setIsFullscreenOpen(true)}>
                                 <SmartImage
@@ -226,20 +240,6 @@ const Phase2RelayDetail: React.FC = () => {
                             </div>
                         </div>
 
-                        <div className="bg-white rounded-xl p-6 shadow-lg">
-                            <h3 className="text-xl font-semibold text-gray-900 mb-4">拍摄信息</h3>
-                            <div className="grid grid-cols-2 gap-4">
-                                <div>
-                                    <span className="text-sm text-gray-500">相机型号</span>
-                                    <p className="font-medium">{relay.camera}</p>
-                                </div>
-                                <div>
-                                    <span className="text-sm text-gray-500">胶片类型</span>
-                                    <p className="font-medium">{relay.film}</p>
-                                </div>
-                            </div>
-                        </div>
-
                         {processedPhotos.length > 1 && (
                             <div className="bg-white rounded-xl p-6 shadow-lg">
                                 <h3 className="text-lg font-semibold text-gray-900 mb-4">所有照片</h3>
@@ -258,8 +258,22 @@ const Phase2RelayDetail: React.FC = () => {
 
                     <motion.div initial={{ opacity: 0, x: 20 }} animate={{ opacity: 1, x: 0 }} transition={{ duration: 0.8, delay: 0.2 }} className="space-y-6">
                         <div className="bg-white rounded-xl p-6 shadow-lg">
-                            <h3 className="text-lg font-semibold text-gray-900 mb-4">留言图片</h3>
-                            {messagePhotos && messagePhotos.length > 0 ? (
+                            <h3 className="text-xl font-semibold text-gray-900 mb-4">留言信息</h3>
+                            <div className="grid grid-cols-2 gap-4">
+                                <div>
+                                    <span className="text-sm text-gray-500">留言数量</span>
+                                    <p className="font-medium">{messagePhotos ? messagePhotos.length : 0} 张</p>
+                                </div>
+                                <div>
+                                    <span className="text-sm text-gray-500">留言类型</span>
+                                    <p className="font-medium">手写留言</p>
+                                </div>
+                            </div>
+                        </div>
+
+                        {messagePhotos && messagePhotos.length > 0 ? (
+                            <div className="bg-white rounded-xl p-6 shadow-lg">
+                                <h3 className="text-lg font-semibold text-gray-900 mb-4">留言图片</h3>
                                 <div className="relative group">
                                     <div className="aspect-square overflow-hidden rounded-xl shadow-2xl cursor-pointer" onClick={() => setIsMsgFullscreenOpen(true)}>
                                         <SmartImage
@@ -307,24 +321,28 @@ const Phase2RelayDetail: React.FC = () => {
                                         </div>
                                     </div>
                                 </div>
-                            ) : (
+                            </div>
+                        ) : (
+                            <div className="bg-white rounded-xl p-6 shadow-lg">
+                                <h3 className="text-lg font-semibold text-gray-900 mb-4">留言图片</h3>
                                 <div className="h-64 rounded-xl bg-gray-50 flex items-center justify-center text-gray-400">暂无留言图片</div>
-                            )}
+                            </div>
+                        )}
 
-                            {messagePhotos && messagePhotos.length > 1 && (
-                                <div className="bg-white rounded-xl p-4 shadow mt-4">
-                                    <div className="grid grid-cols-3 gap-3">
-                                        {messagePhotos.map((photo, index) => (
-                                            <div key={index} className="relative group">
-                                                <button onClick={() => setMsgCurrentIndex(index)} className={`aspect-square overflow-hidden rounded-lg transition-all duration-200 w-full ${index === msgCurrentIndex ? 'ring-2 ring-blue-500' : 'hover:scale-105'}`}>
-                                                    <SmartImage originalPath={photo} variant="thumbnail" alt={`留言 ${index + 1}`} className="w-full h-full object-cover" />
-                                                </button>
-                                            </div>
-                                        ))}
-                                    </div>
+                        {messagePhotos && messagePhotos.length > 1 && (
+                            <div className="bg-white rounded-xl p-6 shadow-lg">
+                                <h3 className="text-lg font-semibold text-gray-900 mb-4">所有留言图片</h3>
+                                <div className="grid grid-cols-3 gap-3">
+                                    {messagePhotos.map((photo, index) => (
+                                        <div key={index} className="relative group">
+                                            <button onClick={() => setMsgCurrentIndex(index)} className={`aspect-square overflow-hidden rounded-lg transition-all duration-200 w-full ${index === msgCurrentIndex ? 'ring-2 ring-blue-500' : 'hover:scale-105'}`}>
+                                                <SmartImage originalPath={photo} variant="thumbnail" alt={`留言 ${index + 1}`} className="w-full h-full object-cover" />
+                                            </button>
+                                        </div>
+                                    ))}
                                 </div>
-                            )}
-                        </div>
+                            </div>
+                        )}
                     </motion.div>
                 </div>
 

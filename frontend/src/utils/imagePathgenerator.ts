@@ -1,4 +1,4 @@
-// 图片路径生成工具 - 基于后缀规则
+// 图片路径生成工具 - 支持新的目录结构
 export class ImagePathGenerator {
     private static variants = {
         thumbnail: '_thumb',
@@ -8,17 +8,41 @@ export class ImagePathGenerator {
 
     /**
      * 根据原图路径生成变体路径
+     * 支持新的目录结构：thumbnails/ 和 previews/ 子目录
      */
     static generateVariantPath(originalPath: string, variant: 'thumbnail' | 'preview' | 'original'): string {
         if (variant === 'original') {
             return originalPath;
         }
 
+        // 检查是否是第二期图片路径（包含 phase2）
+        if (originalPath.includes('/phase2/')) {
+            return this.generatePhase2VariantPath(originalPath, variant);
+        }
+
+        // 第一期图片路径（基于后缀规则）
         const pathParts = originalPath.split('.');
         const extension = pathParts.pop();
         const basePath = pathParts.join('.');
-        
+
         return `${basePath}${this.variants[variant]}.${extension}`;
+    }
+
+    /**
+     * 生成第二期图片的变体路径（基于目录结构）
+     */
+    private static generatePhase2VariantPath(originalPath: string, variant: 'thumbnail' | 'preview'): string {
+        const pathParts = originalPath.split('/');
+        const fileName = pathParts.pop();
+        const directory = pathParts.join('/');
+
+        if (variant === 'thumbnail') {
+            return `${directory}/thumbnails/${fileName}`;
+        } else if (variant === 'preview') {
+            return `${directory}/previews/${fileName}`;
+        }
+
+        return originalPath;
     }
 
     /**
@@ -49,7 +73,7 @@ export class ImagePathGenerator {
      */
     static async getAvailableVariants(originalPath: string) {
         const variants = this.generateAllVariants(originalPath);
-        
+
         // 检查缩略图
         const hasThumbnail = await this.checkVariantExists(variants.thumbnail);
         // 检查预览图
@@ -67,11 +91,11 @@ export class ImagePathGenerator {
      */
     static async processPhotoArray(originalPaths: string[], variant: 'thumbnail' | 'preview' | 'original'): Promise<string[]> {
         const processedPaths: string[] = [];
-        
+
         for (const originalPath of originalPaths) {
             const targetPath = this.generateVariantPath(originalPath, variant);
             const exists = await this.checkVariantExists(targetPath);
-            
+
             if (exists) {
                 processedPaths.push(targetPath);
             } else {
@@ -79,7 +103,7 @@ export class ImagePathGenerator {
                 processedPaths.push(originalPath);
             }
         }
-        
+
         return processedPaths;
     }
 }

@@ -89,8 +89,16 @@ export const phase2Provinces: Phase2Province[] = [
                         weather: '晴',
                         camera: '富士一次性胶片机',
                         film: 'C400',
-                        photos: ['/photos/phase2/zhejiang/A/000001.JPG'],
+                        photos: [
+                            '/photos/phase2/zhejiang/A/A1/photos/000001.JPG',
+                            '/photos/phase2/zhejiang/A/A1/photos/000002.JPG',
+                            '/photos/phase2/zhejiang/A/A1/photos/000003.JPG',
+                            '/photos/phase2/zhejiang/A/A1/photos/000004.JPG'
+                        ],
                         message: '衢州古城的巷子里，有最温柔的风。',
+                        messageImages: [
+                            '/photos/phase2/zhejiang/A/A1/message/aed00478f686ec8c43fa592149363528.jpg'
+                        ],
                         coordinates: { lat: 28.9701, lng: 118.8593 },
                         tags: ['古城', '巷子', '人间烟火'],
                         nextLocation: '浙江省丽水市',
@@ -219,7 +227,12 @@ export const phase2Provinces: Phase2Province[] = [
                         weather: '晴',
                         camera: '富士一次性胶片机',
                         film: 'C400',
-                        photos: ['/photos/phase2/zhejiang/B/000001.JPG'],
+                        photos: [
+                            '/photos/phase2/zhejiang/A/A1/photos/000001_thumb.JPG',
+                            '/photos/phase2/zhejiang/A/A1/photos/000002.JPG',
+                            '/photos/phase2/zhejiang/A/A1/photos/000003_thumb.JPG',
+                            '/photos/phase2/zhejiang/A/A1/photos/000004.JPG'
+                        ],
                         message: '海港与风帆，启程的方向。',
                         coordinates: { lat: 29.8683, lng: 121.5440 },
                         tags: ['海港', '风帆'],
