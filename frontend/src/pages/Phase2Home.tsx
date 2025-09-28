@@ -105,7 +105,7 @@ const Phase2Home: React.FC = () => {
                         transition={{ duration: 0.8 }}
                     >
                         <h1 className="text-[3rem] md:text-[4.2rem] leading-tight font-extrabold tracking-[0.08em] text-white drop-shadow-[0_18px_45px_rgba(248,113,113,0.55)]">
-                            点亮中国 · 第二期漂流
+                            点亮中国 · 胶片相机漂流
                         </h1>
 
                         <p className="mt-5 inline-flex items-center gap-2 px-5 py-2 rounded-full bg-white/10 border border-white/20 text-sm md:text-base font-medium text-rose-100/85">
