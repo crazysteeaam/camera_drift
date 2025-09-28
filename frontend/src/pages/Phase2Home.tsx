@@ -85,36 +85,57 @@ const Phase2Home: React.FC = () => {
     return (
         <div className="min-h-screen bg-gradient-to-br from-orange-50 via-red-50 to-pink-50">
             {/* Hero Section */}
-            <section className="relative py-20 bg-gradient-to-br from-orange-900 via-red-900 to-pink-900 text-white overflow-hidden">
-                <div className="absolute inset-0 bg-black/20"></div>
-                <div className="relative max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 text-center">
+            <section className="relative overflow-hidden py-24 text-white">
+                <div className="absolute inset-0 bg-gradient-to-br from-[#42000f] via-[#7f1323] to-[#b91d47]" />
+                <div
+                    className="absolute inset-0 opacity-45"
+                    style={{
+                        backgroundImage:
+                            'radial-gradient(circle at 15% 20%, rgba(248,113,113,0.35), transparent 45%), radial-gradient(circle at 85% 15%, rgba(253,186,116,0.4), transparent 50%), radial-gradient(circle at 70% 80%, rgba(244,114,182,0.35), transparent 50%)'
+                    }}
+                />
+                <div className="absolute -left-28 -bottom-36 w-96 h-96 bg-orange-400/30 blur-3xl" />
+                <div className="absolute -right-32 -top-24 w-96 h-96 bg-rose-500/35 blur-3xl" />
+
+                <div className="relative max-w-6xl mx-auto px-4 sm:px-6 lg:px-8">
                     <motion.div
-                        initial={{ opacity: 0, y: 20 }}
+                        className="text-center"
+                        initial={{ opacity: 0, y: 28 }}
                         animate={{ opacity: 1, y: 0 }}
                         transition={{ duration: 0.8 }}
                     >
-                        <div className="inline-flex items-center justify-center w-20 h-20 bg-orange-500/20 rounded-full mb-6">
-                            <Film className="h-10 w-10 text-orange-300" />
-                        </div>
-                        <h1 className="text-5xl md:text-6xl font-bold mb-8">
-                            点亮中国 胶片漂流计划
+                        <h1 className="text-[3rem] md:text-[4.2rem] leading-tight font-extrabold tracking-[0.08em] text-white drop-shadow-[0_18px_45px_rgba(248,113,113,0.55)]">
+                            点亮中国 · 第二期漂流
                         </h1>
-                        <p className="text-lg text-orange-100 max-w-4xl mx-auto leading-relaxed mb-8">
-                            ⛳ 一台相机，六张胶片，一本笔记，它将穿越整个中国。<br />
-                            我们开启了一个有点慢、有点傻、但特别浪漫的计划：<br />
-                            把100台一次性胶片相机和100本手写留言本漂流到全国300多座城市，<br />
-                            让每一个你，拍下属于自己城市的六帧生活。
+
+                        <p className="mt-5 inline-flex items-center gap-2 px-5 py-2 rounded-full bg-white/10 border border-white/20 text-sm md:text-base font-medium text-rose-100/85">
+                            <Star className="h-4 w-4 text-amber-200" />
+                            100 台胶片机，让 300+ 座城市的生活持续发光
                         </p>
 
-                        {/* 快速操作按钮 */}
-                        <div className="flex flex-wrap justify-center gap-4">
+                        <p className="mt-6 text-base md:text-lg text-rose-100/85 leading-relaxed max-w-3xl mx-auto">
+                            一台相机、六张胶片、一册留言本。我们邀请热爱记录的人，与城市对话，与远方的陌生人交换故事，让生活的温度沿着影像继续漂流。
+                        </p>
+
+                        <div className="mt-10 flex flex-wrap justify-center gap-4">
                             <Link
                                 to="/phase2/gallery"
-                                className="inline-flex items-center px-6 py-3 bg-red-600 text-white font-medium rounded-lg hover:bg-red-700 transition-colors duration-200"
+                                className="inline-flex items-center gap-2 px-6 py-3 rounded-xl bg-gradient-to-r from-red-500 via-amber-500 to-rose-500 font-medium shadow-lg shadow-rose-900/40 hover:from-red-400 hover:via-amber-400 hover:to-rose-400 transition-all duration-200"
                             >
-                                <Camera className="h-5 w-5 mr-2" />
+                                <Camera className="h-5 w-5" />
                                 浏览作品集
                             </Link>
+                            <a
+                                href="#phase2-provinces"
+                                className="inline-flex items-center gap-2 px-6 py-3 rounded-xl border border-white/30 text-sm font-medium text-white/75 hover:text-white hover:border-white/60 transition"
+                            >
+                                查看城市进度
+                                <ArrowRight className="h-4 w-4" />
+                            </a>
+                        </div>
+
+                        <div className="mt-12 flex justify-center">
+                            <div className="h-[2px] w-48 bg-gradient-to-r from-transparent via-white/45 to-transparent" />
                         </div>
                     </motion.div>
                 </div>

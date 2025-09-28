@@ -19,36 +19,57 @@ const Home: React.FC = () => {
     return (
         <div className="min-h-screen">
             {/* Hero Section */}
-            <section className="relative py-20 bg-gradient-to-br from-blue-900 via-indigo-900 to-purple-900 text-white overflow-hidden">
-                <div className="absolute inset-0 bg-black/20"></div>
-                <div className="relative max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 text-center">
+            <section className="relative overflow-hidden py-24 text-white">
+                <div className="absolute inset-0 bg-gradient-to-br from-[#0f172a] via-[#1d1f3f] to-[#312e81]" />
+                <div
+                    className="absolute inset-0 opacity-40"
+                    style={{
+                        backgroundImage:
+                            'radial-gradient(circle at 15% 20%, rgba(59,130,246,0.35), transparent 45%), radial-gradient(circle at 80% 0%, rgba(165,180,252,0.35), transparent 52%), radial-gradient(circle at 90% 80%, rgba(56,189,248,0.35), transparent 50%)'
+                    }}
+                />
+                <div className="absolute -left-32 -bottom-32 w-96 h-96 bg-blue-500/25 blur-3xl" />
+                <div className="absolute -right-24 -top-20 w-80 h-80 bg-indigo-500/30 blur-3xl" />
+
+                <div className="relative max-w-6xl mx-auto px-4 sm:px-6 lg:px-8">
                     <motion.div
-                        initial={{ opacity: 0, y: 20 }}
+                        className="text-center"
+                        initial={{ opacity: 0, y: 28 }}
                         animate={{ opacity: 1, y: 0 }}
                         transition={{ duration: 0.8 }}
                     >
-                        <div className="inline-flex items-center justify-center w-20 h-20 bg-blue-500/20 rounded-full mb-6">
-                            <Film className="h-10 w-10 text-blue-300" />
-                        </div>
-                        <h1 className="text-5xl md:text-6xl font-bold mb-4">
-                            胶片漂流计划
+                        <h1 className="text-[3rem] md:text-[4.2rem] leading-tight font-extrabold tracking-[0.08em] text-white drop-shadow-[0_18px_45px_rgba(59,130,246,0.55)]">
+                            胶片漂流计划 · 第一期
                         </h1>
-                        <p className="text-xl md:text-2xl text-blue-200 mb-8">
-                            第一期
+
+                        <p className="mt-5 inline-flex items-center gap-2 px-5 py-2 rounded-full bg-white/10 border border-white/20 text-sm md:text-base font-medium text-blue-100/85">
+                            <Film className="h-4 w-4 text-blue-200" />
+                            一次接力，让城市的故事被胶片记住
                         </p>
-                        <p className="text-lg text-blue-100 max-w-3xl mx-auto leading-relaxed mb-8">
-                            这是一个跨越地域、连接心灵的摄影接力项目。四个小组，二十四位参与者，
-                            用胶片记录旅途中的每一个瞬间，让每一张照片都承载着故事与情感，
-                            在接力中传递着对美好生活的向往与追求。
+
+                        <p className="mt-6 text-base md:text-lg text-blue-100/85 leading-relaxed max-w-3xl mx-auto">
+                            四个小组，二十四位参与者，带着一次性胶片机穿行在不同的街巷与生活之间。你将看到每一张影像背后，那些真实的人与瞬间。
                         </p>
-                        <div className="flex flex-wrap justify-center gap-4">
+
+                        <div className="mt-10 flex flex-wrap justify-center gap-4">
                             <Link
                                 to="/phase1/gallery"
-                                className="inline-flex items-center px-6 py-3 bg-blue-600 text-white font-medium rounded-lg hover:bg-blue-700 transition-colors duration-200"
+                                className="inline-flex items-center gap-2 px-6 py-3 rounded-xl bg-gradient-to-r from-blue-500 via-indigo-500 to-blue-600 font-medium shadow-lg shadow-blue-900/40 hover:from-blue-400 hover:via-indigo-400 hover:to-blue-500 transition-all duration-200"
                             >
-                                <Camera className="h-5 w-5 mr-2" />
+                                <Camera className="h-5 w-5" />
                                 浏览作品集
                             </Link>
+                            <a
+                                href="#phase1-overview"
+                                className="inline-flex items-center gap-2 px-6 py-3 rounded-xl border border-white/30 text-sm font-medium text-white/75 hover:text-white hover:border-white/60 transition"
+                            >
+                                了解接力线路
+                                <ArrowRight className="h-4 w-4" />
+                            </a>
+                        </div>
+
+                        <div className="mt-12 flex justify-center">
+                            <div className="h-[2px] w-48 bg-gradient-to-r from-transparent via-white/45 to-transparent" />
                         </div>
                     </motion.div>
                 </div>
