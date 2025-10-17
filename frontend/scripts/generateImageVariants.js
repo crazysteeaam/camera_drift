@@ -15,6 +15,7 @@ async function generateVariantsForImage(sourceImagePath, targetFolder) {
         // 生成缩略图 (300px宽度)
         const thumbnailPath = path.join(targetFolder, `${baseName}_thumb${ext}`);
         await sharp(sourceImagePath)
+            .rotate()
             .resize(300, null, { withoutEnlargement: true })
             .jpeg({ quality: 80 })
             .toFile(thumbnailPath);
@@ -23,6 +24,7 @@ async function generateVariantsForImage(sourceImagePath, targetFolder) {
         // 生成预览图 (1200px宽度)
         const previewPath = path.join(targetFolder, `${baseName}_preview${ext}`);
         await sharp(sourceImagePath)
+            .rotate()
             .resize(1200, null, { withoutEnlargement: true })
             .jpeg({ quality: 85 })
             .toFile(previewPath);
