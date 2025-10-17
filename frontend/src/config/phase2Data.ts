@@ -490,7 +490,7 @@ export const phase2Provinces: Phase2Province[] = [
                 endLocation: '江门市',
                 color: 'from-red-500 to-red-600',
                 bgColor: 'from-red-50 to-red-100',
-                status: 'active',
+                status: 'completed',
                 participantCount: 6,
                 currentRelay: 6,
                 progress: 100,
@@ -882,8 +882,8 @@ export const phase2Provinces: Phase2Province[] = [
                 bgColor: 'from-rose-50 to-rose-100',
                 status: 'active',
                 participantCount: 6,
-                currentRelay: 1,
-                progress: 17,
+                currentRelay: 6,
+                progress: 83,
                 relays: []
             },
             {
@@ -897,7 +897,7 @@ export const phase2Provinces: Phase2Province[] = [
                 bgColor: 'from-indigo-50 to-indigo-100',
                 status: 'active',
                 participantCount: 6,
-                currentRelay: 4,
+                currentRelay: 5,
                 progress: 67,
                 relays: []
             }
