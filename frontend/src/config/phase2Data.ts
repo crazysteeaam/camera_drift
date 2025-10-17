@@ -680,17 +680,196 @@ export const phase2Provinces: Phase2Province[] = [
             {
                 id: 'D',
                 name: 'D组',
-                description: '佛山-东莞-中山线',
+                description: '惠州-深圳-东莞-佛山-清远-韶关线',
                 province: '广东省',
-                startLocation: '佛山市',
-                endLocation: '中山市',
+                startLocation: '惠州市',
+                endLocation: '韶关市',
                 color: 'from-pink-500 to-pink-600',
                 bgColor: 'from-pink-50 to-pink-100',
-                status: 'active',
+                status: 'completed',
                 participantCount: 6,
-                currentRelay: 2,
-                progress: 33,
-                relays: []
+                currentRelay: 6,
+                progress: 100,
+                relays: [
+                    {
+                        id: 1,
+                        name: '第一棒',
+                        participant: '惠州记录者',
+                        location: '广东省惠州市',
+                        province: '广东省',
+                        city: '惠州市',
+                        date: '2025-10-17',
+                        time: '19:48',
+                        weather: '晴',
+                        camera: '富士一次性胶片机',
+                        film: 'C400',
+                        photos: [
+                            "/photos/phase2/guangdong/D/D1/photos/000001.JPG",
+                            "/photos/phase2/guangdong/D/D1/photos/000002.JPG",
+                            "/photos/phase2/guangdong/D/D1/photos/000003.JPG",
+                            "/photos/phase2/guangdong/D/D1/photos/000004.JPG",
+                            "/photos/phase2/guangdong/D/D1/photos/000005.JPG",
+                            "/photos/phase2/guangdong/D/D1/photos/000006.JPG",
+                            "/photos/phase2/guangdong/D/D1/photos/000007.JPG"
+                        ],
+                        message: '东江与西湖交汇，惠州的夜风轻拂胶片里的光。',
+                        messageImages: [
+                            "/photos/phase2/guangdong/D/D1/message/微信图片_20251017194838_378_38.jpg"
+                        ],
+                        coordinates: { lat: 23.1107, lng: 114.4168 },
+                        tags: ['惠州', '东江', '夜色'],
+                        nextLocation: '广东省深圳市',
+                        nextParticipant: '深圳记录者'
+                    },
+                    {
+                        id: 2,
+                        name: '第二棒',
+                        participant: '深圳记录者',
+                        location: '广东省深圳市',
+                        province: '广东省',
+                        city: '深圳市',
+                        date: '2025-10-17',
+                        time: '19:49',
+                        weather: '多云',
+                        camera: '富士一次性胶片机',
+                        film: 'C400',
+                        photos: [
+                            "/photos/phase2/guangdong/D/D2/photos/000007.JPG",
+                            "/photos/phase2/guangdong/D/D2/photos/000008.JPG",
+                            "/photos/phase2/guangdong/D/D2/photos/000009.JPG",
+                            "/photos/phase2/guangdong/D/D2/photos/000010.JPG",
+                            "/photos/phase2/guangdong/D/D2/photos/000011.JPG",
+                            "/photos/phase2/guangdong/D/D2/photos/000012.JPG"
+                        ],
+                        message: '摩天楼与海风交织，深圳的夜幕充满律动。',
+                        messageImages: [
+                            "/photos/phase2/guangdong/D/D2/message/微信图片_20251017194853_379_38.jpg"
+                        ],
+                        coordinates: { lat: 22.5431, lng: 114.0579 },
+                        tags: ['深圳', '都市', '海风'],
+                        nextLocation: '广东省东莞市',
+                        nextParticipant: '东莞记录者'
+                    },
+                    {
+                        id: 3,
+                        name: '第三棒',
+                        participant: '东莞记录者',
+                        location: '广东省东莞市',
+                        province: '广东省',
+                        city: '东莞市',
+                        date: '2025-10-17',
+                        time: '19:49',
+                        weather: '晴',
+                        camera: '富士一次性胶片机',
+                        film: 'C400',
+                        photos: [
+                            "/photos/phase2/guangdong/D/D3/photos/000014.JPG",
+                            "/photos/phase2/guangdong/D/D3/photos/000015.JPG",
+                            "/photos/phase2/guangdong/D/D3/photos/000016.JPG",
+                            "/photos/phase2/guangdong/D/D3/photos/000017.JPG",
+                            "/photos/phase2/guangdong/D/D3/photos/000018.JPG"
+                        ],
+                        message: '松山湖畔灯火点点，东莞的工业城也有温柔一面。',
+                        messageImages: [
+                            "/photos/phase2/guangdong/D/D3/message/微信图片_20251017194911_380_38.jpg"
+                        ],
+                        coordinates: { lat: 23.0207, lng: 113.7518 },
+                        tags: ['东莞', '松山湖', '灯火'],
+                        nextLocation: '广东省佛山市',
+                        nextParticipant: '佛山记录者'
+                    },
+                    {
+                        id: 4,
+                        name: '第四棒',
+                        participant: '佛山记录者',
+                        location: '广东省佛山市',
+                        province: '广东省',
+                        city: '佛山市',
+                        date: '2025-10-17',
+                        time: '19:50',
+                        weather: '多云',
+                        camera: '富士一次性胶片机',
+                        film: 'C400',
+                        photos: [
+                            "/photos/phase2/guangdong/D/D4/photos/000019.JPG",
+                            "/photos/phase2/guangdong/D/D4/photos/000020.JPG",
+                            "/photos/phase2/guangdong/D/D4/photos/000021.JPG",
+                            "/photos/phase2/guangdong/D/D4/photos/000022.JPG",
+                            "/photos/phase2/guangdong/D/D4/photos/000023.JPG"
+                        ],
+                        message: '岭南古韵与珠水交织，佛山的夜晚沉淀着烟火。',
+                        messageImages: [
+                            "/photos/phase2/guangdong/D/D4/message/微信图片_20251017194928_381_38.jpg"
+                        ],
+                        coordinates: { lat: 23.0218, lng: 113.1214 },
+                        tags: ['佛山', '岭南', '烟火气'],
+                        nextLocation: '广东省清远市',
+                        nextParticipant: '清远记录者'
+                    },
+                    {
+                        id: 5,
+                        name: '第五棒',
+                        participant: '清远记录者',
+                        location: '广东省清远市',
+                        province: '广东省',
+                        city: '清远市',
+                        date: '2025-10-17',
+                        time: '19:50',
+                        weather: '多云',
+                        camera: '富士一次性胶片机',
+                        film: 'C400',
+                        photos: [
+                            "/photos/phase2/guangdong/D/D5/photos/000024.JPG",
+                            "/photos/phase2/guangdong/D/D5/photos/000025.JPG",
+                            "/photos/phase2/guangdong/D/D5/photos/000026.JPG",
+                            "/photos/phase2/guangdong/D/D5/photos/000027.JPG",
+                            "/photos/phase2/guangdong/D/D5/photos/000028.JPG",
+                            "/photos/phase2/guangdong/D/D5/photos/000029.JPG"
+                        ],
+                        message: '北江岸边雾气升腾，清远的山水让夜色更显灵动。',
+                        messageImages: [
+                            "/photos/phase2/guangdong/D/D5/message/微信图片_20251017194949_382_38.jpg",
+                            "/photos/phase2/guangdong/D/D5/message/微信图片_20251017195007_383_38.jpg",
+                            "/photos/phase2/guangdong/D/D5/message/微信图片_20251017195023_384_38.jpg"
+                        ],
+                        coordinates: { lat: 23.682, lng: 113.056 },
+                        tags: ['清远', '北江', '山水'],
+                        nextLocation: '广东省韶关市',
+                        nextParticipant: '韶关记录者'
+                    },
+                    {
+                        id: 6,
+                        name: '第六棒',
+                        participant: '韶关记录者',
+                        location: '广东省韶关市',
+                        province: '广东省',
+                        city: '韶关市',
+                        date: '2025-10-17',
+                        time: '19:51',
+                        weather: '晴',
+                        camera: '富士一次性胶片机',
+                        film: 'C400',
+                        photos: [
+                            "/photos/phase2/guangdong/D/D6/photos/000030.JPG",
+                            "/photos/phase2/guangdong/D/D6/photos/000031.JPG",
+                            "/photos/phase2/guangdong/D/D6/photos/000033.JPG",
+                            "/photos/phase2/guangdong/D/D6/photos/000034.JPG",
+                            "/photos/phase2/guangdong/D/D6/photos/000035.JPG"
+                        ],
+                        message: '丹霞脚下灯火点亮，韶关为这段旅程写下尾声。',
+                        messageImages: [
+                            "/photos/phase2/guangdong/D/D6/message/微信图片_20251017195040_385_38.jpg",
+                            "/photos/phase2/guangdong/D/D6/message/微信图片_20251017195100_386_38.jpg",
+                            "/photos/phase2/guangdong/D/D6/message/微信图片_20251017195118_387_38.jpg",
+                            "/photos/phase2/guangdong/D/D6/message/微信图片_20251017195138_388_38.jpg",
+                            "/photos/phase2/guangdong/D/D6/message/微信图片_20251017195150_389_38.jpg"
+                        ],
+                        coordinates: { lat: 24.8104, lng: 113.597 },
+                        tags: ['韶关', '丹霞', '旅程'],
+                        nextLocation: '终点',
+                        nextParticipant: '完成'
+                    }
+                ]
             },
             {
                 id: 'E',
