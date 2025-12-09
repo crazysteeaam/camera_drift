@@ -1,5 +1,5 @@
 // components/SmartImage.tsx
-import { useState, useEffect } from 'react';
+import { useState, useEffect, type CSSProperties, type FC } from 'react';
 import { ImagePathGenerator } from '../utils/imagePathgenerator';
 
 interface SmartImageProps {
@@ -9,15 +9,17 @@ interface SmartImageProps {
     className?: string;
     onClick?: () => void;
     alt?: string;
+    style?: CSSProperties;
 }
 
-const SmartImage: React.FC<SmartImageProps> = ({
+const SmartImage: FC<SmartImageProps> = ({
     originalPath,
     variant,
     fallback,
     className,
     onClick,
-    alt
+    alt,
+    style
 }) => {
     const [imagePath, setImagePath] = useState<string>('');
     const [isLoading, setIsLoading] = useState(false);
@@ -77,13 +79,16 @@ const SmartImage: React.FC<SmartImageProps> = ({
         </div>;
     }
 
+    const combinedClassName = className ? `smart-image ${className}` : 'smart-image';
+
     return (
         <img
             src={imagePath}
             alt={alt || '图片'}
-            className={className}
+            className={combinedClassName}
             onClick={onClick}
             onError={() => setHasError(true)}
+            style={style}
         />
     );
 };
