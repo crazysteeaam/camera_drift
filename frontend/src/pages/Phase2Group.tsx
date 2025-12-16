@@ -19,21 +19,35 @@ import {
 import { getGroupById } from '../config/phase2Data';
 import MessageGallery from '../components/MessageGallery';
 import SmartImage from '../components/SmartImage';
+import { useTranslation } from '../i18n/hooks';
+import { translateRelayName, translateCityName, translateGroupInfo, translateMessage } from '../i18n/utils';
 
 const Phase2Group: React.FC = () => {
     const { provinceId, groupId } = useParams<{ provinceId: string; groupId: string }>();
     const navigate = useNavigate();
+    const { t, isLoading, language } = useTranslation();
     // 与第一期保持一致的卡片式列表 + 跳转详页，无本页选中状态
 
     const group = getGroupById(provinceId || '', groupId || '');
+
+    if (isLoading) {
+        return (
+            <div className="min-h-screen flex items-center justify-center bg-gradient-to-br from-orange-50 via-red-50 to-pink-50">
+                <div className="text-center">
+                    <div className="inline-block animate-spin rounded-full h-12 w-12 border-b-2 border-orange-600 mb-4"></div>
+                    <p className="text-gray-600">{t('common.messages.loading') as string}</p>
+                </div>
+            </div>
+        );
+    }
 
     if (!group) {
         return (
             <div className="min-h-screen flex items-center justify-center">
                 <div className="text-center">
-                    <h1 className="text-2xl font-bold text-gray-900 mb-4">小组不存在</h1>
+                    <h1 className="text-2xl font-bold text-gray-900 mb-4">{t('phase2.group.notFound') as string}</h1>
                     <Link to="/phase2" className="text-orange-600 hover:text-orange-700">
-                        返回首页
+                        {t('phase2.group.backToHome') as string}
                     </Link>
                 </div>
             </div>
@@ -56,13 +70,13 @@ const Phase2Group: React.FC = () => {
     const getStatusText = (status: string) => {
         switch (status) {
             case 'active':
-                return '进行中';
+                return t('common.status.active') as string;
             case 'planning':
-                return '计划中';
+                return t('common.status.planning') as string;
             case 'completed':
-                return '已完成';
+                return t('common.status.completed') as string;
             default:
-                return '未知';
+                return t('common.status.unknown') as string;
         }
     };
 
@@ -81,15 +95,15 @@ const Phase2Group: React.FC = () => {
                             className="flex items-center text-gray-600 hover:text-gray-900 transition-colors"
                         >
                             <ArrowLeft className="h-5 w-5 mr-2" />
-                            返回省份
+                            {t('phase2.group.back') as string}
                         </button>
                         <div className="flex items-center space-x-4">
                             <div className={`w-12 h-12 rounded-full bg-gradient-to-br ${group.color} flex items-center justify-center text-white text-xl font-bold`}>
                                 {group.id}
                             </div>
                             <div>
-                                <h1 className="text-2xl font-bold text-gray-900">{group.name}</h1>
-                                <p className="text-gray-600">{group.description}</p>
+                                <h1 className="text-2xl font-bold text-gray-900">{translateGroupInfo(provinceId || '', group.id, t).name}</h1>
+                                <p className="text-gray-600">{translateGroupInfo(provinceId || '', group.id, t).description || group.description}</p>
                             </div>
                         </div>
                     </div>
@@ -102,15 +116,15 @@ const Phase2Group: React.FC = () => {
                     <div className="grid grid-cols-1 md:grid-cols-4 gap-6">
                         <div className="text-center">
                             <div className="text-3xl font-bold text-gray-900">{group.participantCount}</div>
-                            <div className="text-sm text-gray-500">总参与者</div>
+                            <div className="text-sm text-gray-500">{t('phase2.group.stats.totalParticipants') as string}</div>
                         </div>
                         <div className="text-center">
                             <div className="text-3xl font-bold text-orange-600">{group.currentRelay}</div>
-                            <div className="text-sm text-gray-500">当前棒次</div>
+                            <div className="text-sm text-gray-500">{t('phase2.group.stats.currentRelay') as string}</div>
                         </div>
                         <div className="text-center">
                             <div className="text-3xl font-bold text-green-600">{getProgressPercentage()}%</div>
-                            <div className="text-sm text-gray-500">完成进度</div>
+                            <div className="text-sm text-gray-500">{t('phase2.group.stats.progress') as string}</div>
                         </div>
                         <div className="text-center">
                             <div className="flex items-center justify-center">
@@ -127,13 +141,13 @@ const Phase2Group: React.FC = () => {
                         <div className="flex items-center justify-between">
                             <div className="flex items-center">
                                 <MapPin className="h-5 w-5 text-gray-400 mr-2" />
-                                <span className="text-lg font-medium text-gray-900">{group.startLocation}</span>
+                                <span className="text-lg font-medium text-gray-900">{translateCityName(group.startLocation, t)}</span>
                             </div>
                             <div className="flex-1 mx-4">
                                 <div className="h-1 bg-gradient-to-r from-orange-500 to-red-500 rounded-full"></div>
                             </div>
                             <div className="flex items-center">
-                                <span className="text-lg font-medium text-gray-900">{group.endLocation}</span>
+                                <span className="text-lg font-medium text-gray-900">{translateCityName(group.endLocation, t)}</span>
                                 <MapPin className="h-5 w-5 text-gray-400 ml-2" />
                             </div>
                         </div>
@@ -142,8 +156,8 @@ const Phase2Group: React.FC = () => {
                     {/* 进度条 */}
                     <div className="mt-6">
                         <div className="flex justify-between text-sm text-gray-500 mb-2">
-                            <span>接力进度</span>
-                            <span>{group.currentRelay}/{group.participantCount} 棒</span>
+                            <span>{t('phase2.group.route.progress') as string}</span>
+                            <span>{t('phase2.group.route.relay', { current: group.currentRelay, total: group.participantCount }) as string}</span>
                         </div>
                         <div className="w-full bg-gray-200 rounded-full h-3">
                             <div
@@ -165,8 +179,8 @@ const Phase2Group: React.FC = () => {
                         viewport={{ once: true }}
                         className="text-center mb-12"
                     >
-                        <h2 className="text-3xl font-bold text-gray-900 mb-4">接力棒详情</h2>
-                        <p className="text-lg text-gray-600">每一棒都承载着独特的视角和故事</p>
+                        <h2 className="text-3xl font-bold text-gray-900 mb-4">{t('phase2.group.relays.title') as string}</h2>
+                        <p className="text-lg text-gray-600">{t('phase2.group.relays.description') as string}</p>
                     </motion.div>
 
                     {group.relays.length > 0 ? (
@@ -186,12 +200,12 @@ const Phase2Group: React.FC = () => {
                                                 {relay.photos && relay.photos[0] && typeof relay.photos[0] === 'string' ? (
                                                     <SmartImage originalPath={relay.photos[0]} variant="thumbnail" alt={relay.name} className="w-full h-full object-cover group-hover:scale-110 transition-transform duration-300" />
                                                 ) : (
-                                                    <div className="w-full h-full bg-gray-100 flex items-center justify-center text-gray-400">无照片</div>
+                                                    <div className="w-full h-full bg-gray-100 flex items-center justify-center text-gray-400">{t('phase2.group.relays.noPhoto') as string}</div>
                                                 )}
                                             </div>
                                             <div className="p-6">
                                                 <div className="flex items-center justify-between mb-3">
-                                                    <h3 className="text-xl font-semibold text-gray-900">{relay.name}</h3>
+                                                    <h3 className="text-xl font-semibold text-gray-900">{translateRelayName(relay.id, t)}</h3>
                                                     <span className={`px-3 py-1 rounded-full text-xs font-medium bg-gradient-to-r ${group.color} text-white`}>
                                                         {relay.participant}
                                                     </span>
@@ -199,18 +213,18 @@ const Phase2Group: React.FC = () => {
                                                 <div className="space-y-2 mb-4">
                                                     <div className="flex items-center text-sm text-gray-500">
                                                         <MapPin className="h-4 w-4 mr-2" />
-                                                        <span>{relay.location}</span>
+                                                        <span>{translateCityName(relay.location, t, language)}</span>
                                                     </div>
                                                     <div className="flex items-center text-sm text-gray-500">
                                                         <Calendar className="h-4 w-4 mr-2" />
                                                         <span>{relay.date}</span>
                                                     </div>
                                                 </div>
-                                                <p className="text-gray-600 text-sm line-clamp-3">{relay.message}</p>
-                                                <div className="mt-3 text-xs text-gray-500">📸 {relay.photos ? relay.photos.length : 0} 张照片</div>
+                                                <p className="text-gray-600 text-sm line-clamp-3">{translateMessage(provinceId || '', groupId || '', relay.id, relay.message, t)}</p>
+                                                <div className="mt-3 text-xs text-gray-500">{t('phase2.group.relays.photoCount', { count: relay.photos ? relay.photos.length : 0 }) as string}</div>
                                                 <div className="mt-4 text-center">
                                                     <span className="inline-flex items-center text-sm font-medium text-blue-600 group-hover:text-blue-700">
-                                                        查看详情
+                                                        {t('phase2.group.relays.viewDetails') as string}
                                                         <ArrowRight className="h-4 w-4 ml-1 group-hover:translate-x-1 transition-transform" />
                                                     </span>
                                                 </div>
@@ -225,8 +239,8 @@ const Phase2Group: React.FC = () => {
                             <div className="text-gray-400 mb-4">
                                 <Clock className="h-12 w-12 mx-auto" />
                             </div>
-                            <h3 className="text-lg font-medium text-gray-900 mb-2">小组尚未开始</h3>
-                            <p className="text-gray-500">该小组的接力活动还未开始，请耐心等待</p>
+                            <h3 className="text-lg font-medium text-gray-900 mb-2">{t('phase2.group.relays.notStarted.title') as string}</h3>
+                            <p className="text-gray-500">{t('phase2.group.relays.notStarted.description') as string}</p>
                         </div>
                     )}
                 </div>
@@ -243,44 +257,34 @@ const Phase2Group: React.FC = () => {
                         className="bg-white rounded-2xl p-8 shadow-lg"
                     >
                         <h2 className="text-2xl font-bold text-gray-900 mb-6 text-center">
-                            {group.name}特色
+                            {t('phase2.group.features.title', { group: translateGroupInfo(provinceId || '', group.id, t).name }) as string}
                         </h2>
                         <div className="grid grid-cols-1 md:grid-cols-2 gap-8">
                             <div>
-                                <h3 className="text-lg font-semibold text-gray-900 mb-4">路线特色</h3>
+                                <h3 className="text-lg font-semibold text-gray-900 mb-4">{t('phase2.group.features.route.title') as string}</h3>
                                 <p className="text-gray-600 mb-4">
-                                    {group.description}
+                                    {translateGroupInfo(provinceId || '', group.id, t).description || group.description}
                                 </p>
                                 <div className="space-y-2">
                                     <div className="flex items-center text-gray-600">
                                         <MapPin className="h-4 w-4 mr-2" />
-                                        <span>起点：{group.startLocation}</span>
+                                        <span>{t('phase2.group.features.route.start', { location: translateCityName(group.startLocation, t) }) as string}</span>
                                     </div>
                                     <div className="flex items-center text-gray-600">
                                         <MapPin className="h-4 w-4 mr-2" />
-                                        <span>终点：{group.endLocation}</span>
+                                        <span>{t('phase2.group.features.route.end', { location: translateCityName(group.endLocation, t) }) as string}</span>
                                     </div>
                                 </div>
                             </div>
                             <div>
-                                <h3 className="text-lg font-semibold text-gray-900 mb-4">参与说明</h3>
+                                <h3 className="text-lg font-semibold text-gray-900 mb-4">{t('phase2.group.features.participation.title') as string}</h3>
                                 <ul className="space-y-2 text-gray-600">
-                                    <li className="flex items-start">
-                                        <Star className="h-4 w-4 text-yellow-500 mr-2 mt-1 flex-shrink-0" />
-                                        每位参与者拍摄6张照片
-                                    </li>
-                                    <li className="flex items-start">
-                                        <Star className="h-4 w-4 text-yellow-500 mr-2 mt-1 flex-shrink-0" />
-                                        在留言本上写下想说的话
-                                    </li>
-                                    <li className="flex items-start">
-                                        <Star className="h-4 w-4 text-yellow-500 mr-2 mt-1 flex-shrink-0" />
-                                        最多保留5天，然后传递给下一位
-                                    </li>
-                                    <li className="flex items-start">
-                                        <Star className="h-4 w-4 text-yellow-500 mr-2 mt-1 flex-shrink-0" />
-                                        记录当地的风土人情和特色文化
-                                    </li>
+                                    {((t('phase2.group.features.participation.tips', { returnObjects: true }) as unknown) as string[]).map((tip, index) => (
+                                        <li key={index} className="flex items-start">
+                                            <Star className="h-4 w-4 text-yellow-500 mr-2 mt-1 flex-shrink-0" />
+                                            {tip}
+                                        </li>
+                                    ))}
                                 </ul>
                             </div>
                         </div>

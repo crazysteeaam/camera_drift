@@ -1,6 +1,7 @@
 // components/SmartImage.tsx
 import { useState, useEffect, type CSSProperties, type FC } from 'react';
 import { ImagePathGenerator } from '../utils/imagePathgenerator';
+import { useTranslation } from '../i18n/hooks';
 
 interface SmartImageProps {
     originalPath: string;
@@ -21,6 +22,7 @@ const SmartImage: FC<SmartImageProps> = ({
     alt,
     style
 }) => {
+    const { t } = useTranslation();
     const [imagePath, setImagePath] = useState<string>('');
     const [isLoading, setIsLoading] = useState(false);
     const [hasError, setHasError] = useState(false);
@@ -75,7 +77,7 @@ const SmartImage: FC<SmartImageProps> = ({
 
     if (hasError && !fallback) {
         return <div className={`bg-gray-100 flex items-center justify-center ${className}`}>
-            <span className="text-gray-500">图片加载失败</span>
+            <span className="text-gray-500">{t('common.messages.imageLoadFailed') as string}</span>
         </div>;
     }
 

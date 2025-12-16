@@ -15,8 +15,12 @@ import {
 } from 'lucide-react';
 import { getAllProvinces } from '../config/phase2Data';
 import Phase2MapComponent from '../components/Phase2MapComponent';
+import ProvinceCard from '../components/ProvinceCard';
+import { useTranslation } from '../i18n/hooks';
+import { useProvinceTranslation } from '../i18n/utils';
 
 const Phase2Home: React.FC = () => {
+    const { t, isLoading } = useTranslation(); // 使用翻译 Hook
     const [searchTerm, setSearchTerm] = useState('');
     const [filterStatus, setFilterStatus] = useState<'all' | 'active' | 'planning' | 'completed'>('all');
     const [filterGroup, setFilterGroup] = useState<string>('all');
@@ -25,6 +29,21 @@ const Phase2Home: React.FC = () => {
     const [itemsPerPage] = useState(8); // 每页显示8个省份（4列 * 2行）
 
     const provinces = getAllProvinces();
+
+    // 预先计算所有省份的翻译名称（避免在 map 中使用 hook）
+    const provinceNames = React.useMemo(() => {
+        const names: Record<string, string> = {};
+        provinces.forEach(province => {
+            const translated = t(`provinces.${province.id}.name`) as string;
+            // 如果翻译不存在（返回的是 key），使用原始名称作为 fallback
+            if (translated === `provinces.${province.id}.name`) {
+                names[province.id] = province.name || province.id;
+            } else {
+                names[province.id] = translated;
+            }
+        });
+        return names;
+    }, [provinces, t]);
 
     // 过滤省份
     const filteredProvinces = provinces.filter(province => {
@@ -53,7 +72,7 @@ const Phase2Home: React.FC = () => {
         return matchesSearch && matchesProvince && matchesStatus;
     });
 
-    // 当状态为“全部”时，按小组字母顺序排序（无小组的排在最后）
+    // 当状态为"全部"时，按小组字母顺序排序（无小组的排在最后）
     const sortedProvinces = React.useMemo(() => {
         if (filterStatus !== 'all') return filteredProvinces;
         const order = 'ABCDEFGHIJKLMNOPQRSTUVWXYZ'.split('');
@@ -81,6 +100,19 @@ const Phase2Home: React.FC = () => {
         setCurrentPage(1);
     }, [filterStatus, filterGroup, filterProvince, searchTerm]);
 
+    // 如果翻译文件正在加载，显示加载状态
+    // 注意：必须在所有 Hooks 调用之后才能进行早期返回
+    if (isLoading) {
+        return (
+            <div className="min-h-screen flex items-center justify-center bg-gradient-to-br from-blue-50 via-indigo-50 to-purple-50">
+                <div className="text-center">
+                    <div className="inline-block animate-spin rounded-full h-12 w-12 border-b-2 border-blue-600 mb-4"></div>
+                    <p className="text-gray-600">加载中...</p>
+                </div>
+            </div>
+        );
+    }
+
 
     return (
         <div className="min-h-screen bg-gradient-to-br from-orange-50 via-red-50 to-pink-50">
@@ -105,16 +137,16 @@ const Phase2Home: React.FC = () => {
                         transition={{ duration: 0.8 }}
                     >
                         <h1 className="text-[3rem] md:text-[4.2rem] leading-tight font-extrabold tracking-[0.08em] text-white drop-shadow-[0_18px_45px_rgba(248,113,113,0.55)]">
-                            点亮中国 · 胶片相机漂流
+                            {t('phase2.home.title')}
                         </h1>
 
                         <p className="mt-5 inline-flex items-center gap-2 px-5 py-2 rounded-full bg-white/10 border border-white/20 text-sm md:text-base font-medium text-rose-100/85">
                             <Star className="h-4 w-4 text-amber-200" />
-                            100 台胶片机，让 300+ 座城市的生活持续发光
+                            {t('phase2.home.subtitle')}
                         </p>
 
                         <p className="mt-6 text-base md:text-lg text-rose-100/85 leading-relaxed max-w-3xl mx-auto">
-                            一台相机、六张胶片、一册留言本。我们邀请热爱记录的人，与城市对话，与远方的陌生人交换故事，让生活的温度沿着影像继续漂流。
+                            {t('phase2.home.description')}
                         </p>
 
                         <div className="mt-10 flex flex-wrap justify-center gap-4">
@@ -123,13 +155,13 @@ const Phase2Home: React.FC = () => {
                                 className="inline-flex items-center gap-2 px-6 py-3 rounded-xl bg-gradient-to-r from-red-500 via-amber-500 to-rose-500 font-medium shadow-lg shadow-rose-900/40 hover:from-red-400 hover:via-amber-400 hover:to-rose-400 transition-all duration-200"
                             >
                                 <Camera className="h-5 w-5" />
-                                浏览作品集
+                                {t('phase2.home.buttons.viewGallery')}
                             </Link>
                             <a
                                 href="#phase2-provinces"
                                 className="inline-flex items-center gap-2 px-6 py-3 rounded-xl border border-white/30 text-sm font-medium text-white/75 hover:text-white hover:border-white/60 transition"
                             >
-                                查看城市进度
+                                {t('phase2.home.buttons.viewProgress')}
                                 <ArrowRight className="h-4 w-4" />
                             </a>
                         </div>
@@ -155,9 +187,9 @@ const Phase2Home: React.FC = () => {
                         viewport={{ once: true }}
                         className="text-center mb-12"
                     >
-                        <h2 className="text-3xl font-bold text-gray-900 mb-4">全国地图</h2>
+                        <h2 className="text-3xl font-bold text-gray-900 mb-4">{t('phase2.home.sections.map.title')}</h2>
                         <p className="text-lg text-gray-600 max-w-3xl mx-auto">
-                            点亮中国每一座城市，查看胶片漂流计划的全国分布
+                            {t('phase2.home.sections.map.description')}
                         </p>
                     </motion.div>
 
@@ -187,7 +219,7 @@ const Phase2Home: React.FC = () => {
                             <Search className="absolute left-3 top-1/2 transform -translate-y-1/2 h-5 w-5 text-gray-400" />
                             <input
                                 type="text"
-                                placeholder="搜索省份..."
+                                placeholder={t('common.placeholders.searchProvince') as string}
                                 value={searchTerm}
                                 onChange={(e) => setSearchTerm(e.target.value)}
                                 className="w-full pl-10 pr-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-orange-500 focus:border-transparent"
@@ -197,10 +229,10 @@ const Phase2Home: React.FC = () => {
                         {/* 状态筛选 */}
                         <div className="flex flex-wrap gap-2">
                             {[
-                                { key: 'all', label: '全部', icon: Filter },
-                                { key: 'active', label: '进行中', icon: PlayCircle },
-                                { key: 'planning', label: '计划中', icon: Clock },
-                                { key: 'completed', label: '已完成', icon: CheckCircle }
+                                { key: 'all', label: t('phase2.home.filters.status.all'), icon: Filter },
+                                { key: 'active', label: t('phase2.home.filters.status.active'), icon: PlayCircle },
+                                { key: 'planning', label: t('phase2.home.filters.status.planning'), icon: Clock },
+                                { key: 'completed', label: t('phase2.home.filters.status.completed'), icon: CheckCircle }
                             ].map(({ key, label, icon: Icon }) => (
                                 <button
                                     key={key}
@@ -220,7 +252,7 @@ const Phase2Home: React.FC = () => {
                     {/* 省份筛选 */}
                     <div className="mt-4">
                         <div className="flex flex-wrap gap-2">
-                            <span className="text-sm font-medium text-gray-700 mr-2">省份筛选：</span>
+                            <span className="text-sm font-medium text-gray-700 mr-2">{t('phase2.home.filters.province')}：</span>
                             <button
                                 onClick={() => setFilterProvince('all')}
                                 className={`px-3 py-1 rounded-full text-sm font-medium transition-colors ${filterProvince === 'all'
@@ -228,7 +260,7 @@ const Phase2Home: React.FC = () => {
                                     : 'bg-gray-100 text-gray-700 hover:bg-gray-200'
                                     }`}
                             >
-                                全部
+                                {t('common.status.all')}
                             </button>
                             {provinces.map((province) => (
                                 <button
@@ -239,7 +271,7 @@ const Phase2Home: React.FC = () => {
                                         : 'bg-gray-100 text-gray-700 hover:bg-gray-200'
                                         }`}
                                 >
-                                    {province.name}
+                                    {provinceNames[province.id] || province.name || province.id}
                                 </button>
                             ))}
                         </div>
@@ -248,19 +280,19 @@ const Phase2Home: React.FC = () => {
                     {/* 字母组数筛选 */}
                     <div className="mt-4">
                         <div className="flex flex-wrap gap-2">
-                            <span className="text-sm font-medium text-gray-700 mr-2">组数筛选：</span>
+                            <span className="text-sm font-medium text-gray-700 mr-2">{t('phase2.home.filters.group')}：</span>
                             {[
-                                { key: 'all', label: '全部' },
-                                { key: 'A', label: 'A组' },
-                                { key: 'B', label: 'B组' },
-                                { key: 'C', label: 'C组' },
-                                { key: 'D', label: 'D组' },
-                                { key: 'E', label: 'E组' },
-                                { key: 'F', label: 'F组' },
-                                { key: 'G', label: 'G组' },
-                                { key: 'H', label: 'H组' },
-                                { key: 'I', label: 'I组' },
-                                { key: 'J', label: 'J组' }
+                                { key: 'all', label: t('common.groups.all') },
+                                { key: 'A', label: t('common.groups.A') },
+                                { key: 'B', label: t('common.groups.B') },
+                                { key: 'C', label: t('common.groups.C') },
+                                { key: 'D', label: t('common.groups.D') },
+                                { key: 'E', label: t('common.groups.E') },
+                                { key: 'F', label: t('common.groups.F') },
+                                { key: 'G', label: t('common.groups.G') },
+                                { key: 'H', label: t('common.groups.H') },
+                                { key: 'I', label: t('common.groups.I') },
+                                { key: 'J', label: t('common.groups.J') }
                             ].map(({ key, label }) => (
                                 <button
                                     key={key}
@@ -288,110 +320,15 @@ const Phase2Home: React.FC = () => {
                         viewport={{ once: true }}
                         className="text-center mb-12"
                     >
-                        <h2 className="text-3xl font-bold text-gray-900 mb-4">参与省份</h2>
+                        <h2 className="text-3xl font-bold text-gray-900 mb-4">{t('phase2.home.sections.provinces.title')}</h2>
                         <p className="text-lg text-gray-600 max-w-3xl mx-auto">
-                            点亮中国每一座城市，每个省份的小组数量不同，每个小组由6位参与者组成接力棒
+                            {t('phase2.home.sections.provinces.description')}
                         </p>
                     </motion.div>
 
                     <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-6">
                         {currentProvinces.map((province, index) => (
-                            <motion.div
-                                key={province.id}
-                                initial={{ opacity: 0, y: 20 }}
-                                whileInView={{ opacity: 1, y: 0 }}
-                                transition={{ duration: 0.6, delay: index * 0.1 }}
-                                viewport={{ once: true }}
-                                className="group"
-                            >
-                                <Link to={`/phase2/province/${province.id}`}>
-                                    <div className="bg-white rounded-2xl p-6 shadow-lg hover:shadow-xl transition-all duration-300 transform hover:-translate-y-2 relative h-80 flex flex-col">
-                                        {/* 状态标识 - 右上角 */}
-                                        <div className="absolute top-4 right-4">
-                                            {province.activeGroups > 0 ? (
-                                                <span className="inline-flex items-center px-2 py-1 rounded-full text-xs font-medium bg-orange-100 text-orange-800">
-                                                    <div className="w-2 h-2 bg-orange-500 rounded-full mr-1"></div>
-                                                    进行中
-                                                </span>
-                                            ) : province.completedGroups > 0 ? (
-                                                <span className="inline-flex items-center px-2 py-1 rounded-full text-xs font-medium bg-green-100 text-green-800">
-                                                    <div className="w-2 h-2 bg-green-500 rounded-full mr-1"></div>
-                                                    已完成
-                                                </span>
-                                            ) : (
-                                                <span className="inline-flex items-center px-2 py-1 rounded-full text-xs font-medium bg-gray-100 text-gray-800">
-                                                    <div className="w-2 h-2 bg-gray-400 rounded-full mr-1"></div>
-                                                    计划中
-                                                </span>
-                                            )}
-                                        </div>
-                                        {/* 省份标识 - 颜色与状态一致 */}
-                                        <div className={`w-16 h-16 mx-auto mb-4 rounded-full flex items-center justify-center text-white text-xl font-bold ${province.completedGroups > 0
-                                                ? 'bg-green-500'
-                                                : province.activeGroups > 0
-                                                    ? 'bg-orange-500'
-                                                    : 'bg-gray-400'
-                                            }`}>
-                                            {province.shortName}
-                                        </div>
-
-                                        {/* 省份信息 */}
-                                        <h3 className="text-xl font-semibold text-gray-900 mb-2 text-center">{province.name}</h3>
-                                        <p className="text-gray-600 text-sm mb-4 text-center flex-grow">{province.description}</p>
-
-                                        {/* 统计信息 */}
-                                        <div className="grid grid-cols-3 gap-4 mb-4">
-                                            <div className="text-center">
-                                                <div className="text-lg font-bold text-gray-900">{province.totalGroups}</div>
-                                                <div className="text-xs text-gray-500">总小组</div>
-                                            </div>
-                                            <div className="text-center">
-                                                <div className="text-lg font-bold text-orange-600">{province.activeGroups}</div>
-                                                <div className="text-xs text-gray-500">进行中</div>
-                                            </div>
-                                            <div className="text-center">
-                                                <div className="text-lg font-bold text-green-600">{province.completedGroups}</div>
-                                                <div className="text-xs text-gray-500">已完成</div>
-                                            </div>
-                                        </div>
-
-                                        {/* 小组预览 */}
-                                        <div className="mb-4">
-                                            <div className="flex flex-wrap gap-1 justify-center">
-                                                {province.groups.slice(0, 6).map((group) => (
-                                                    <div
-                                                        key={group.id}
-                                                        className={`w-6 h-6 rounded-full bg-gradient-to-br ${group.color} flex items-center justify-center text-white text-xs font-bold`}
-                                                        title={`${group.name} - ${group.description}`}
-                                                    >
-                                                        {group.id}
-                                                    </div>
-                                                ))}
-                                                {province.groups.length > 6 && (
-                                                    <div className="w-6 h-6 rounded-full bg-gray-300 flex items-center justify-center text-gray-600 text-xs font-bold">
-                                                        +{province.groups.length - 6}
-                                                    </div>
-                                                )}
-                                            </div>
-                                        </div>
-
-                                        {/* 计划开启时间 */}
-                                        {province.planningStartDate && province.activeGroups === 0 && province.completedGroups === 0 && (
-                                            <div className="text-xs text-gray-500 text-center mb-2">
-                                                {province.planningStartDate}
-                                            </div>
-                                        )}
-
-                                        {/* 查看详情按钮 */}
-                                        <div className="text-center mt-auto">
-                                            <span className="inline-flex items-center text-sm font-medium text-orange-600 group-hover:text-orange-700">
-                                                查看详情
-                                                <ArrowRight className="h-4 w-4 ml-1 group-hover:translate-x-1 transition-transform" />
-                                            </span>
-                                        </div>
-                                    </div>
-                                </Link>
-                            </motion.div>
+                            <ProvinceCard key={province.id} province={province} index={index} />
                         ))}
                     </div>
 
@@ -404,7 +341,7 @@ const Phase2Home: React.FC = () => {
                                     disabled={currentPage === 1}
                                     className="px-3 py-2 rounded-lg text-sm font-medium text-gray-500 bg-gray-100 hover:bg-gray-200 disabled:opacity-50 disabled:cursor-not-allowed"
                                 >
-                                    上一页
+                                    {t('common.pagination.previous')}
                                 </button>
 
                                 {Array.from({ length: totalPages }, (_, i) => i + 1).map((page) => (
@@ -425,7 +362,7 @@ const Phase2Home: React.FC = () => {
                                     disabled={currentPage === totalPages}
                                     className="px-3 py-2 rounded-lg text-sm font-medium text-gray-500 bg-gray-100 hover:bg-gray-200 disabled:opacity-50 disabled:cursor-not-allowed"
                                 >
-                                    下一页
+                                    {t('common.pagination.next')}
                                 </button>
                             </div>
                         </div>
@@ -433,7 +370,11 @@ const Phase2Home: React.FC = () => {
 
                     {/* 分页信息 */}
                     <div className="mt-4 text-center text-sm text-gray-500">
-                        显示 {startIndex + 1}-{Math.min(endIndex, sortedProvinces.length)} 共 {sortedProvinces.length} 个省份
+                        {t('common.pagination.showing', { 
+                            start: startIndex + 1, 
+                            end: Math.min(endIndex, sortedProvinces.length), 
+                            total: sortedProvinces.length 
+                        })}
                     </div>
                 </div>
             </section>
@@ -448,30 +389,31 @@ const Phase2Home: React.FC = () => {
                         viewport={{ once: true }}
                         className="bg-white rounded-2xl p-8 shadow-lg"
                     >
-                        <h2 className="text-3xl font-bold text-gray-900 mb-8 text-center">活动说明</h2>
+                        <h2 className="text-3xl font-bold text-gray-900 mb-8 text-center">
+                            {t('phase2.home.sections.activity.title')}
+                        </h2>
 
                         <div className="grid grid-cols-1 md:grid-cols-2 gap-8">
                             {/* 左侧：参与流程 */}
                             <div>
                                 <h3 className="text-xl font-semibold text-gray-900 mb-6 flex items-center">
                                     <Camera className="h-6 w-6 mr-2 text-orange-600" />
-                                    参与流程
+                                    {t('phase2.home.sections.activity.process.title')}
                                 </h3>
                                 <div className="space-y-4">
-                                    {[
-                                        '每位参与者会收到 1 台一次性胶片相机（24 张底片）+ 1 本漂流笔记本',
-                                        '你只需拍摄 6 张，并写点想说的话',
-                                        '最多保留 5 天，拍完后联系发起人',
-                                        '我们会告诉你下一个人的地址，你只需要付一点邮费即可',
-                                        '最终我们会冲洗这些照片，扫描留言，在小红书发布完整展览'
-                                    ].map((step, index) => (
-                                        <div key={index} className="flex items-start">
-                                            <div className="flex-shrink-0 w-6 h-6 bg-orange-100 rounded-full flex items-center justify-center mr-3 mt-1">
-                                                <span className="text-orange-600 text-sm font-bold">{index + 1}</span>
+                                    {/* 使用 returnObjects 获取步骤数组 */}
+                                    {(() => {
+                                        const steps = t('phase2.home.sections.activity.process.steps', { returnObjects: true });
+                                        const stepsArray = Array.isArray(steps) ? steps : [];
+                                        return stepsArray.map((step, index) => (
+                                            <div key={index} className="flex items-start">
+                                                <div className="flex-shrink-0 w-6 h-6 bg-orange-100 rounded-full flex items-center justify-center mr-3 mt-1">
+                                                    <span className="text-orange-600 text-sm font-bold">{index + 1}</span>
+                                                </div>
+                                                <span className="text-gray-700">{step}</span>
                                             </div>
-                                            <span className="text-gray-700">{step}</span>
-                                        </div>
-                                    ))}
+                                        ));
+                                    })()}
                                 </div>
                             </div>
 
@@ -479,23 +421,28 @@ const Phase2Home: React.FC = () => {
                             <div>
                                 <h3 className="text-xl font-semibold text-gray-900 mb-6 flex items-center">
                                     <Users className="h-6 w-6 mr-2 text-red-600" />
-                                    参与条件
+                                    {t('phase2.home.sections.activity.conditions.title')}
                                 </h3>
                                 <div className="space-y-4">
                                     <p className="text-gray-700 mb-4">
-                                        我们想点亮中国的每一座城市。不论你是：
+                                        {t('phase2.home.sections.activity.conditions.description')}
                                     </p>
                                     <div className="grid grid-cols-2 gap-2 text-sm">
-                                        {['初中生', '大学生', '社畜', '骑手', '店主', '程序员', '作家'].map((role, index) => (
-                                            <div key={index} className="flex items-center p-2 bg-gray-50 rounded-lg">
-                                                <Star className="h-4 w-4 text-yellow-500 mr-2" />
-                                                {role}
-                                            </div>
-                                        ))}
+                                        {/* 使用 returnObjects 获取角色数组 */}
+                                        {(() => {
+                                            const roles = t('phase2.home.sections.activity.conditions.roles', { returnObjects: true });
+                                            const rolesArray = Array.isArray(roles) ? roles : [];
+                                            return rolesArray.map((role, index) => (
+                                                <div key={index} className="flex items-center p-2 bg-gray-50 rounded-lg">
+                                                    <Star className="h-4 w-4 text-yellow-500 mr-2" />
+                                                    {role}
+                                                </div>
+                                            ));
+                                        })()}
                                     </div>
-                                    <p className="text-gray-700 text-sm mt-4">
-                                        来自都市的高楼，也好，来自县城的小街巷，也好<br />
-                                        你都值得拥有 1 次，属于自己的快门故事。
+                                    {/* 结论文本，支持换行 */}
+                                    <p className="text-gray-700 text-sm mt-4" style={{ whiteSpace: 'pre-line' }}>
+                                        {t('phase2.home.sections.activity.conditions.conclusion')}
                                     </p>
                                 </div>
                             </div>
@@ -507,13 +454,13 @@ const Phase2Home: React.FC = () => {
                                 {/* 小红书账号信息 */}
                                 <div className="flex flex-col items-center">
                                     <p className="text-lg text-gray-700 mb-2">
-                                        关注我的小红书账号
+                                        {t('phase2.home.sections.activity.xiaohongshu.title')}
                                     </p>
                                     <p className="text-2xl font-bold text-orange-600 mb-2">
-                                        7527914100
+                                        {t('phase2.home.sections.activity.xiaohongshu.account')}
                                     </p>
                                     <p className="text-sm text-gray-500">
-                                        后续推进进度和活动更新
+                                        {t('phase2.home.sections.activity.xiaohongshu.description')}
                                     </p>
                                 </div>
 
@@ -522,11 +469,13 @@ const Phase2Home: React.FC = () => {
                                     <div className="w-36 h-36 bg-white rounded-xl shadow-inner border border-pink-200 overflow-hidden flex items-center justify-center">
                                         <img
                                             src="/scan.jpg"
-                                            alt="小红书二维码"
+                                            alt={t('phase2.home.sections.activity.xiaohongshu.scan') as string}
                                             className="w-full h-full object-cover"
                                         />
                                     </div>
-                                    <p className="text-xs text-gray-500 mt-2">扫码关注</p>
+                                    <p className="text-xs text-gray-500 mt-2">
+                                        {t('phase2.home.sections.activity.xiaohongshu.scan')}
+                                    </p>
                                 </div>
                             </div>
                         </div>
@@ -543,19 +492,21 @@ const Phase2Home: React.FC = () => {
                         transition={{ duration: 0.6 }}
                         viewport={{ once: true }}
                     >
-                        <h2 className="text-3xl font-bold mb-4">报名通道现已开启</h2>
+                        <h2 className="text-3xl font-bold mb-4">
+                            {t('phase2.home.sections.registration.title')}
+                        </h2>
                         <p className="text-xl mb-6">
-                            请认真填写以下信息，我们会根据时间、城市、节奏合理安排漂流路线。
+                            {t('phase2.home.sections.registration.description')}
                         </p>
                         <p className="text-lg mb-8">
-                            如果你被选中，我们会在半个月内联系你。
+                            {t('phase2.home.sections.registration.notice')}
                         </p>
                         <button className="inline-flex items-center px-8 py-4 bg-white text-orange-600 font-bold text-lg rounded-lg hover:bg-gray-100 transition-colors duration-200 shadow-lg">
                             <Camera className="h-6 w-6 mr-2" />
-                            立即报名
+                            {t('phase2.home.sections.registration.button')}
                         </button>
                         <p className="text-orange-100 mt-4">
-                            感谢你，让一台相机，看到世界。
+                            {t('phase2.home.sections.registration.thanks')}
                         </p>
                     </motion.div>
                 </div>

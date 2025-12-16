@@ -7,6 +7,8 @@ import AmapComponent from '../components/AmapComponent';
 import FullscreenPhotoViewer from '../components/FullscreenPhotoViewer';
 import SmartImage from '../components/SmartImage';
 import MessageGallery from '../components/MessageGallery';
+import { useTranslation } from '../i18n/hooks';
+import { translateRelayName, translateCityName, translateMessage, translateTag, translateCamera, translateFilm } from '../i18n/utils';
 
 const downloadImage = (url: string, filename: string) => {
     const link = document.createElement('a');
@@ -30,6 +32,7 @@ const downloadAllImages = async (photos: string[], relayName: string, participan
 const Phase2RelayDetail: React.FC = () => {
     const { provinceId, groupId, relayId } = useParams<{ provinceId: string; groupId: string; relayId: string }>();
     const navigate = useNavigate();
+    const { t, isLoading, language } = useTranslation();
 
     const group = getGroupById(provinceId || '', groupId || '');
     const relay: Phase2Relay | undefined = group?.relays.find(r => r.id === parseInt(relayId || '0'));
@@ -63,12 +66,23 @@ const Phase2RelayDetail: React.FC = () => {
         }
     }, [relay?.photos]);
 
+    if (isLoading) {
+        return (
+            <div className="min-h-screen flex items-center justify-center bg-gradient-to-br from-blue-50 via-indigo-50 to-purple-50">
+                <div className="text-center">
+                    <div className="inline-block animate-spin rounded-full h-12 w-12 border-b-2 border-blue-600 mb-4"></div>
+                    <p className="text-gray-600">{t('common.messages.loading') as string}</p>
+                </div>
+            </div>
+        );
+    }
+
     if (!group || !relay) {
         return (
             <div className="min-h-screen flex items-center justify-center">
                 <div className="text-center">
-                    <h1 className="text-2xl font-bold text-gray-900 mb-4">接力棒不存在</h1>
-                    <Link to={`/phase2/province/${provinceId}/group/${groupId}`} className="text-orange-600 hover:text-orange-700">返回小组</Link>
+                    <h1 className="text-2xl font-bold text-gray-900 mb-4">{t('phase2.relay.notFound') as string}</h1>
+                    <Link to={`/phase2/province/${provinceId}/group/${groupId}`} className="text-orange-600 hover:text-orange-700">{t('phase2.relay.back') as string}</Link>
                 </div>
             </div>
         );
@@ -131,7 +145,7 @@ const Phase2RelayDetail: React.FC = () => {
                     className="inline-flex items-center text-blue-600 hover:text-blue-700 transition-colors duration-200"
                 >
                     <ArrowLeft className="h-4 w-4 mr-2" />
-                    返回小组
+                    {t('phase2.relay.back') as string}
                 </Link>
             </div>
 
@@ -143,25 +157,25 @@ const Phase2RelayDetail: React.FC = () => {
                             <div className="flex items-center mb-4">
                                 <div className="w-12 h-12 bg-gradient-to-br from-blue-500 to-blue-600 rounded-full flex items-center justify-center text-white text-xl font-bold mr-4">{relayId}</div>
                                 <div>
-                                    <h2 className="text-2xl font-bold text-gray-900">{relay.name}</h2>
+                                    <h2 className="text-2xl font-bold text-gray-900">{translateRelayName(relay.id, t)}</h2>
                                     <p className="text-blue-600 font-medium">{relay.participant}</p>
                                 </div>
                             </div>
                             <div className="space-y-2">
-                                <div className="flex items-center text-gray-600"><MapPin className="h-5 w-5 mr-3 text-blue-500" /><span>{relay.location}</span></div>
+                                <div className="flex items-center text-gray-600"><MapPin className="h-5 w-5 mr-3 text-blue-500" /><span>{translateCityName(relay.location, t, language)}</span></div>
                                 <div className="flex items-center text-gray-600"><Calendar className="h-5 w-5 mr-3 text-blue-500" /><span>{relay.date}</span></div>
                             </div>
                         </div>
                         <div>
-                            <h3 className="text-lg font-semibold text-gray-900 mb-3">接力信息</h3>
+                            <h3 className="text-lg font-semibold text-gray-900 mb-3">{t('phase2.relay.info.relay') as string}</h3>
                             <div className="flex items-center justify-between bg-gradient-to-r from-blue-50 to-indigo-50 rounded-xl p-4 border border-blue-200">
                                 <div>
-                                    <p className="text-sm text-gray-600">下一站</p>
-                                    <p className="font-medium text-gray-900">{relay.nextLocation}</p>
+                                    <p className="text-sm text-gray-600">{t('phase2.relay.info.nextStop') as string}</p>
+                                    <p className="font-medium text-gray-900">{translateCityName(relay.nextLocation, t, language)}</p>
                                 </div>
                                 <ArrowRight className="h-6 w-6 text-blue-500" />
                                 <div>
-                                    <p className="text-sm text-gray-600">下一位参与者</p>
+                                    <p className="text-sm text-gray-600">{t('phase2.relay.info.nextParticipant') as string}</p>
                                     <p className="font-medium text-gray-900">{relay.nextParticipant}</p>
                                 </div>
                             </div>
@@ -172,15 +186,15 @@ const Phase2RelayDetail: React.FC = () => {
                 <div className="grid grid-cols-1 lg:grid-cols-2 gap-12">
                     <motion.div initial={{ opacity: 0, x: -20 }} animate={{ opacity: 1, x: 0 }} transition={{ duration: 0.8 }} className="space-y-6">
                         <div className="bg-white rounded-xl p-6 shadow-lg">
-                            <h3 className="text-xl font-semibold text-gray-900 mb-4">拍摄信息</h3>
+                            <h3 className="text-xl font-semibold text-gray-900 mb-4">{t('phase2.relay.info.shooting') as string}</h3>
                             <div className="grid grid-cols-2 gap-4">
                                 <div>
-                                    <span className="text-sm text-gray-500">相机型号</span>
-                                    <p className="font-medium">{relay.camera}</p>
+                                    <span className="text-sm text-gray-500">{t('phase2.relay.info.camera') as string}</span>
+                                    <p className="font-medium">{translateCamera(relay.camera, t)}</p>
                                 </div>
                                 <div>
-                                    <span className="text-sm text-gray-500">胶片类型</span>
-                                    <p className="font-medium">{relay.film}</p>
+                                    <span className="text-sm text-gray-500">{t('phase2.relay.info.film') as string}</span>
+                                    <p className="font-medium">{translateFilm(relay.film, t)}</p>
                                 </div>
                             </div>
                         </div>
@@ -191,16 +205,16 @@ const Phase2RelayDetail: React.FC = () => {
                                     <SmartImage
                                         originalPath={processedPhotos[currentPhotoIndex]}
                                         variant="preview"
-                                        alt={`${relay.name} - 照片 ${currentPhotoIndex + 1}`}
+                                        alt={t('phase2.relay.photos.alt', { name: relay.name, index: currentPhotoIndex + 1 }) as string}
                                         className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-500"
                                     />
                                 ) : (
                                     <div className="w-full h-full bg-gray-100 flex items-center justify-center text-gray-400">
-                                        暂无照片
+                                        {t('phase2.relay.photos.noPhoto') as string}
                                     </div>
                                 )}
                                 <div className="absolute inset-0 bg-black/0 group-hover:bg-black/20 transition-colors duration-300 flex items-center justify-center">
-                                    <div className="opacity-0 group-hover:opacity-100 transition-opacity duration-300 text-white text-lg font-medium">点击查看大图</div>
+                                    <div className="opacity-0 group-hover:opacity-100 transition-opacity duration-300 text-white text-lg font-medium">{t('phase2.relay.photos.clickToView') as string}</div>
                                 </div>
                             </div>
 
@@ -252,12 +266,12 @@ const Phase2RelayDetail: React.FC = () => {
 
                         {processedPhotos.length > 1 && (
                             <div className="bg-white rounded-xl p-6 shadow-lg">
-                                <h3 className="text-lg font-semibold text-gray-900 mb-4">所有照片</h3>
+                                <h3 className="text-lg font-semibold text-gray-900 mb-4">{t('phase2.relay.photos.title') as string}</h3>
                                 <div className="grid grid-cols-3 gap-3">
                                     {processedPhotos.map((photo, index) => (
                                         <div key={index} className="relative group">
                                             <button onClick={() => setCurrentPhotoIndex(index)} className={`aspect-square overflow-hidden rounded-lg transition-all duration-200 w-full ${index === currentPhotoIndex ? 'ring-2 ring-blue-500' : 'hover:scale-105'}`}>
-                                                <SmartImage originalPath={photo} variant="thumbnail" alt={`照片 ${index + 1}`} className="w-full h-full object-cover" />
+                                                <SmartImage originalPath={photo} variant="thumbnail" alt={t('phase2.relay.photos.thumbnailAlt', { index: index + 1 }) as string} className="w-full h-full object-cover" />
                                             </button>
                                         </div>
                                     ))}
@@ -268,38 +282,38 @@ const Phase2RelayDetail: React.FC = () => {
 
                     <motion.div initial={{ opacity: 0, x: 20 }} animate={{ opacity: 1, x: 0 }} transition={{ duration: 0.8, delay: 0.2 }} className="space-y-6">
                         <div className="bg-white rounded-xl p-6 shadow-lg">
-                            <h3 className="text-xl font-semibold text-gray-900 mb-4">留言信息</h3>
+                            <h3 className="text-xl font-semibold text-gray-900 mb-4">{t('phase2.relay.info.message') as string}</h3>
                             <div className="grid grid-cols-2 gap-4">
                                 <div>
-                                    <span className="text-sm text-gray-500">留言数量</span>
-                                    <p className="font-medium">{messagePhotos ? messagePhotos.length : 0} 张</p>
+                                    <span className="text-sm text-gray-500">{t('phase2.relay.info.messageCount') as string}</span>
+                                    <p className="font-medium">{t('phase2.relay.messageImages.count', { count: messagePhotos ? messagePhotos.length : 0 }) as string}</p>
                                 </div>
                                 <div>
-                                    <span className="text-sm text-gray-500">留言类型</span>
-                                    <p className="font-medium">手写留言</p>
+                                    <span className="text-sm text-gray-500">{t('phase2.relay.info.messageType') as string}</span>
+                                    <p className="font-medium">{t('phase2.relay.info.messageTypeValue') as string}</p>
                                 </div>
                             </div>
                         </div>
 
                         {messagePhotos && messagePhotos.length > 0 ? (
                             <div className="bg-white rounded-xl p-6 shadow-lg">
-                                <h3 className="text-lg font-semibold text-gray-900 mb-4">留言图片</h3>
+                                <h3 className="text-lg font-semibold text-gray-900 mb-4">{t('phase2.relay.messageImages.title') as string}</h3>
                                 <div className="relative group">
                                     <div className="aspect-square overflow-hidden rounded-xl shadow-2xl cursor-pointer" onClick={() => setIsMsgFullscreenOpen(true)}>
                                         {messagePhotos[msgCurrentIndex] ? (
                                             <SmartImage
                                                 originalPath={messagePhotos[msgCurrentIndex]}
                                                 variant="preview"
-                                                alt={`留言图片 ${msgCurrentIndex + 1}`}
+                                                alt={t('phase2.relay.messageImages.alt', { index: msgCurrentIndex + 1 }) as string}
                                                 className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-500"
                                             />
                                         ) : (
                                             <div className="w-full h-full bg-gray-100 flex items-center justify-center text-gray-400">
-                                                暂无留言图片
+                                                {t('phase2.relay.messageImages.noImages') as string}
                                             </div>
                                         )}
                                         <div className="absolute inset-0 bg-black/0 group-hover:bg-black/20 transition-colors duration-300 flex items-center justify-center">
-                                            <div className="opacity-0 group-hover:opacity-100 transition-opacity duration-300 text-white text-lg font-medium">点击查看大图</div>
+                                            <div className="opacity-0 group-hover:opacity-100 transition-opacity duration-300 text-white text-lg font-medium">{t('phase2.relay.photos.clickToView') as string}</div>
                                         </div>
                                     </div>
 
@@ -340,19 +354,19 @@ const Phase2RelayDetail: React.FC = () => {
                             </div>
                         ) : (
                             <div className="bg-white rounded-xl p-6 shadow-lg">
-                                <h3 className="text-lg font-semibold text-gray-900 mb-4">留言图片</h3>
-                                <div className="h-64 rounded-xl bg-gray-50 flex items-center justify-center text-gray-400">暂无留言图片</div>
+                                <h3 className="text-lg font-semibold text-gray-900 mb-4">{t('phase2.relay.messageImages.title') as string}</h3>
+                                <div className="h-64 rounded-xl bg-gray-50 flex items-center justify-center text-gray-400">{t('phase2.relay.messageImages.noImages') as string}</div>
                             </div>
                         )}
 
                         {messagePhotos && messagePhotos.length > 1 && (
                             <div className="bg-white rounded-xl p-6 shadow-lg">
-                                <h3 className="text-lg font-semibold text-gray-900 mb-4">所有留言图片</h3>
+                                <h3 className="text-lg font-semibold text-gray-900 mb-4">{t('phase2.relay.messageImages.all') as string}</h3>
                                 <div className="grid grid-cols-3 gap-3">
                                     {messagePhotos.map((photo, index) => (
                                         <div key={index} className="relative group">
                                             <button onClick={() => setMsgCurrentIndex(index)} className={`aspect-square overflow-hidden rounded-lg transition-all duration-200 w-full ${index === msgCurrentIndex ? 'ring-2 ring-blue-500' : 'hover:scale-105'}`}>
-                                                <SmartImage originalPath={photo} variant="thumbnail" alt={`留言 ${index + 1}`} className="w-full h-full object-cover" />
+                                                <SmartImage originalPath={photo} variant="thumbnail" alt={t('phase2.relay.messageImages.thumbnailAlt', { index: index + 1 }) as string} className="w-full h-full object-cover" />
                                             </button>
                                         </div>
                                     ))}
@@ -367,13 +381,13 @@ const Phase2RelayDetail: React.FC = () => {
                     <div className="bg-white rounded-xl p-6 shadow-lg">
                         <div className="flex items-center mb-4">
                             <MessageCircle className="h-6 w-6 text-blue-500 mr-3" />
-                            <h3 className="text-xl font-semibold text-gray-900">参与者留言</h3>
+                            <h3 className="text-xl font-semibold text-gray-900">{t('phase2.relay.info.participantMessage') as string}</h3>
                         </div>
-                        <p className="text-gray-700 leading-relaxed">{relay.message}</p>
+                        <p className="text-gray-700 leading-relaxed">{translateMessage(provinceId || '', groupId || '', relay.id, relay.message, t)}</p>
                         {relay.tags && relay.tags.length > 0 && (
                             <div className="flex flex-wrap gap-2 mt-4">
                                 {relay.tags.map((tag, index) => (
-                                    <span key={index} className="px-3 py-1 bg-blue-100 text-blue-700 text-sm rounded-full">{tag}</span>
+                                    <span key={index} className="px-3 py-1 bg-blue-100 text-blue-700 text-sm rounded-full">{translateTag(tag, t)}</span>
                                 ))}
                             </div>
                         )}
@@ -384,14 +398,14 @@ const Phase2RelayDetail: React.FC = () => {
                 <div className="mt-8">
                     <div className="bg-white rounded-xl p-6 shadow-lg">
                         <div className="flex items-center justify-between mb-4">
-                            <h3 className="text-lg font-semibold text-gray-900">拍摄位置</h3>
-                            <Link to={`/route-map/${group.id}`} className="text-blue-600 hover:text-blue-700 text-sm font-medium">查看完整路线 →</Link>
+                            <h3 className="text-lg font-semibold text-gray-900">{t('phase2.relay.info.location') as string}</h3>
+                            <Link to={`/route-map/${group.id}`} className="text-blue-600 hover:text-blue-700 text-sm font-medium">{t('phase2.relay.info.viewFullRoute') as string}</Link>
                         </div>
                         <div className="h-64 rounded-lg overflow-hidden">
                             <AmapComponent relays={(group.relays as any)} currentRelayId={relay.id} height="100%" showRoute={true} showAllMarkers={true} />
                         </div>
                         {relay.coordinates && (
-                            <div className="mt-3 text-sm text-gray-500 text-center">坐标: {relay.coordinates.lat.toFixed(4)}, {relay.coordinates.lng.toFixed(4)}</div>
+                            <div className="mt-3 text-sm text-gray-500 text-center">{t('phase2.relay.info.coordinates', { lat: relay.coordinates.lat.toFixed(4), lng: relay.coordinates.lng.toFixed(4) }) as string}</div>
                         )}
                     </div>
                 </div>
@@ -401,11 +415,11 @@ const Phase2RelayDetail: React.FC = () => {
                         <div className="bg-white rounded-xl p-6 max-w-md w-full" onClick={(e) => e.stopPropagation()}>
                             <div className="flex items-center mb-4">
                                 <MessageCircle className="h-6 w-6 text-blue-500 mr-3" />
-                                <h3 className="text-xl font-semibold text-gray-900">参与者留言</h3>
+                                <h3 className="text-xl font-semibold text-gray-900">{t('phase2.relay.info.participantMessage') as string}</h3>
                             </div>
-                            <p className="text-gray-700 leading-relaxed mb-4">{relay.message}</p>
+                            <p className="text-gray-700 leading-relaxed mb-4">{translateMessage(provinceId || '', groupId || '', relay.id, relay.message, t)}</p>
                             <div className="text-right">
-                                <button onClick={() => setShowMessage(false)} className="px-4 py-2 bg-blue-600 text-white rounded-lg hover:bg-blue-700 transition-colors duration-200">关闭</button>
+                                <button onClick={() => setShowMessage(false)} className="px-4 py-2 bg-blue-600 text-white rounded-lg hover:bg-blue-700 transition-colors duration-200">{t('common.buttons.close') as string}</button>
                             </div>
                         </div>
                     </motion.div>
@@ -416,7 +430,7 @@ const Phase2RelayDetail: React.FC = () => {
                         <div className="bg-white rounded-xl p-6 max-w-md w-full" onClick={(e) => e.stopPropagation()}>
                             <div className="flex items-center mb-4">
                                 <Download className="h-6 w-6 text-green-500 mr-3" />
-                                <h3 className="text-xl font-semibold text-gray-900">下载照片</h3>
+                                <h3 className="text-xl font-semibold text-gray-900">{t('phase2.relay.download.title') as string}</h3>
                             </div>
                             <div className="space-y-4 mb-6">
                                 <button
@@ -437,12 +451,12 @@ const Phase2RelayDetail: React.FC = () => {
                                     {isDownloading ? (
                                         <>
                                             <div className="animate-spin rounded-full h-5 w-5 border-b-2 border-white mr-2"></div>
-                                            下载中... {Math.round(downloadProgress)}%
+                                            {t('phase2.relay.download.downloading', { progress: Math.round(downloadProgress) }) as string}
                                         </>
                                     ) : (
                                         <>
                                             <Download className="h-5 w-5 mr-2" />
-                                            下载全部照片 ({processedPhotos.length}张)
+                                            {t('phase2.relay.download.all', { count: processedPhotos.length }) as string}
                                         </>
                                     )}
                                 </button>
@@ -455,12 +469,12 @@ const Phase2RelayDetail: React.FC = () => {
 
                                 <button onClick={() => { setShowDownloadOptions(false); const filename = `${relay.name}_${relay.participant}_当前照片.jpg`; downloadImage(processedPhotos[currentPhotoIndex], filename); }} className="w-full flex items-center justify-center px-4 py-3 bg-blue-600 text-white rounded-lg hover:bg-blue-700 transition-colors duration-200">
                                     <Download className="h-5 w-5 mr-2" />
-                                    下载当前照片
+                                    {t('phase2.relay.download.current') as string}
                                 </button>
-                                <div className="text-sm text-gray-600 text-center">批量下载将逐张下载所有照片，每张间隔0.5秒</div>
+                                <div className="text-sm text-gray-600 text-center">{t('phase2.relay.download.notice') as string}</div>
                             </div>
                             <div className="text-right">
-                                <button onClick={() => setShowDownloadOptions(false)} className="px-4 py-2 bg-gray-300 text-gray-700 rounded-lg hover:bg-gray-400 transition-colors duration-200">取消</button>
+                                <button onClick={() => setShowDownloadOptions(false)} className="px-4 py-2 bg-gray-300 text-gray-700 rounded-lg hover:bg-gray-400 transition-colors duration-200">{t('common.buttons.cancel') as string}</button>
                             </div>
                         </div>
                     </motion.div>
@@ -472,7 +486,7 @@ const Phase2RelayDetail: React.FC = () => {
                         <div className="bg-white rounded-xl p-6 max-w-md w-full" onClick={(e) => e.stopPropagation()}>
                             <div className="flex items-center mb-4">
                                 <Download className="h-6 w-6 text-green-500 mr-3" />
-                                <h3 className="text-xl font-semibold text-gray-900">下载留言图片</h3>
+                                <h3 className="text-xl font-semibold text-gray-900">{t('phase2.relay.download.messageTitle') as string}</h3>
                             </div>
                             <div className="space-y-4 mb-6">
                                 <button
@@ -493,12 +507,12 @@ const Phase2RelayDetail: React.FC = () => {
                                     {msgIsDownloading ? (
                                         <>
                                             <div className="animate-spin rounded-full h-5 w-5 border-b-2 border-white mr-2"></div>
-                                            下载中... {Math.round(msgDownloadProgress)}%
+                                            {t('phase2.relay.download.downloading', { progress: Math.round(msgDownloadProgress) }) as string}
                                         </>
                                     ) : (
                                         <>
                                             <Download className="h-5 w-5 mr-2" />
-                                            下载全部留言图片 ({messagePhotos.length}张)
+                                            {t('phase2.relay.download.messageAll', { count: messagePhotos.length }) as string}
                                         </>
                                     )}
                                 </button>
@@ -509,14 +523,14 @@ const Phase2RelayDetail: React.FC = () => {
                                     </div>
                                 )}
 
-                                <button onClick={() => { setMsgShowDownloadOptions(false); const filename = `${relay.name}_${relay.participant}_留言_${msgCurrentIndex + 1}.jpg`; downloadImage(messagePhotos[msgCurrentIndex], filename); }} className="w-full flex items-center justify-center px-4 py-3 bg-blue-600 text白 rounded-lg hover:bg-blue-700 transition-colors duration-200">
+                                <button onClick={() => { setMsgShowDownloadOptions(false); const filename = `${relay.name}_${relay.participant}_留言_${msgCurrentIndex + 1}.jpg`; downloadImage(messagePhotos[msgCurrentIndex], filename); }} className="w-full flex items-center justify-center px-4 py-3 bg-blue-600 text-white rounded-lg hover:bg-blue-700 transition-colors duration-200">
                                     <Download className="h-5 w-5 mr-2" />
-                                    下载当前留言图片
+                                    {t('phase2.relay.download.messageCurrent') as string}
                                 </button>
-                                <div className="text-sm text-gray-600 text-center">批量下载将逐张下载所有留言图片，每张间隔0.5秒</div>
+                                <div className="text-sm text-gray-600 text-center">{t('phase2.relay.download.messageNotice') as string}</div>
                             </div>
                             <div className="text-right">
-                                <button onClick={() => setMsgShowDownloadOptions(false)} className="px-4 py-2 bg-gray-300 text-gray-700 rounded-lg hover:bg-gray-400 transition-colors duration-200">取消</button>
+                                <button onClick={() => setMsgShowDownloadOptions(false)} className="px-4 py-2 bg-gray-300 text-gray-700 rounded-lg hover:bg-gray-400 transition-colors duration-200">{t('common.buttons.cancel') as string}</button>
                             </div>
                         </div>
                     </motion.div>

@@ -2,6 +2,7 @@ import React, { useEffect, useRef, useState } from 'react';
 import { MapPin } from 'lucide-react';
 import { Phase2Province } from '../config/phase2Data';
 import { getAmapKey, isAmapKeyConfigured, MAP_CONFIG } from '../config/mapConfig';
+import { useTranslation } from '../i18n/hooks';
 import './AmapComponent.css';
 
 interface Phase2MapComponentProps {
@@ -19,6 +20,7 @@ const Phase2MapComponent: React.FC<Phase2MapComponentProps> = ({
     height = '500px',
     className = ''
 }) => {
+    const { t } = useTranslation();
     const [map, setMap] = useState<any>(null);
     const [infoWindow, setInfoWindow] = useState<any>(null);
     const [selectedProvince, setSelectedProvince] = useState<Phase2Province | null>(null);
@@ -49,11 +51,11 @@ const Phase2MapComponent: React.FC<Phase2MapComponentProps> = ({
     // 获取省份状态
     const getProvinceStatus = (province: Phase2Province): string => {
         if (province.completedGroups > 0) {
-            return '已完成';
+            return t('phase2.home.sections.map.statistics.status.completed') as string;
         } else if (province.activeGroups > 0) {
-            return '进行中';
+            return t('phase2.home.sections.map.statistics.status.active') as string;
         } else {
-            return '计划中';
+            return t('phase2.home.sections.map.statistics.status.planning') as string;
         }
     };
 
@@ -213,18 +215,25 @@ const Phase2MapComponent: React.FC<Phase2MapComponentProps> = ({
                         polygon.setOptions({ strokeWeight: 2.5, fillOpacity: 0.85, strokeColor: '#000000' });
 
                         // 显示简化的悬浮提示
-                        const statusText = matched.completedGroups > 0 ? '已完成' : matched.activeGroups > 0 ? '进行中' : '计划中';
+                        const statusText = matched.completedGroups > 0 
+                            ? t('phase2.home.sections.map.statistics.status.completed') as string
+                            : matched.activeGroups > 0 
+                                ? t('phase2.home.sections.map.statistics.status.active') as string
+                                : t('phase2.home.sections.map.statistics.status.planning') as string;
+                        
+                        const provinceName = t(`provinces.${matched.id}.name`) as string || matched.name;
+                        
                         const timeInfo = matched.completedGroups > 0
-                            ? `已完成时间: ${matched.planningStartDate || '2024年12月'}`
+                            ? `${t('phase2.home.sections.map.statistics.status.completedTime')}: ${matched.planningStartDate || '2024年12月'}`
                             : matched.activeGroups > 0
-                                ? `当前时间: ${new Date().toLocaleDateString('zh-CN')}`
-                                : `计划开启: ${matched.planningStartDate || '待定'}`;
+                                ? `${t('phase2.home.sections.map.statistics.status.currentTime')}: ${new Date().toLocaleDateString()}`
+                                : `${t('phase2.home.sections.map.statistics.status.planningStart')}: ${matched.planningStartDate || t('common.messages.loading')}`;
 
                         const content = `
                             <div class="p-2">
-                                <div class="font-bold text-sm">${matched.name}</div>
+                                <div class="font-bold text-sm">${provinceName}</div>
                                 <div class="text-xs text-gray-600 mt-1">
-                                    <div>状态: ${statusText}</div>
+                                    <div>${t('phase2.home.sections.map.statistics.status.label')}: ${statusText}</div>
                                     <div>${timeInfo}</div>
                                 </div>
                             </div>
@@ -351,18 +360,25 @@ const Phase2MapComponent: React.FC<Phase2MapComponentProps> = ({
                         polygon.setOptions({ strokeWeight: 2.5, fillOpacity: 0.85, strokeColor: '#000000' });
 
                         // 显示简化的悬浮提示
-                        const statusText = matched.completedGroups > 0 ? '已完成' : matched.activeGroups > 0 ? '进行中' : '计划中';
+                        const statusText = matched.completedGroups > 0 
+                            ? t('phase2.home.sections.map.statistics.status.completed') as string
+                            : matched.activeGroups > 0 
+                                ? t('phase2.home.sections.map.statistics.status.active') as string
+                                : t('phase2.home.sections.map.statistics.status.planning') as string;
+                        
+                        const provinceName = t(`provinces.${matched.id}.name`) as string || matched.name;
+                        
                         const timeInfo = matched.completedGroups > 0
-                            ? `已完成时间: ${matched.planningStartDate || '2024年12月'}`
+                            ? `${t('phase2.home.sections.map.statistics.status.completedTime')}: ${matched.planningStartDate || '2024年12月'}`
                             : matched.activeGroups > 0
-                                ? `当前时间: ${new Date().toLocaleDateString('zh-CN')}`
-                                : `计划开启: ${matched.planningStartDate || '待定'}`;
+                                ? `${t('phase2.home.sections.map.statistics.status.currentTime')}: ${new Date().toLocaleDateString()}`
+                                : `${t('phase2.home.sections.map.statistics.status.planningStart')}: ${matched.planningStartDate || t('common.messages.loading')}`;
 
                         const content = `
                             <div class="p-2">
-                                <div class="font-bold text-sm">${matched.name}</div>
+                                <div class="font-bold text-sm">${provinceName}</div>
                                 <div class="text-xs text-gray-600 mt-1">
-                                    <div>状态: ${statusText}</div>
+                                    <div>${t('phase2.home.sections.map.statistics.status.label')}: ${statusText}</div>
                                     <div>${timeInfo}</div>
                                 </div>
                             </div>
@@ -491,14 +507,15 @@ const Phase2MapComponent: React.FC<Phase2MapComponentProps> = ({
         provincePolygonsRef.current.forEach((polys, provId) => {
             const prov = provinces.find(p => p.id === provId);
             if (!prov) return;
-            const status = prov.completedGroups > 0 ? '已完成' : (prov.activeGroups > 0 ? '进行中' : '计划中');
             const baseColor = getProvinceColor(prov);
+            const isCompleted = prov.completedGroups > 0;
+            const isActive = prov.activeGroups > 0;
             polys.forEach(poly => {
                 poly.setOptions({
                     fillColor: baseColor,
-                    fillOpacity: status === '已完成' ? 0.75 : status === '进行中' ? 0.65 : 0.4,
-                    strokeColor: status === '已完成' ? '#2E7D32' : status === '进行中' ? '#F57C00' : '#CCCCCC',
-                    strokeWeight: status === '已完成' ? 2 : status === '进行中' ? 2 : 1
+                    fillOpacity: isCompleted ? 0.75 : isActive ? 0.65 : 0.4,
+                    strokeColor: isCompleted ? '#2E7D32' : isActive ? '#F57C00' : '#CCCCCC',
+                    strokeWeight: isCompleted || isActive ? 2 : 1
                 });
             });
         });
@@ -551,15 +568,15 @@ const Phase2MapComponent: React.FC<Phase2MapComponentProps> = ({
                 <div className="flex flex-col space-y-2">
                     <div className="flex items-center">
                         <div className="w-3 h-3 bg-green-500 rounded-full mr-2"></div>
-                        <span className="text-sm text-gray-700">已完成</span>
+                        <span className="text-sm text-gray-700">{t('phase2.home.sections.map.statistics.status.completed')}</span>
                     </div>
                     <div className="flex items-center">
                         <div className="w-3 h-3 bg-orange-500 rounded-full mr-2"></div>
-                        <span className="text-sm text-gray-700">进行中</span>
+                        <span className="text-sm text-gray-700">{t('phase2.home.sections.map.statistics.status.active')}</span>
                     </div>
                     <div className="flex items-center">
                         <div className="w-3 h-3 bg-gray-400 rounded-full mr-2"></div>
-                        <span className="text-sm text-gray-700">计划中</span>
+                        <span className="text-sm text-gray-700">{t('phase2.home.sections.map.statistics.status.planning')}</span>
                     </div>
                 </div>
             </div>
@@ -567,27 +584,37 @@ const Phase2MapComponent: React.FC<Phase2MapComponentProps> = ({
             {/* 省份信息提示 */}
             {selectedProvince && (
                 <div className="absolute top-4 left-4 bg-white/90 backdrop-blur-sm rounded-lg p-4 shadow-lg max-w-xs z-40">
-                    <h4 className="font-semibold text-gray-900 mb-2">{selectedProvince.name}</h4>
+                    <h4 className="font-semibold text-gray-900 mb-2">
+                        {t(`provinces.${selectedProvince.id}.name`) as string || selectedProvince.name}
+                    </h4>
                     <p className="text-sm text-gray-600 mb-1">
                         <span className="inline-block w-2 h-2 bg-orange-500 rounded-full mr-2"></span>
-                        状态: {getProvinceStatus(selectedProvince)}
+                        {t('phase2.home.sections.map.statistics.status.label')}: {getProvinceStatus(selectedProvince)}
                     </p>
-                    <p className="text-sm text-gray-600 mb-1">总小组: {selectedProvince.totalGroups}</p>
-                    <p className="text-sm text-gray-600 mb-1">进行中: {selectedProvince.activeGroups}</p>
-                    <p className="text-sm text-gray-600 mb-1">已完成: {selectedProvince.completedGroups}</p>
-                    <p className="text-sm text-gray-600">{selectedProvince.description}</p>
+                    <p className="text-sm text-gray-600 mb-1">
+                        {t('common.labels.totalGroups')}: {selectedProvince.totalGroups}
+                    </p>
+                    <p className="text-sm text-gray-600 mb-1">
+                        {t('common.labels.activeGroups')}: {selectedProvince.activeGroups}
+                    </p>
+                    <p className="text-sm text-gray-600 mb-1">
+                        {t('common.labels.completedGroups')}: {selectedProvince.completedGroups}
+                    </p>
+                    <p className="text-sm text-gray-600">
+                        {t(`provinces.${selectedProvince.id}.description`) as string || selectedProvince.description}
+                    </p>
                 </div>
             )}
 
             {/* 省份数据统计 */}
             <div className="absolute bottom-4 left-4 bg-white/90 backdrop-blur-sm rounded-lg p-4 shadow-lg">
                 <div className="text-sm text-gray-700">
-                    <div className="font-semibold mb-2">省份统计</div>
+                    <div className="font-semibold mb-2">{t('phase2.home.sections.map.statistics.title')}</div>
                     <div className="space-y-1">
-                        <div>总省份数: {provinces.length}</div>
-                        <div>进行中: {provinces.filter(p => p.activeGroups > 0).length}</div>
-                        <div>已完成: {provinces.filter(p => p.completedGroups > 0).length}</div>
-                        <div>计划中: {provinces.filter(p => p.activeGroups === 0 && p.completedGroups === 0).length}</div>
+                        <div>{t('phase2.home.sections.map.statistics.totalProvinces')}: {provinces.length}</div>
+                        <div>{t('phase2.home.sections.map.statistics.status.active')}: {provinces.filter(p => p.activeGroups > 0).length}</div>
+                        <div>{t('phase2.home.sections.map.statistics.status.completed')}: {provinces.filter(p => p.completedGroups > 0).length}</div>
+                        <div>{t('phase2.home.sections.map.statistics.status.planning')}: {provinces.filter(p => p.activeGroups === 0 && p.completedGroups === 0).length}</div>
                     </div>
                 </div>
             </div>

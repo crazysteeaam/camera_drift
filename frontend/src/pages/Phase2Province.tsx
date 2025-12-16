@@ -16,22 +16,37 @@ import {
 } from 'lucide-react';
 import { getProvinceById } from '../config/phase2Data';
 import ProvinceMapComponent from '../components/ProvinceMapComponent';
+import { useTranslation } from '../i18n/hooks';
+import { useProvinceTranslation, translateCityName, translateGroupInfo } from '../i18n/utils';
 
 const Phase2Province: React.FC = () => {
     const { provinceId } = useParams<{ provinceId: string }>();
     const navigate = useNavigate();
+    const { t, isLoading, language } = useTranslation();
     const [filterStatus, setFilterStatus] = useState<'all' | 'active' | 'planning' | 'completed'>('all');
     const [searchTerm, setSearchTerm] = useState('');
 
     const province = getProvinceById(provinceId || '');
+    const provinceTranslation = useProvinceTranslation(provinceId || '');
+
+    if (isLoading) {
+        return (
+            <div className="min-h-screen flex items-center justify-center bg-gradient-to-br from-orange-50 via-red-50 to-pink-50">
+                <div className="text-center">
+                    <div className="inline-block animate-spin rounded-full h-12 w-12 border-b-2 border-orange-600 mb-4"></div>
+                    <p className="text-gray-600">{t('common.messages.loading') as string}</p>
+                </div>
+            </div>
+        );
+    }
 
     if (!province) {
         return (
             <div className="min-h-screen flex items-center justify-center">
                 <div className="text-center">
-                    <h1 className="text-2xl font-bold text-gray-900 mb-4">省份不存在</h1>
+                    <h1 className="text-2xl font-bold text-gray-900 mb-4">{t('phase2.province.notFound') as string}</h1>
                     <Link to="/phase2" className="text-orange-600 hover:text-orange-700">
-                        返回首页
+                        {t('phase2.province.back') as string}
                     </Link>
                 </div>
             </div>
@@ -62,13 +77,13 @@ const Phase2Province: React.FC = () => {
     const getStatusText = (status: string) => {
         switch (status) {
             case 'active':
-                return '进行中';
+                return t('common.status.active') as string;
             case 'planning':
-                return '计划中';
+                return t('common.status.planning') as string;
             case 'completed':
-                return '已完成';
+                return t('common.status.completed') as string;
             default:
-                return '未知';
+                return t('common.status.unknown') as string;
         }
     };
 
@@ -83,15 +98,15 @@ const Phase2Province: React.FC = () => {
                             className="flex items-center text-gray-600 hover:text-gray-900 transition-colors"
                         >
                             <ArrowLeft className="h-5 w-5 mr-2" />
-                            返回首页
+                            {t('phase2.province.back') as string}
                         </button>
                         <div className="flex items-center space-x-4">
                             <div className={`w-12 h-12 rounded-full bg-gradient-to-br ${province.color} flex items-center justify-center text-white text-xl font-bold`}>
                                 {province.shortName}
                             </div>
                             <div>
-                                <h1 className="text-2xl font-bold text-gray-900">{province.name}</h1>
-                                <p className="text-gray-600">{province.description}</p>
+                                <h1 className="text-2xl font-bold text-gray-900">{provinceTranslation.name}</h1>
+                                <p className="text-gray-600">{provinceTranslation.description}</p>
                             </div>
                         </div>
                     </div>
@@ -104,19 +119,19 @@ const Phase2Province: React.FC = () => {
                     <div className="grid grid-cols-2 md:grid-cols-4 gap-6">
                         <div className="text-center">
                             <div className="text-3xl font-bold text-gray-900">{province.totalGroups}</div>
-                            <div className="text-sm text-gray-500">总小组数</div>
+                            <div className="text-sm text-gray-500">{t('phase2.province.stats.totalGroups') as string}</div>
                         </div>
                         <div className="text-center">
                             <div className="text-3xl font-bold text-orange-600">{province.activeGroups}</div>
-                            <div className="text-sm text-gray-500">进行中</div>
+                            <div className="text-sm text-gray-500">{t('phase2.province.stats.active') as string}</div>
                         </div>
                         <div className="text-center">
                             <div className="text-3xl font-bold text-green-600">{province.completedGroups}</div>
-                            <div className="text-sm text-gray-500">已完成</div>
+                            <div className="text-sm text-gray-500">{t('phase2.province.stats.completed') as string}</div>
                         </div>
                         <div className="text-center">
                             <div className="text-3xl font-bold text-blue-600">{province.totalGroups * 6}</div>
-                            <div className="text-sm text-gray-500">总参与者</div>
+                            <div className="text-sm text-gray-500">{t('phase2.province.stats.totalParticipants') as string}</div>
                         </div>
                     </div>
                 </div>
@@ -132,9 +147,9 @@ const Phase2Province: React.FC = () => {
                         viewport={{ once: true }}
                         className="text-center mb-8"
                     >
-                        <h2 className="text-3xl font-bold text-gray-900 mb-4">地级市分布图</h2>
+                        <h2 className="text-3xl font-bold text-gray-900 mb-4">{t('phase2.province.map.title') as string}</h2>
                         <p className="text-lg text-gray-600 max-w-3xl mx-auto">
-                            探索{province.name}内各城市的接力情况，点击标记查看详细信息
+                            {t('phase2.province.map.description', { province: provinceTranslation.name }) as string}
                         </p>
                     </motion.div>
                     
@@ -166,7 +181,7 @@ const Phase2Province: React.FC = () => {
                             <Search className="absolute left-3 top-1/2 transform -translate-y-1/2 h-5 w-5 text-gray-400" />
                             <input
                                 type="text"
-                                placeholder="搜索小组..."
+                                placeholder={t('phase2.province.search.placeholder') as string}
                                 value={searchTerm}
                                 onChange={(e) => setSearchTerm(e.target.value)}
                                 className="w-full pl-10 pr-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-orange-500 focus:border-transparent"
@@ -176,11 +191,11 @@ const Phase2Province: React.FC = () => {
                         {/* 状态筛选 */}
                         <div className="flex gap-2">
                             {[
-                                { key: 'all', label: '全部', icon: Filter },
-                                { key: 'active', label: '进行中', icon: PlayCircle },
-                                { key: 'planning', label: '计划中', icon: Clock },
-                                { key: 'completed', label: '已完成', icon: CheckCircle }
-                            ].map(({ key, label, icon: Icon }) => (
+                                { key: 'all', labelKey: 'common.status.all', icon: Filter },
+                                { key: 'active', labelKey: 'common.status.active', icon: PlayCircle },
+                                { key: 'planning', labelKey: 'common.status.planning', icon: Clock },
+                                { key: 'completed', labelKey: 'common.status.completed', icon: CheckCircle }
+                            ].map(({ key, labelKey, icon: Icon }) => (
                                 <button
                                     key={key}
                                     onClick={() => setFilterStatus(key as any)}
@@ -190,7 +205,7 @@ const Phase2Province: React.FC = () => {
                                         }`}
                                 >
                                     <Icon className="h-4 w-4 mr-2" />
-                                    {label}
+                                    {t(labelKey) as string}
                                 </button>
                             ))}
                         </div>
@@ -201,7 +216,7 @@ const Phase2Province: React.FC = () => {
             {/* 小组列表 */}
             <section className="py-12">
                 <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-                    <h2 className="text-2xl font-bold text-gray-900 mb-8">小组列表</h2>
+                    <h2 className="text-2xl font-bold text-gray-900 mb-8">{t('phase2.province.groups.title') as string}</h2>
 
                     <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
                         {filteredGroups.map((group, index) => (
@@ -220,20 +235,20 @@ const Phase2Province: React.FC = () => {
                                         </div>
 
                                         {/* 小组信息 */}
-                                        <h3 className="text-xl font-semibold text-gray-900 mb-2 text-center">{group.name}</h3>
-                                        <p className="text-gray-600 text-sm mb-4 text-center">{group.description}</p>
+                                        <h3 className="text-xl font-semibold text-gray-900 mb-2 text-center">{translateGroupInfo(province.id, group.id, t).name}</h3>
+                                        <p className="text-gray-600 text-sm mb-4 text-center">{translateGroupInfo(province.id, group.id, t).description || group.description}</p>
 
                                         {/* 路线信息 */}
                                         <div className="space-y-2 mb-4">
                                             <div className="flex items-center text-xs text-gray-500">
                                                 <MapPin className="h-3 w-3 mr-1" />
-                                                <span className="truncate">{group.startLocation}</span>
+                                                <span className="truncate">{translateCityName(group.startLocation, t, language)}</span>
                                                 <span className="mx-1">→</span>
-                                                <span className="truncate">{group.endLocation}</span>
+                                                <span className="truncate">{translateCityName(group.endLocation, t, language)}</span>
                                             </div>
                                             <div className="flex items-center text-xs text-gray-500">
                                                 <Users className="h-3 w-3 mr-1" />
-                                                <span>{group.participantCount} 位参与者</span>
+                                                <span>{t('phase2.province.groups.participants', { count: group.participantCount }) as string}</span>
                                             </div>
                                         </div>
 
@@ -246,14 +261,14 @@ const Phase2Province: React.FC = () => {
                                                 </span>
                                             </div>
                                             <div className="text-sm text-gray-500">
-                                                {group.currentRelay}/{group.participantCount} 棒
+                                                {t('phase2.province.groups.relay', { current: group.currentRelay, total: group.participantCount }) as string}
                                             </div>
                                         </div>
 
                                         {/* 进度条 */}
                                         <div className="mb-4">
                                             <div className="flex justify-between text-xs text-gray-500 mb-1">
-                                                <span>进度</span>
+                                                <span>{t('phase2.province.groups.progress') as string}</span>
                                                 <span>{Math.round((group.currentRelay / group.participantCount) * 100)}%</span>
                                             </div>
                                             <div className="w-full bg-gray-200 rounded-full h-2">
@@ -267,7 +282,7 @@ const Phase2Province: React.FC = () => {
                                         {/* 查看详情按钮 */}
                                         <div className="text-center">
                                             <span className="inline-flex items-center text-sm font-medium text-orange-600 group-hover:text-orange-700">
-                                                查看详情
+                                                {t('phase2.province.groups.viewDetails') as string}
                                                 <Camera className="h-4 w-4 ml-1 group-hover:translate-x-1 transition-transform" />
                                             </span>
                                         </div>
@@ -282,8 +297,8 @@ const Phase2Province: React.FC = () => {
                             <div className="text-gray-400 mb-4">
                                 <Search className="h-12 w-12 mx-auto" />
                             </div>
-                            <h3 className="text-lg font-medium text-gray-900 mb-2">没有找到匹配的小组</h3>
-                            <p className="text-gray-500">请尝试调整搜索条件或筛选器</p>
+                            <h3 className="text-lg font-medium text-gray-900 mb-2">{t('phase2.province.search.noResults.title') as string}</h3>
+                            <p className="text-gray-500">{t('phase2.province.search.noResults.description') as string}</p>
                         </div>
                     )}
                 </div>
@@ -300,16 +315,16 @@ const Phase2Province: React.FC = () => {
                         className="bg-white rounded-2xl p-8 shadow-lg"
                     >
                         <h2 className="text-2xl font-bold text-gray-900 mb-6 text-center">
-                            {province.name}特色
+                            {t('phase2.province.features.title', { province: provinceTranslation.name }) as string}
                         </h2>
                         <div className="grid grid-cols-1 md:grid-cols-2 gap-8">
                             <div>
-                                <h3 className="text-lg font-semibold text-gray-900 mb-4">文化特色</h3>
+                                <h3 className="text-lg font-semibold text-gray-900 mb-4">{t('phase2.province.features.culture.title') as string}</h3>
                                 <p className="text-gray-600 mb-4">
-                                    {province.description}
+                                    {provinceTranslation.description}
                                 </p>
                                 <div className="flex flex-wrap gap-2">
-                                    {['历史文化', '自然风光', '现代发展', '人文风情'].map((tag, index) => (
+                                    {((t('phase2.province.features.culture.tags', { returnObjects: true }) as unknown) as string[]).map((tag, index) => (
                                         <span
                                             key={index}
                                             className="px-3 py-1 bg-orange-100 text-orange-800 rounded-full text-sm"
@@ -320,24 +335,14 @@ const Phase2Province: React.FC = () => {
                                 </div>
                             </div>
                             <div>
-                                <h3 className="text-lg font-semibold text-gray-900 mb-4">拍摄建议</h3>
+                                <h3 className="text-lg font-semibold text-gray-900 mb-4">{t('phase2.province.features.shooting.title') as string}</h3>
                                 <ul className="space-y-2 text-gray-600">
-                                    <li className="flex items-start">
-                                        <Star className="h-4 w-4 text-yellow-500 mr-2 mt-1 flex-shrink-0" />
-                                        记录当地的历史建筑和文化遗迹
-                                    </li>
-                                    <li className="flex items-start">
-                                        <Star className="h-4 w-4 text-yellow-500 mr-2 mt-1 flex-shrink-0" />
-                                        捕捉自然风光和季节变化
-                                    </li>
-                                    <li className="flex items-start">
-                                        <Star className="h-4 w-4 text-yellow-500 mr-2 mt-1 flex-shrink-0" />
-                                        展现现代城市的发展面貌
-                                    </li>
-                                    <li className="flex items-start">
-                                        <Star className="h-4 w-4 text-yellow-500 mr-2 mt-1 flex-shrink-0" />
-                                        记录当地人的日常生活
-                                    </li>
+                                    {((t('phase2.province.features.shooting.tips', { returnObjects: true }) as unknown) as string[]).map((tip, index) => (
+                                        <li key={index} className="flex items-start">
+                                            <Star className="h-4 w-4 text-yellow-500 mr-2 mt-1 flex-shrink-0" />
+                                            {tip}
+                                        </li>
+                                    ))}
                                 </ul>
                             </div>
                         </div>

@@ -2,15 +2,20 @@ import React, { useState } from 'react';
 import { Link, useLocation } from 'react-router-dom';
 import { motion } from 'framer-motion';
 import { Camera, Menu, X, Home, Info, Star } from 'lucide-react';
+import LanguageSwitcher from './LanguageSwitcher';
+import { useTranslation } from '../i18n/hooks';
 
 const Navbar: React.FC = () => {
     const [isOpen, setIsOpen] = useState(false);
     const location = useLocation();
+    const { t, isLoading } = useTranslation(); // 使用翻译 Hook
 
+    // 导航项配置，使用翻译函数获取文本
+    // 如果翻译还在加载，使用默认文本
     const navItems = [
-        { path: '/', label: '第二期', icon: <Star className="h-4 w-4" /> },
-        { path: '/phase1', label: '第一期', icon: <Home className="h-4 w-4" /> },
-        { path: '/about', label: '关于', icon: <Info className="h-4 w-4" /> },
+        { path: '/', label: isLoading ? '第二期' : (t('navbar.navItems.phase2') as string), icon: <Star className="h-4 w-4" /> },
+        { path: '/phase1', label: isLoading ? '第一期' : (t('navbar.navItems.phase1') as string), icon: <Home className="h-4 w-4" /> },
+        { path: '/about', label: isLoading ? '关于' : (t('navbar.navItems.about') as string), icon: <Info className="h-4 w-4" /> },
     ];
 
     const isActive = (path: string) => location.pathname === path;
@@ -26,7 +31,7 @@ const Navbar: React.FC = () => {
                     >
                         <Camera className="h-8 w-8 text-blue-400" />
                         <Link to="/" className="text-xl font-serif font-bold text-white">
-                            胶片漂流计划
+                            {isLoading ? '胶片漂流计划' : (t('navbar.brand') as string)}
                         </Link>
                     </motion.div>
 
@@ -46,11 +51,15 @@ const Navbar: React.FC = () => {
                                     {item.label}
                                 </Link>
                             ))}
+                            {/* 语言切换组件 - 桌面端 */}
+                            <LanguageSwitcher />
                         </div>
                     </div>
 
                     {/* Mobile menu button */}
-                    <div className="md:hidden">
+                    <div className="md:hidden flex items-center">
+                        {/* 语言切换组件 - 移动端 */}
+                        <LanguageSwitcher isMobile />
                         <button
                             onClick={() => setIsOpen(!isOpen)}
                             className="text-blue-200 hover:text-white p-2"

@@ -1,6 +1,7 @@
 import React from 'react';
 import { BrowserRouter as Router, Routes, Route } from 'react-router-dom';
 import { motion, AnimatePresence } from 'framer-motion';
+import { LanguageProvider } from './i18n/context';
 import Navbar from './components/Navbar';
 import Home from './pages/Home';
 import GroupDetail from './pages/GroupDetail';
@@ -23,10 +24,12 @@ import './App.css';
 
 function App() {
     return (
-        <Router>
-            <div className="min-h-screen bg-gradient-to-br from-blue-50 via-indigo-50 to-purple-50">
-                <Navbar />
-                <AnimatePresence mode="wait">
+        // 包裹整个应用，提供多语言支持
+        <LanguageProvider>
+            <Router>
+                <div className="min-h-screen bg-gradient-to-br from-blue-50 via-indigo-50 to-purple-50">
+                    <Navbar />
+                    <AnimatePresence mode="wait">
                     <Routes>
                         <Route path="/" element={
                             <motion.div
@@ -195,6 +198,7 @@ function App() {
                 </AnimatePresence>
             </div>
         </Router>
+        </LanguageProvider>
     );
 }
 
