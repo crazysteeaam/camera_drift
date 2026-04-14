@@ -22,21 +22,12 @@ npm-debug.log*
 yarn-debug.log*
 yarn-error.log*
 
-# 忽略照片文件夹 - 这些文件太大且会频繁变化
-public/photos/
+# 忽略本地图片与构建产物
 public/photos/**
+photos/**
+build/**
 
-# 忽略所有图片文件（但保留必要的示例图片）
-*.jpg
-*.jpeg
-*.png
-*.gif
-*.bmp
-*.tiff
-*.webp
-
-# 保留必要的示例图片和文件夹结构
-!public/photos/
-!public/photos/*/
-!public/photos/**/
+# 保留目录说明文档
+!public/photos/**/README.md
+!photos/**/README.md
 !public/favicon.ico

@@ -10,6 +10,8 @@ export default {
   navItems: {
     phase2: '第二期',
     phase1: '第一期',
+    extra: '番外篇',
+    meaning: '旅行的意义',
     about: '关于'
   },
   
@@ -19,6 +21,8 @@ export default {
     current: '当前语言'
   }
 };
+
+
 
 
 

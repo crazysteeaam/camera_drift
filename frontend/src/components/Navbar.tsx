@@ -1,7 +1,7 @@
 import React, { useState } from 'react';
 import { Link, useLocation } from 'react-router-dom';
 import { motion } from 'framer-motion';
-import { Camera, Menu, X, Home, Info, Star } from 'lucide-react';
+import { Camera, Menu, X, Home, Info, Star, Globe2, Compass } from 'lucide-react';
 import LanguageSwitcher from './LanguageSwitcher';
 import { useTranslation } from '../i18n/hooks';
 
@@ -14,11 +14,14 @@ const Navbar: React.FC = () => {
     // 如果翻译还在加载，使用默认文本
     const navItems = [
         { path: '/', label: isLoading ? '第二期' : (t('navbar.navItems.phase2') as string), icon: <Star className="h-4 w-4" /> },
+        { path: '/extra', label: isLoading ? '番外篇' : (t('navbar.navItems.extra') as string), icon: <Globe2 className="h-4 w-4" /> },
         { path: '/phase1', label: isLoading ? '第一期' : (t('navbar.navItems.phase1') as string), icon: <Home className="h-4 w-4" /> },
+        { path: '/meaning', label: isLoading ? '旅行的意义' : (t('navbar.navItems.meaning') as string), icon: <Compass className="h-4 w-4" /> },
         { path: '/about', label: isLoading ? '关于' : (t('navbar.navItems.about') as string), icon: <Info className="h-4 w-4" /> },
     ];
 
-    const isActive = (path: string) => location.pathname === path;
+    const isActive = (path: string) =>
+        location.pathname === path || (path !== '/' && location.pathname.startsWith(`${path}/`));
 
     return (
         <nav className="bg-gradient-to-r from-blue-900 via-indigo-900 to-purple-900 backdrop-blur-sm sticky top-0 z-50 border-b border-blue-700">

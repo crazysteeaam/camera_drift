@@ -25,6 +25,13 @@ const ProvinceMapComponent: React.FC<ProvinceMapComponentProps> = ({
     const provincePolygonRef = useRef<any>(null);
     const [geoJsonData, setGeoJsonData] = useState<any>(null);
 
+    // 本地开发环境下，避免因为域名未授权导致高德脚本报错
+    const isLocalhost =
+        typeof window !== 'undefined' &&
+        (window.location.hostname === 'localhost' || window.location.hostname === '127.0.0.1');
+
+    const canUseAmap = isAmapKeyConfigured() && !isLocalhost;
+
     // 加载 GeoJSON 数据
     useEffect(() => {
         const loadGeoJsonData = async () => {
@@ -219,7 +226,7 @@ const ProvinceMapComponent: React.FC<ProvinceMapComponentProps> = ({
 
     // 初始化地图
     useEffect(() => {
-        if (!isAmapKeyConfigured() || !mapRef.current) return;
+        if (!canUseAmap || !mapRef.current) return;
 
         const initMap = async () => {
             try {
@@ -286,7 +293,7 @@ const ProvinceMapComponent: React.FC<ProvinceMapComponentProps> = ({
                 map.destroy();
             }
         };
-    }, [province, geoJsonData]);
+    }, [province, geoJsonData, canUseAmap]);
 
     // 添加省份边界高亮
     const addProvinceBoundary = (mapInstance: any) => {
@@ -654,7 +661,7 @@ const ProvinceMapComponent: React.FC<ProvinceMapComponentProps> = ({
         }
     };
 
-    if (!isAmapKeyConfigured()) {
+    if (!canUseAmap) {
         return (
             <div className={`flex items-center justify-center bg-gray-100 rounded-lg ${className}`} style={{ height }}>
                 <div className="text-center text-gray-500">

@@ -19,6 +19,14 @@ import Phase2Test from './pages/Phase2Test';
 import Phase2RelayDetail from './pages/Phase2RelayDetail';
 import Gallery from './pages/Gallery';
 import Phase1Gallery from './pages/Phase1Gallery';
+import ExtraDriftPage from './pages/ExtraDriftPage';
+import ExtraEditorialPage from './pages/ExtraEditorialPage';
+import ExtraGroupDetailPage from './pages/ExtraGroupDetailPage';
+import ExtraMemberDetailPage from './pages/ExtraMemberDetailPage';
+import MeaningHubPage from './pages/MeaningHubPage';
+import MeaningMonthPage from './pages/MeaningMonthPage';
+import MeaningRecruitPage from './pages/MeaningRecruitPage';
+import MeaningMemberDetailPage from './pages/MeaningMemberDetailPage';
 
 import './App.css';
 
@@ -89,6 +97,87 @@ function App() {
                                 transition={{ duration: 0.5 }}
                             >
                                 <About />
+                            </motion.div>
+                        } />
+                        {/* 旅行的意义（月度篇章） */}
+                        <Route path="/meaning" element={
+                            <motion.div
+                                initial={{ opacity: 0, y: 20 }}
+                                animate={{ opacity: 1, y: 0 }}
+                                exit={{ opacity: 0, y: -20 }}
+                                transition={{ duration: 0.5 }}
+                            >
+                                <MeaningHubPage />
+                            </motion.div>
+                        } />
+                        <Route path="/meaning/recruit" element={
+                            <motion.div
+                                initial={{ opacity: 0, y: 20 }}
+                                animate={{ opacity: 1, y: 0 }}
+                                exit={{ opacity: 0, y: -20 }}
+                                transition={{ duration: 0.5 }}
+                            >
+                                <MeaningRecruitPage />
+                            </motion.div>
+                        } />
+                        <Route path="/meaning/:monthId" element={
+                            <motion.div
+                                initial={{ opacity: 0, y: 20 }}
+                                animate={{ opacity: 1, y: 0 }}
+                                exit={{ opacity: 0, y: -20 }}
+                                transition={{ duration: 0.5 }}
+                            >
+                                <MeaningMonthPage />
+                            </motion.div>
+                        } />
+                        <Route path="/meaning/:monthId/member/:memberId" element={
+                            <motion.div
+                                initial={{ opacity: 0, y: 20 }}
+                                animate={{ opacity: 1, y: 0 }}
+                                exit={{ opacity: 0, y: -20 }}
+                                transition={{ duration: 0.5 }}
+                            >
+                                <MeaningMemberDetailPage />
+                            </motion.div>
+                        } />
+                        <Route path="/extra" element={
+                            <motion.div
+                                initial={{ opacity: 0 }}
+                                animate={{ opacity: 1 }}
+                                exit={{ opacity: 0 }}
+                                transition={{ duration: 0.6 }}
+                            >
+                                <ExtraDriftPage />
+                            </motion.div>
+                        } />
+                        <Route path="/extra/editorial" element={
+                            <motion.div
+                                initial={{ opacity: 0 }}
+                                animate={{ opacity: 1 }}
+                                exit={{ opacity: 0 }}
+                                transition={{ duration: 0.6 }}
+                            >
+                                <ExtraEditorialPage />
+                            </motion.div>
+                        } />
+                        <Route path="/extra/group/:groupId" element={
+                            <motion.div
+                                initial={{ opacity: 0, y: 20 }}
+                                animate={{ opacity: 1, y: 0 }}
+                                exit={{ opacity: 0, y: -20 }}
+                                transition={{ duration: 0.5 }}
+                            >
+                                <ExtraGroupDetailPage />
+                            </motion.div>
+                        } />
+                        <Route path="/extra/group/:groupId/member/:memberId" element={
+                            <motion.div
+                                initial={{ opacity: 0, y: 20 }}
+                                animate={{ opacity: 1, y: 0 }}
+                                exit={{ opacity: 0, y: -20 }}
+                                transition={{ duration: 0.5 }}
+                            >
+                                <ExtraMemberDetailPage />
                             </motion.div>
                         } />
                         <Route path="/photo-test" element={

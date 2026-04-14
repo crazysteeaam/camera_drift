@@ -1,0 +1,168 @@
+/**
+ * 中文翻译 - 旅行的意义（月度篇章）
+ * 语气：克制、有留白，偏文学编辑而非说明书。
+ */
+export default {
+  hub: {
+    hint: '每月更新：招募、行旅、显影与成册，各自有各自的时辰。',
+    heroEyebrow: '月度篇章 · 仍在路上',
+    heroTitle: '胶片漂流 ·「旅行的意义」',
+    heroLead: '底片把光折成一格一格的沉默；人在路上，把沉默走成句子。',
+    heroLead2: '这里以月为卷，收容每一种快慢不一的步履，与不急于被命名的刹那。',
+    heroLead3: '你若倚窗片刻，或许会与某一条尚未干透的路，悄悄对上目光。',
+    fullPlaybookLink: '展卷细读',
+    heroGuideHubTitle: '卷首',
+    heroGuideHubBody: '在这里辨认这条支线如何开始，也把名字写进扉页。',
+    heroGuideMonthsTitle: '月卷',
+    heroGuideMonthsBody: '每月各成一页，记录在途、显影与回声。',
+    heroGuideJoinTitle: '同行',
+    heroGuideJoinBody: '若愿加入下一卷，可由路书或问卷落款。',
+    heroGuideCtaHub: '留名在册',
+    heroGuideCtaMonths: '沿月入卷',
+    heroGuideCtaJoin: '去看报名',
+    timelineTitle: '月与月的延伸',
+    timelineSub: '此刻正在发生的，与尚未开启的，在同一条视线里相连。',
+    journeyPulse: '时间仍在走动',
+    timelineStatusCurrent: '此刻',
+    timelineStatusNext: '将启',
+    timelineStatusPast: '已归档',
+    monthEyebrow: '月卷',
+    monthCardHint: '沿月深入',
+    monthOpen: '入卷',
+    thanksTitle: '致谢',
+    thanksPartner: '同路人',
+    sponsorLabel: '同行者',
+    footerThanksLine: '承蒙同行者襄助，使这一卷路得以继续铺展。',
+    surveyEyebrow: '留名在册',
+    surveyTitle: '若愿同行',
+    surveyNote: '更想先听见你的路线；把问卷当作写给未来的一行短笺即可。',
+    surveyCta: '书写问卷',
+    processNote: '若想继续往下读，可先沿月入卷；若已决定同行，再去展卷细读。',
+    processLinkMonths: '沿月入卷',
+    processLinkPlaybook: '展卷细读'
+  },
+  stages: {
+    recruiting: '招募中',
+    inProgress: '进行中',
+    developing: '冲洗与整理中',
+    published: '成果已发布'
+  },
+  month: {
+    backHub: '回卷首',
+    loading: '载入中…',
+    notFoundTitle: '未寻得此月',
+    notFoundBody: '请回到卷首，另择一页。',
+    participantsTitle: '同行者',
+    participantsIntro: '各自一条轨迹；影像、字句与片段，在成员页汇成一卷私史。',
+    participantsIntroSlots: '三格胶片已上路，这三席暂留空白：等显影之后，姓名、城市与一句短签会自己走到光里。',
+    participantsIntroEmpty: '这一月的同行者尚未入册；若你正预备出发，可从本页路书与问卷择径落款。',
+    slotVacant: '留白 · 待履迹入画',
+    slotHint: '冲洗与编排之后，这里会升起名字、城市与路上的只言片语。',
+    navBeforeHub: '愿落款者，可在',
+    navHub: '卷首',
+    navMid: '提笔，亦可于',
+    navPlaybook: '路书',
+    navAfter: '（展卷细读）细写沪粤直联与他城问卷。',
+    thanksTitle: '致谢',
+    learnMore: '进一步了解',
+    thanksLink: '完整致谢见活动说明',
+    videoSlot: '影像位',
+    videoPlaceholder: '本月氛围短片可在数据中配置（自托管或嵌入）。',
+    signUpEyebrow: '若愿同行',
+    signUpEyebrowCurrent: '若想预订下一卷',
+    signUpEyebrowNext: '若愿同行',
+    signUpTitle: '两径落款',
+    signUpTitleCurrent: '下一卷报名',
+    signUpTitleNext: '两径落款',
+    signUpLeadCurrent: '这一月已在途中；若你想把名字写进下一卷，可先在此留下路线。',
+    signUpLeadNext: '若你正预备出发，可依所在城市选择直联或问卷，把名字写入下一卷。',
+    signUpDirect: '在上海或广东生活或出发的朋友，请依路书中的小红书二维码直联报名。',
+    signUpSurvey: '其他城市的朋友，请打开问卷留下路线与收件信息，便于寄送相机与行前确认。',
+    signUpCtaPlaybook: '展卷路书',
+    signUpCtaPlaybookCurrent: '查看下一卷报名说明',
+    signUpCtaPlaybookNext: '展卷路书',
+    signUpCtaSurvey: '书写问卷',
+    signUpCtaSurveyCurrent: '预填下一卷问卷',
+    signUpCtaSurveyNext: '书写问卷'
+  },
+  recruit: {
+    backHub: '回卷首',
+    activityLead:
+      '这一页是写给旅人的路书：它说明我们在做什么、胶片如何流转、以及你可以用哪两种方式与我们同行。',
+    sectionHow: '胶片如何走过一月',
+    sectionSignUp: '报名方式',
+    directRegionLabel: '上海 · 广东',
+    directRegionBody:
+      '若你目前生活或出发地在上海或广东，更欢迎直接通过小红书联系报名：便于当面交接、沟通行程与寄送细节。',
+    xhsTitle: '小红书直联',
+    xhsBody: '保存或扫描下方二维码，进入账号后私信「旅行的意义」即可。',
+    qrAlt: '小红书联系二维码',
+    qrPlaceholderTitle: '二维码待替换',
+    qrPlaceholderBody: '将图片放到 frontend/public 下，并在 meaningData.ts 的 meaningRecruitDirectSignup.qrImageSrc 填写路径。',
+    openXhsProfile: '打开小红书主页',
+    surveyRegionLabel: '其他城市',
+    surveyCardTitle: '问卷报名',
+    surveyRegionBody:
+      '不在上述地区的朋友，请填写问卷报名：便于我们统一记录信息、排期寄送一次性相机，并在行前与你确认收件方式。',
+    surveyBullet1: '问卷由腾讯问卷托管，提交后请留意邮箱或手机通知。',
+    surveyBullet2: '提交即表示你已阅读本页活动说明，并同意按流程寄回底片。',
+    ctaSurvey: '打开问卷（新窗口填写）',
+    letterClosing: '路上见。'
+  },
+  sticky: {
+    chapter: '旅行的意义',
+    subtitle: '此页只叙当月人与物；报名见路书与卷首。',
+    recruiting: '去路书写问卷',
+    inProgress: '落目于同行者',
+    developing: '显影与整理',
+    published: '展卷成册',
+    hintRecruit: '路书页写明沪粤直联与其他城市问卷；卷首亦可留名。',
+    hintProgress: '行旅未终，此页会轻轻翻新。',
+    hintDevelop: '底片正在慢慢说出颜色。',
+    hintPublished: '胶片与影像，终会在一页里重逢。'
+  },
+  mosaic: {
+    title: '路上拾遗',
+    subtitle: '胶片之外，尚有风、声与一行偶然写下的字。',
+    all: '全部',
+    empty: '留白待补',
+    clipLabel: '一帧',
+    countSuffix: '枚'
+  },
+  filmstrip: {
+    title: '阶段',
+    phases: '四段',
+    now: '此刻',
+    phase: '阶段'
+  },
+  member: {
+    back: '返回',
+    backMonth: '回到此月',
+    notFound: '未寻得此人',
+    openTrack: '查看轨迹',
+    emptySubmissions: '这一路的画格与字札尚在途中；冲洗与整理之后，会在此页一帧一帧摊开。'
+  },
+  memberStatus: {
+    preparing: '整装',
+    traveling: '在途',
+    returned: '已寄回',
+    published: '已显影'
+  },
+  memberCard: {
+    statPhoto: '画格',
+    statVideo: '影像',
+    statNote: '字札'
+  },
+  showcase: {
+    title: '成册',
+    empty: '尚无展卷。待显影落定，胶片与影像会在此重逢。',
+    titleFull: '成册：胶片与影像',
+    subtitle: '把未说尽的路，交给光。',
+    filmPacks: '胶片集',
+    videoMoments: '影像片段',
+    textExcerpts: '字句摘录',
+    filmLabel: '胶片',
+    noVideo: '暂无影像',
+    noPhotos: '暂无画格'
+  }
+};

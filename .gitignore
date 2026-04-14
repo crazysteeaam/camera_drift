@@ -1,23 +1,11 @@
-# 忽略照片文件夹
-frontend/public/photos/
-frontend/photos/
-<<<<<<< HEAD
-=======
-frontend/build/
->>>>>>> 3d566512a09fc54e7ef5280d7f75503aad5480db
+# 前端本地图片与构建产物
+frontend/public/photos/**
+frontend/photos/**
+frontend/build/**
 
-# 忽略照片文件
-*.jpg
-*.jpeg
-*.png
-*.gif
-*.bmp
-*.tiff
-*.webp
-
-# 但保留文件夹结构
-!frontend/public/photos/
-!frontend/photos/
+# 保留目录说明文档
+!frontend/public/photos/**/README.md
+!frontend/photos/**/README.md
 
 # 忽略node_modules文件夹 - 这些是依赖包，不应该提交到git
 frontend/node_modules/

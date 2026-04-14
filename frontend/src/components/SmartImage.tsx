@@ -39,29 +39,29 @@ const SmartImage: FC<SmartImageProps> = ({
                 return;
             }
 
-            // setIsLoading(true);
+            setIsLoading(true);
             setHasError(false);
 
             try {
                 // 生成目标变体路径
                 const targetPath = ImagePathGenerator.generateVariantPath(originalPath, variant);
-                setImagePath(targetPath);
-                
-                // 检查目标变体是否存在
-                // const exists = await ImagePathGenerator.checkVariantExists(targetPath);
-                
-                // if (exists) {
-                //     setImagePath(targetPath);
-                // } else {
-                    // 降级策略：如果目标变体不存在，使用原图
-                //     setImagePath(originalPath);
-                // }
+                const resolvedPath =
+                    variant === 'original'
+                        ? originalPath
+                        : (await ImagePathGenerator.checkVariantExists(targetPath))
+                            ? targetPath
+                            : originalPath;
+
+                setImagePath(resolvedPath);
                 console.log('Loading image:', originalPath, 'variant:', variant);
             } catch (error) {
                 console.error('图片加载失败:', error);
                 setHasError(true);
                 if (fallback) {
                     setImagePath(fallback);
+                } else {
+                    setImagePath(originalPath);
+                    setHasError(false);
                 }
             } finally {
                 setIsLoading(false);
@@ -89,7 +89,13 @@ const SmartImage: FC<SmartImageProps> = ({
             alt={alt || '图片'}
             className={combinedClassName}
             onClick={onClick}
-            onError={() => setHasError(true)}
+            onError={() => {
+                if (imagePath !== originalPath) {
+                    setImagePath(originalPath);
+                    return;
+                }
+                setHasError(true);
+            }}
             style={style}
         />
     );

@@ -14,6 +14,8 @@ import messages from './messages';
 import tags from './tags';
 import cameras from './cameras';
 import films from './films';
+import extra from './extra';
+import meaning from './meaning';
 
 /**
  * English translation object
@@ -42,7 +44,9 @@ export default {
   messages,
   tags,
   cameras,
-  films
+  films,
+  extra,
+  meaning
 };
 
 

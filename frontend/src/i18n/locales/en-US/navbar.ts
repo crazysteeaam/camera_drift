@@ -10,6 +10,8 @@ export default {
   navItems: {
     phase2: 'Phase 2',
     phase1: 'Phase 1',
+    extra: 'Extra',
+    meaning: 'Meaning of Travel',
     about: 'About'
   },
   
@@ -19,6 +21,8 @@ export default {
     current: 'Current Language'
   }
 };
+
+
 
 
 

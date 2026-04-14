@@ -62,8 +62,20 @@ const Phase2MapComponent: React.FC<Phase2MapComponentProps> = ({
     // 获取高德地图API密钥
     const AMAP_KEY = getAmapKey();
 
+    // 本地开发环境下，避免因为域名未授权导致高德脚本报错
+    const isLocalhost =
+        typeof window !== 'undefined' &&
+        (window.location.hostname === 'localhost' || window.location.hostname === '127.0.0.1');
+
+    const canUseAmap = isAmapKeyConfigured() && !isLocalhost;
+
     useEffect(() => {
         if (!mapRef.current) return;
+
+        // 本地开发环境或未正确配置密钥时，不加载高德脚本
+        if (!canUseAmap) {
+            return;
+        }
 
         // 初始化地图
         const initMap = async () => {
@@ -114,7 +126,7 @@ const Phase2MapComponent: React.FC<Phase2MapComponentProps> = ({
         };
 
         initMap();
-    }, [AMAP_KEY]);
+    }, [AMAP_KEY, canUseAmap]);
 
     useEffect(() => {
         if (!map || !provinces.length) return;
@@ -534,8 +546,8 @@ const Phase2MapComponent: React.FC<Phase2MapComponentProps> = ({
         });
     }, [highlightedProvinces, map, provinces]);
 
-    // 检查API密钥是否已配置
-    if (!isAmapKeyConfigured()) {
+    // 检查是否可以安全使用高德地图
+    if (!canUseAmap) {
         return (
             <div className={`relative ${className}`}>
                 <div
