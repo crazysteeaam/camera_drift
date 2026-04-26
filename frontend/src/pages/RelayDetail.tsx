@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState } from 'react';
 import { useParams, Link } from 'react-router-dom';
 import { motion } from 'framer-motion';
 import { MapPin, Calendar, MessageCircle, ArrowLeft, Heart, Download, ChevronLeft, ChevronRight } from 'lucide-react';
@@ -6,45 +6,8 @@ import { projectData } from '../config/projectData';
 import AmapComponent from '../components/AmapComponent';
 import FullscreenPhotoViewer from '../components/FullscreenPhotoViewer';
 import SmartImage from '../components/SmartImage';
-import { ImagePathGenerator } from '../utils/imagePathgenerator';
 import { useNavigate } from "react-router-dom";
-
-// 下载工具函数
-const downloadImage = (url: string, filename: string) => {
-    const link = document.createElement('a');
-    link.href = url;
-    link.download = filename;
-    document.body.appendChild(link);
-    link.click();
-    document.body.removeChild(link);
-};
-
-const downloadAllImages = async (photos: string[], relayName: string, participant: string, onProgress?: (progress: number) => void) => {
-    try {
-        // 逐张下载照片
-        for (let i = 0; i < photos.length; i++) {
-            try {
-                const filename = `${relayName}_${participant}_${i + 1}.jpg`;
-                downloadImage(photos[i], filename);
-                
-                // 更新进度
-                const progress = ((i + 1) / photos.length) * 100;
-                onProgress?.(progress);
-                
-                // 添加延迟避免浏览器阻止多个下载
-                await new Promise(resolve => setTimeout(resolve, 500));
-            } catch (error) {
-                console.error(`下载照片 ${i + 1} 失败:`, error);
-            }
-        }
-        
-        onProgress?.(100); // 完成
-        
-    } catch (error) {
-        console.error('批量下载失败:', error);
-        alert('批量下载失败，请检查网络连接');
-    }
-};
+import { downloadImageAsset, downloadImageAssets } from '../utils/imageDownload';
 
 const RelayDetail: React.FC = () => {
     const { groupId, relayId } = useParams<{ groupId: string; relayId: string }>();
@@ -55,20 +18,11 @@ const RelayDetail: React.FC = () => {
     const [downloadProgress, setDownloadProgress] = useState(0);
     const [showDownloadOptions, setShowDownloadOptions] = useState(false);
     const [isFullscreenOpen, setIsFullscreenOpen] = useState(false);
-    const [processedPhotos, setProcessedPhotos] = useState<string[]>([]);
     const navigate = useNavigate();
 
     // 获取数据
     const group = projectData.find(g => g.id === groupId);
     const relay = group?.relays.find(r => r.id === parseInt(relayId || '0'));
-
-    // 处理图片路径，生成预览图路径
-    useEffect(() => {
-        if (relay) {
-            // 直接使用原图路径，SmartImage 组件会自动处理变体
-            setProcessedPhotos(relay.photos);
-        }
-    }, [relay?.photos]);
 
     // 添加类型检查
     if (!groupId || !relayId) {
@@ -163,7 +117,7 @@ const RelayDetail: React.FC = () => {
                                 onClick={() => setIsFullscreenOpen(true)}
                             >
                                 <SmartImage
-                                    originalPath={relay.photos[currentPhotoIndex]}
+                                    asset={relay.photos[currentPhotoIndex]}
                                     variant="preview"
                                     alt={`${relay.name} - 照片 ${currentPhotoIndex + 1}`}
                                     className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-500"
@@ -238,7 +192,7 @@ const RelayDetail: React.FC = () => {
                                             if (relay.photos.length === 1) {
                                                 // 单张照片直接下载原图
                                                 const filename = `${relay.name}_${relay.participant}.jpg`;
-                                                downloadImage(relay.photos[0], filename);
+                                                void downloadImageAsset(relay.photos[0], filename);
                                             } else {
                                                 // 多张照片显示下载选项
                                                 setShowDownloadOptions(true);
@@ -307,7 +261,7 @@ const RelayDetail: React.FC = () => {
                                                     }`}
                                             >
                                                 <SmartImage
-                                                    originalPath={photo}
+                                                    asset={photo}
                                                     variant="thumbnail"
                                                     alt={`照片 ${index + 1}`}
                                                     className="w-full h-full object-cover"
@@ -484,10 +438,9 @@ const RelayDetail: React.FC = () => {
                                         setDownloadProgress(0);
                                         
                                         try {
-                                            await downloadAllImages(
+                                            await downloadImageAssets(
                                                 relay.photos, 
-                                                relay.name, 
-                                                relay.participant,
+                                                (_, index) => `${relay.name}_${relay.participant}_${index + 1}.jpg`,
                                                 (progress) => setDownloadProgress(progress)
                                             );
                                         } finally {
@@ -524,7 +477,7 @@ const RelayDetail: React.FC = () => {
                                     onClick={() => {
                                         setShowDownloadOptions(false);
                                         const filename = `${relay.name}_${relay.participant}_当前照片.jpg`;
-                                        downloadImage(relay.photos[currentPhotoIndex], filename);
+                                        void downloadImageAsset(relay.photos[currentPhotoIndex], filename);
                                     }}
                                     className="w-full flex items-center justify-center px-4 py-3 bg-blue-600 text-white rounded-lg hover:bg-blue-700 transition-colors duration-200"
                                 >

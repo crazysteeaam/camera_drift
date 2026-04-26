@@ -1,10 +1,11 @@
 // 番外篇（全球胶片漂流）数据模型与示例数据
 // 仅作为结构示例，后续可按实际拍摄结果扩展或替换
 import { EXTRA_PHOTO_MANIFEST } from './extraPhotoManifest';
+import { createRemoteImageAsset, type ImageAsset } from '../types/imageAsset';
 
 export interface ExtraMessagePage {
   id: string;
-  photo: string;
+  photo: ImageAsset;
   place: {
     city: string;
     country: string;
@@ -30,7 +31,7 @@ export interface ExtraMember {
   enKeyword: string;
   zhTagline: string;
   enTagline: string;
-  photos: string[]; // 建议 12 张，为番外规则：每人 12 张
+  photos: ImageAsset[]; // 建议 12 张，为番外规则：每人 12 张
   messageBook: ExtraMessagePage[];
 }
 
@@ -47,10 +48,11 @@ export interface ExtraGroup {
 
 const buildDefaultPhotos = (folder: string) =>
   Array.from({ length: 12 }).map(
-    (_, index) => `/photos/extra/${folder}/photos/${String(index + 1).padStart(6, '0')}.jpg`
+    (_, index) => createRemoteImageAsset(`/photos/extra/${folder}/photos/${String(index + 1).padStart(6, '0')}.jpg`)
   );
 
-const buildDefaultMessagePhoto = (folder: string) => `/photos/extra/${folder}/message/000001.jpg`;
+const buildDefaultMessagePhoto = (folder: string) =>
+  createRemoteImageAsset(`/photos/extra/${folder}/message/000001.jpg`);
 
 const getExtraPhotoEntry = (folder: string) => {
   return (
@@ -75,7 +77,7 @@ const buildMessageBook = (
       date: string;
       zhText: string;
       enText: string;
-      photo?: string;
+      photo?: ImageAsset;
     };
   }
 ): ExtraMessagePage[] => {
@@ -109,7 +111,7 @@ const createMember = (
       date: string;
       zhText: string;
       enText: string;
-      photo?: string;
+      photo?: ImageAsset;
     };
   }
 ): ExtraMember => ({

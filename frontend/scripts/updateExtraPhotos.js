@@ -4,8 +4,15 @@ const path = require('path');
 const projectRoot = path.join(__dirname, '..');
 const extraDataPath = path.join(projectRoot, 'src/config/extraData.ts');
 const outputPath = path.join(projectRoot, 'src/config/extraPhotoManifest.ts');
-const extraPhotosRoot = path.join(projectRoot, 'public/photos/extra');
+const extraSourceRoot = path.join(projectRoot, 'photos/extra');
+const extraOutputRoot = path.join(projectRoot, 'public/photos/extra');
 const imagePattern = /\.(jpg|jpeg|png|webp)$/i;
+
+function isOriginalImage(fileName) {
+  return imagePattern.test(fileName)
+    && !fileName.includes('_thumb')
+    && !fileName.includes('_preview');
+}
 
 function ensureDir(dirPath) {
   fs.mkdirSync(dirPath, { recursive: true });
@@ -18,11 +25,14 @@ function getMemberFolders() {
 }
 
 function ensureScaffold(folders) {
-  ensureDir(extraPhotosRoot);
+  ensureDir(extraSourceRoot);
+  ensureDir(extraOutputRoot);
 
   folders.forEach((folder) => {
-    ensureDir(path.join(extraPhotosRoot, folder, 'photos'));
-    ensureDir(path.join(extraPhotosRoot, folder, 'message'));
+    ensureDir(path.join(extraSourceRoot, folder, 'photos'));
+    ensureDir(path.join(extraSourceRoot, folder, 'message'));
+    ensureDir(path.join(extraOutputRoot, folder, 'photos'));
+    ensureDir(path.join(extraOutputRoot, folder, 'message'));
   });
 }
 
@@ -33,7 +43,7 @@ function listImages(dirPath, webPathPrefix) {
 
   return fs
     .readdirSync(dirPath, { withFileTypes: true })
-    .filter((entry) => entry.isFile() && imagePattern.test(entry.name))
+    .filter((entry) => entry.isFile() && isOriginalImage(entry.name))
     .map((entry) => entry.name)
     .sort((a, b) => a.localeCompare(b, undefined, { numeric: true, sensitivity: 'base' }))
     .map((fileName) => `${webPathPrefix}/${fileName}`);
@@ -45,11 +55,11 @@ function buildManifest(folders) {
   folders.forEach((folder) => {
     manifest[folder] = {
       photos: listImages(
-        path.join(extraPhotosRoot, folder, 'photos'),
+        path.join(extraOutputRoot, folder, 'photos'),
         `/photos/extra/${folder}/photos`
       ),
       messagePhotos: listImages(
-        path.join(extraPhotosRoot, folder, 'message'),
+        path.join(extraOutputRoot, folder, 'message'),
         `/photos/extra/${folder}/message`
       )
     };
@@ -60,23 +70,35 @@ function buildManifest(folders) {
 
 function writeManifest(manifest) {
   const fileContent = `// 番外篇图片清单 - 由 npm run update-extra-photos 自动生成
+import { toImageAssets, type ImageAsset } from '../types/imageAsset';
+
 export type ExtraPhotoManifestEntry = {
-  photos: string[];
-  messagePhotos: string[];
+  photos: ImageAsset[];
+  messagePhotos: ImageAsset[];
 };
 
-export const EXTRA_PHOTO_MANIFEST: Record<string, ExtraPhotoManifestEntry> = ${JSON.stringify(
+const RAW_EXTRA_PHOTO_MANIFEST: Record<string, { photos: string[]; messagePhotos: string[] }> = ${JSON.stringify(
     manifest,
     null,
     2
   )};
+
+export const EXTRA_PHOTO_MANIFEST: Record<string, ExtraPhotoManifestEntry> = Object.fromEntries(
+  Object.entries(RAW_EXTRA_PHOTO_MANIFEST).map(([folder, entry]) => [
+    folder,
+    {
+      photos: toImageAssets(entry.photos),
+      messagePhotos: toImageAssets(entry.messagePhotos)
+    }
+  ])
+);
 `;
 
   fs.writeFileSync(outputPath, fileContent, 'utf8');
 }
 
 function ensureReadme() {
-  const readmePath = path.join(extraPhotosRoot, 'README.md');
+  const readmePath = path.join(extraSourceRoot, 'README.md');
   const content = `# 番外篇图片目录
 
 ## 推荐结构
@@ -105,11 +127,11 @@ extra/
 ## 你的日常操作
 1. 主图放进对应成员的 \`photos/\`
 2. 留言图放进对应成员的 \`message/\`
-3. 运行 \`npm run update-extra-photos\`
+3. 把原图放在这里后，运行 \`npm run update-extra-photos\`
 
 这个命令会同时完成：
+- 从 \`photos/extra\` 生成上传产物到 \`public/photos/extra\`
 - 更新番外篇图片清单
-- 生成 \`_preview\` 和 \`_thumb\` 变体
 
 ## 命名建议
 - 为了控制显示顺序，建议使用 \`000001.jpg\`、\`000002.jpg\` 这种编号

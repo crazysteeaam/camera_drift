@@ -1,12 +1,12 @@
 // components/SmartImage.tsx
 import { useState, useEffect, type CSSProperties, type FC } from 'react';
-import { ImagePathGenerator } from '../utils/imagePathgenerator';
 import { useTranslation } from '../i18n/hooks';
+import { resolveImageAssetUrl, type ImageAssetLike, type ImageVariant } from '../types/imageAsset';
 
 interface SmartImageProps {
-    originalPath: string;
-    variant: 'thumbnail' | 'preview' | 'original';
-    fallback?: string;
+    asset: ImageAssetLike;
+    variant?: ImageVariant;
+    fallback?: ImageAssetLike;
     className?: string;
     onClick?: () => void;
     alt?: string;
@@ -14,8 +14,8 @@ interface SmartImageProps {
 }
 
 const SmartImage: FC<SmartImageProps> = ({
-    originalPath,
-    variant,
+    asset,
+    variant = 'original',
     fallback,
     className,
     onClick,
@@ -23,57 +23,18 @@ const SmartImage: FC<SmartImageProps> = ({
     style
 }) => {
     const { t } = useTranslation();
-    const [imagePath, setImagePath] = useState<string>('');
-    const [isLoading, setIsLoading] = useState(false);
+    const primaryOriginal = resolveImageAssetUrl(asset, 'original');
+    const primaryVariant = resolveImageAssetUrl(asset, variant);
+    const fallbackOriginal = resolveImageAssetUrl(fallback, 'original');
+    const initialPath = primaryVariant || primaryOriginal || fallbackOriginal;
+
+    const [imagePath, setImagePath] = useState<string>(initialPath);
     const [hasError, setHasError] = useState(false);
 
     useEffect(() => {
-        const loadImage = async () => {
-            // 参数验证
-            if (!originalPath || typeof originalPath !== 'string') {
-                console.warn('SmartImage: originalPath is invalid:', originalPath);
-                setHasError(true);
-                if (fallback) {
-                    setImagePath(fallback);
-                }
-                return;
-            }
-
-            setIsLoading(true);
-            setHasError(false);
-
-            try {
-                // 生成目标变体路径
-                const targetPath = ImagePathGenerator.generateVariantPath(originalPath, variant);
-                const resolvedPath =
-                    variant === 'original'
-                        ? originalPath
-                        : (await ImagePathGenerator.checkVariantExists(targetPath))
-                            ? targetPath
-                            : originalPath;
-
-                setImagePath(resolvedPath);
-                console.log('Loading image:', originalPath, 'variant:', variant);
-            } catch (error) {
-                console.error('图片加载失败:', error);
-                setHasError(true);
-                if (fallback) {
-                    setImagePath(fallback);
-                } else {
-                    setImagePath(originalPath);
-                    setHasError(false);
-                }
-            } finally {
-                setIsLoading(false);
-            }
-        };
-
-        loadImage();
-    }, [originalPath, variant, fallback]);
-
-    // if (isLoading) {
-    //     return <div className={`animate-pulse bg-gray-200 ${className}`} />;
-    // }
+        setHasError(false);
+        setImagePath(primaryVariant || primaryOriginal || fallbackOriginal);
+    }, [primaryVariant, primaryOriginal, fallbackOriginal]);
 
     if (hasError && !fallback) {
         return <div className={`bg-gray-100 flex items-center justify-center ${className}`}>
@@ -90,10 +51,16 @@ const SmartImage: FC<SmartImageProps> = ({
             className={combinedClassName}
             onClick={onClick}
             onError={() => {
-                if (imagePath !== originalPath) {
-                    setImagePath(originalPath);
+                if (imagePath !== primaryOriginal && primaryOriginal) {
+                    setImagePath(primaryOriginal);
                     return;
                 }
+
+                if (imagePath !== fallbackOriginal && fallbackOriginal) {
+                    setImagePath(fallbackOriginal);
+                    return;
+                }
+
                 setHasError(true);
             }}
             style={style}

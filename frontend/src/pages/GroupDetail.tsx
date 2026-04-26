@@ -1,14 +1,13 @@
-import React, { useState } from 'react';
+import React from 'react';
 import { useParams, Link } from 'react-router-dom';
 import { motion } from 'framer-motion';
-import { Camera, MapPin, Calendar, MessageCircle, ArrowRight, Users, Compass, Map } from 'lucide-react';
+import { MapPin, Calendar, ArrowRight, Users, Compass, Map } from 'lucide-react';
 import { projectData } from '../config/projectData';
 import AmapComponent from '../components/AmapComponent';
 import SmartImage from '../components/SmartImage';
 
 const GroupDetail: React.FC = () => {
     const { groupId } = useParams<{ groupId: string }>();
-    const [selectedRelay, setSelectedRelay] = useState<number | null>(null);
 
     // 添加类型检查
     if (!groupId) {
@@ -128,7 +127,7 @@ const GroupDetail: React.FC = () => {
                                         {/* 照片 */}
                                         <div className="aspect-square overflow-hidden">
                                             <SmartImage
-                                                originalPath={relay.photos[0]} // 显示第一张照片作为封面
+                                                asset={relay.photos[0]} // 显示第一张照片作为封面
                                                 variant="thumbnail"
                                                 alt={relay.name}
                                                 className="w-full h-full object-cover group-hover:scale-110 transition-transform duration-300"

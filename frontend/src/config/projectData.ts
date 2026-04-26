@@ -1,5 +1,6 @@
 // 导入图片路径自动生成工具
 import { getAllPhotoConfig } from './photoConfig';
+import type { ImageAsset } from '../types/imageAsset';
 
 // 项目数据配置文件
 export interface Relay {
@@ -14,7 +15,7 @@ export interface Relay {
     weather: string;
     camera: string;
     film: string;
-    photos: string[]; // 支持多张照片
+    photos: ImageAsset[]; // 支持多张照片
     message: string;
     coordinates: { lat: number; lng: number };
     tags: string[];

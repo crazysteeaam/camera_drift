@@ -34,11 +34,13 @@
         "copy-photos": "node scripts/copyPhotosToPublic.js",
         "generate-variants": "node scripts/generateImageVariants.js",
         "generate-phase2-variants": "node scripts/generatePhase2ImageVariants.js",
+        "generate-meaning-variants": "node scripts/generateRecursiveVariants.js photos/meaning public/photos/meaning",
         "reorganize-phase2-images": "node scripts/reorganizePhase2Images.js",
         "add-photos": "npm run generate-variants",
         "update-photos": "node scripts/updatePhase2Photos.js",
         "generate-extra-variants": "node scripts/generateExtraImageVariants.js",
-        "update-extra-photos": "node scripts/updateExtraPhotos.js && node scripts/generateExtraImageVariants.js"
+        "update-extra-photos": "node scripts/generateExtraImageVariants.js && node scripts/updateExtraPhotos.js",
+        "prepare-image-upload": "node scripts/prepareImageUpload.js"
     },
     "eslintConfig": {
         "extends": [

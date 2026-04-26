@@ -2,54 +2,64 @@ const sharp = require('sharp');
 const fs = require('fs');
 const path = require('path');
 
-const extraPhotosRoot = path.join(__dirname, '../public/photos/extra');
+const extraSourceRoot = path.join(__dirname, '../photos/extra');
+const extraOutputRoot = path.join(__dirname, '../public/photos/extra');
 const imagePattern = /\.(jpg|jpeg|png|webp)$/i;
 
-async function generateVariantsForImage(imagePath) {
-  const ext = path.extname(imagePath);
-  const baseName = path.basename(imagePath, ext);
-  const dirName = path.dirname(imagePath);
+function isOriginalImage(fileName) {
+  return imagePattern.test(fileName)
+    && !fileName.includes('_thumb')
+    && !fileName.includes('_preview');
+}
 
-  const thumbnailPath = path.join(dirName, `${baseName}_thumb${ext}`);
-  const previewPath = path.join(dirName, `${baseName}_preview${ext}`);
+async function generateVariantsForImage(sourceImagePath, targetDir) {
+  const ext = path.extname(sourceImagePath);
+  const baseName = path.basename(sourceImagePath, ext);
+  const fileName = path.basename(sourceImagePath);
 
-  await sharp(imagePath)
+  fs.mkdirSync(targetDir, { recursive: true });
+
+  const originalTargetPath = path.join(targetDir, fileName);
+  const thumbnailPath = path.join(targetDir, `${baseName}_thumb${ext}`);
+  const previewPath = path.join(targetDir, `${baseName}_preview${ext}`);
+
+  fs.copyFileSync(sourceImagePath, originalTargetPath);
+
+  await sharp(sourceImagePath)
     .rotate()
     .resize(300, null, { withoutEnlargement: true })
     .jpeg({ quality: 80 })
     .toFile(thumbnailPath);
 
-  await sharp(imagePath)
+  await sharp(sourceImagePath)
     .rotate()
     .resize(1200, null, { withoutEnlargement: true })
     .jpeg({ quality: 85 })
     .toFile(previewPath);
 }
 
-async function walkAndGenerate(targetDir) {
-  if (!fs.existsSync(targetDir)) {
-    console.log('番外篇图片目录不存在。');
+async function walkAndGenerate(sourceDir, targetDir) {
+  if (!fs.existsSync(sourceDir)) {
+    fs.mkdirSync(sourceDir, { recursive: true });
+    fs.mkdirSync(targetDir, { recursive: true });
+    console.log('番外篇源图片目录不存在，已自动创建。');
     return 0;
   }
 
   let processed = 0;
-  const entries = fs.readdirSync(targetDir, { withFileTypes: true });
+  const entries = fs.readdirSync(sourceDir, { withFileTypes: true });
 
   for (const entry of entries) {
-    const fullPath = path.join(targetDir, entry.name);
+    const sourcePath = path.join(sourceDir, entry.name);
+    const nextTargetPath = path.join(targetDir, entry.name);
 
     if (entry.isDirectory()) {
-      processed += await walkAndGenerate(fullPath);
+      processed += await walkAndGenerate(sourcePath, nextTargetPath);
       continue;
     }
 
-    if (
-      entry.isFile() &&
-      imagePattern.test(entry.name) &&
-      !entry.name.includes('_thumb') &&
-      !entry.name.includes('_preview')
-    ) {
-      await generateVariantsForImage(fullPath);
+    if (entry.isFile() && isOriginalImage(entry.name)) {
+      await generateVariantsForImage(sourcePath, targetDir);
       processed += 1;
     }
   }
@@ -58,7 +68,7 @@ async function walkAndGenerate(targetDir) {
 }
 
 async function main() {
-  const processed = await walkAndGenerate(extraPhotosRoot);
+  const processed = await walkAndGenerate(extraSourceRoot, extraOutputRoot);
   console.log(`番外篇图片变体生成完成，共处理 ${processed} 张图片。`);
 }
 

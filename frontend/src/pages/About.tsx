@@ -1,9 +1,10 @@
 import React, { useState } from 'react';
 import { motion } from 'framer-motion';
-import { Users, Globe, Film, MapPin, ArrowRight } from 'lucide-react';
+import { Users, Globe, Film, MapPin, ArrowRight, ExternalLink, MessageCircle } from 'lucide-react';
 import MessageBoard from '../components/MessageBoard';
 import { sampleMessages } from '../data/messages';
 import type { Message } from '../components/MessageBoard';
+import { MEANING_SURVEY_URL, meaningOfficialContacts } from '../config/meaningData';
 
 const About: React.FC = () => {
     const [messages, setMessages] = useState<Message[]>(sampleMessages);
@@ -213,24 +214,78 @@ const About: React.FC = () => {
                     />
                 </motion.div>
 
-                {/* 联系我们 */}
+                {/* 官方账号 */}
                 <motion.div
                     initial={{ opacity: 0, y: 20 }}
                     animate={{ opacity: 1, y: 0 }}
                     transition={{ delay: 0.8 }}
-                    className="text-center"
+                    className="rounded-3xl bg-white/85 backdrop-blur p-8 shadow-xl border border-purple-100/70"
                 >
-                    <h2 className="text-3xl font-bold text-gray-900 mb-6">联系我们</h2>
-                    <p className="text-lg text-gray-600 mb-8">
-                        如果您对胶片漂流计划感兴趣，或者有任何问题建议，欢迎随时联系我们
-                    </p>
-                    <div className="flex justify-center space-x-6">
-                        <button className="px-8 py-3 bg-purple-600 text-white rounded-lg hover:bg-purple-700 transition-colors duration-200">
-                            发送邮件
+                    <div className="text-center">
+                        <div className="inline-flex items-center justify-center gap-2 rounded-full border border-purple-200 bg-purple-50 px-4 py-2 text-sm font-semibold text-purple-700">
+                            <MessageCircle className="h-4 w-4" />
+                            官方账号
+                        </div>
+                        <h2 className="mt-4 text-3xl font-bold text-gray-900">关注胶片漂流计划</h2>
+                        <p className="mt-3 text-lg text-gray-600 max-w-3xl mx-auto">
+                            小红书与抖音会作为长期更新入口：后续招募、活动说明、成片发布与线下消息，都会优先在这里同步。
+                        </p>
+                    </div>
+
+                    <div className="mt-8 grid grid-cols-1 md:grid-cols-2 gap-5">
+                        {meaningOfficialContacts.map((contact) => {
+                            const qrSrc = contact.qrImageSrc.trim();
+                            const profileUrl = contact.profileUrl.trim();
+
+                            return (
+                                <div key={contact.id} className="rounded-2xl border border-purple-100 bg-gradient-to-br from-purple-50/80 to-pink-50/70 p-5 text-left">
+                                    <div className="flex items-start gap-4">
+                                        {qrSrc ? (
+                                            <img
+                                                src={qrSrc}
+                                                alt={`${contact.label.zh} 官方二维码`}
+                                                className="h-28 w-28 shrink-0 rounded-2xl border border-white bg-white object-cover shadow-inner"
+                                            />
+                                        ) : (
+                                            <div className="flex h-28 w-28 shrink-0 flex-col items-center justify-center rounded-2xl border-2 border-dashed border-purple-200 bg-white/60 px-3 text-center">
+                                                <p className="text-xs font-semibold text-purple-700">二维码待替换</p>
+                                                <p className="mt-2 text-[0.68rem] leading-relaxed text-gray-500">在 meaningData.ts 配置</p>
+                                            </div>
+                                        )}
+
+                                        <div className="min-w-0 flex-1">
+                                            <h3 className="text-lg font-bold text-gray-900">{contact.label.zh}</h3>
+                                            <p className="mt-2 text-sm leading-relaxed text-gray-600">{contact.handleLine.zh}</p>
+                                            {profileUrl ? (
+                                                <a
+                                                    href={profileUrl}
+                                                    target="_blank"
+                                                    rel="noreferrer"
+                                                    className="mt-4 inline-flex items-center gap-1.5 text-sm font-semibold text-purple-700 hover:text-purple-900"
+                                                >
+                                                    打开主页
+                                                    <ExternalLink className="h-4 w-4" />
+                                                </a>
+                                            ) : (
+                                                <p className="mt-4 text-xs text-gray-500">主页链接可后续补充。</p>
+                                            )}
+                                        </div>
+                                    </div>
+                                </div>
+                            );
+                        })}
+                    </div>
+
+                    <div className="mt-8 flex flex-col sm:flex-row items-center justify-center gap-3">
+                        <button
+                            className="px-8 py-3 bg-purple-600 text-white rounded-xl hover:bg-purple-700 transition-colors duration-200"
+                            onClick={() => window.open(MEANING_SURVEY_URL, '_blank', 'noopener,noreferrer')}
+                        >
+                            填写报名问卷
                         </button>
-                        <button className="px-8 py-3 border-2 border-purple-600 text-purple-600 rounded-lg hover:bg-purple-600 hover:text-white transition-all duration-200">
-                            加入计划
-                        </button>
+                        <p className="text-sm text-gray-500">
+                            报名以问卷与官方账号私信确认为准。
+                        </p>
                     </div>
                 </motion.div>
             </div>

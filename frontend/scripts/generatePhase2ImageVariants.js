@@ -1,43 +1,36 @@
 const sharp = require('sharp');
 const fs = require('fs');
 const path = require('path');
+const { loadPhase2Catalog } = require('./phase2ConfigCatalog');
 
 /**
  * 为单张图片生成变体
  */
 async function generateVariantsForImage(sourceImagePath, targetFolder) {
     try {
+        const ext = path.extname(sourceImagePath);
+        const baseName = path.basename(sourceImagePath, ext);
         const fileName = path.basename(sourceImagePath);
-        const targetThumbnailsDir = path.join(targetFolder, 'thumbnails');
-        const targetPreviewsDir = path.join(targetFolder, 'previews');
 
         console.log(`处理图片: ${fileName}`);
 
-        // 确保 thumbnails 和 previews 目录存在
-        if (!fs.existsSync(targetThumbnailsDir)) {
-            fs.mkdirSync(targetThumbnailsDir, { recursive: true });
-        }
-        if (!fs.existsSync(targetPreviewsDir)) {
-            fs.mkdirSync(targetPreviewsDir, { recursive: true });
-        }
-
-        // 生成缩略图 (300px宽度) 到 thumbnails 目录
-        const thumbnailPath = path.join(targetThumbnailsDir, fileName);
+        // 生成缩略图，与原图放在同目录
+        const thumbnailPath = path.join(targetFolder, `${baseName}_thumb${ext}`);
         await sharp(sourceImagePath)
             .rotate()
             .resize(300, null, { withoutEnlargement: true })
             .jpeg({ quality: 80 })
             .toFile(thumbnailPath);
-        console.log(`  ✓ 生成缩略图: thumbnails/${fileName}`);
+        console.log(`  ✓ 生成缩略图: ${path.basename(thumbnailPath)}`);
 
-        // 生成预览图 (1200px宽度) 到 previews 目录
-        const previewPath = path.join(targetPreviewsDir, fileName);
+        // 生成预览图，与原图放在同目录
+        const previewPath = path.join(targetFolder, `${baseName}_preview${ext}`);
         await sharp(sourceImagePath)
             .rotate()
             .resize(1200, null, { withoutEnlargement: true })
             .jpeg({ quality: 85 })
             .toFile(previewPath);
-        console.log(`  ✓ 生成预览图: previews/${fileName}`);
+        console.log(`  ✓ 生成预览图: ${path.basename(previewPath)}`);
 
         // 复制原图到目标文件夹
         const originalTargetPath = path.join(targetFolder, fileName);
@@ -78,6 +71,16 @@ async function processFolder(sourceFolder, targetFolder) {
     }
 }
 
+function ensureRelayScaffold(groupPath, groupId, participantCount) {
+    fs.mkdirSync(groupPath, { recursive: true });
+
+    for (let i = 1; i <= participantCount; i++) {
+        const relayDir = path.join(groupPath, `${groupId}${i}`);
+        fs.mkdirSync(path.join(relayDir, 'photos'), { recursive: true });
+        fs.mkdirSync(path.join(relayDir, 'message'), { recursive: true });
+    }
+}
+
 /**
  * 主函数
  */
@@ -97,105 +100,68 @@ async function main() {
     }
 
     console.log('开始生成第二期图片变体...\n');
-
-    // 遍历所有省份
-    const provinces = ['zhejiang', 'guangdong', 'jiangsu', 'shanghai', 'macau', 'hongkong', 'hainan', 'fujian'];
-    const groups = {
-        'zhejiang': ['A', 'B'],
-        'guangdong': ['C', 'D', 'E', 'F'],
-        'jiangsu': ['G', 'H', 'I'],
-        'shanghai': ['J'],
-        'macau': ['K'],
-        'hongkong': ['L'],
-        'hainan': ['M'],
-        'fujian': ['N', 'O']
-    };
+    const phase2Catalog = loadPhase2Catalog();
 
     let totalProcessed = 0;
 
-    for (const provinceId of provinces) {
+    for (const province of phase2Catalog) {
+        const provinceId = province.id;
         const sourceProvincePath = path.join(sourcePhase2PhotosDir, provinceId);
         const targetProvincePath = path.join(targetPhase2PhotosDir, provinceId);
-        
-        if (!fs.existsSync(sourceProvincePath)) continue;
 
         console.log(`\n处理省份: ${provinceId}`);
 
-        // 确保目标省份目录存在
-        if (!fs.existsSync(targetProvincePath)) {
-            fs.mkdirSync(targetProvincePath, { recursive: true });
-        }
+        fs.mkdirSync(sourceProvincePath, { recursive: true });
+        fs.mkdirSync(targetProvincePath, { recursive: true });
 
-        for (const groupId of groups[provinceId]) {
+        for (const group of province.groups) {
+            const groupId = group.id;
             const sourceGroupPath = path.join(sourceProvincePath, groupId);
             const targetGroupPath = path.join(targetProvincePath, groupId);
-            
-            if (!fs.existsSync(sourceGroupPath)) continue;
 
             console.log(`\n处理组别: ${groupId}`);
 
-            // 确保目标组别目录存在
-            if (!fs.existsSync(targetGroupPath)) {
-                fs.mkdirSync(targetGroupPath, { recursive: true });
-            }
+            ensureRelayScaffold(sourceGroupPath, groupId, group.participantCount || 6);
+            ensureRelayScaffold(targetGroupPath, groupId, group.participantCount || 6);
 
             // 处理A1, A2等目录结构
-            for (let i = 1; i <= 6; i++) {
+            for (let i = 1; i <= (group.participantCount || 6); i++) {
                 const photoDir = `${groupId}${i}`;
                 const sourcePhotoDirPath = path.join(sourceGroupPath, photoDir);
                 const targetPhotoDirPath = path.join(targetGroupPath, photoDir);
 
-                if (fs.existsSync(sourcePhotoDirPath)) {
-                    console.log(`\n处理目录: ${photoDir}`);
+                console.log(`\n处理目录: ${photoDir}`);
 
-                    // 确保目标子目录存在
-                    if (!fs.existsSync(targetPhotoDirPath)) {
-                        fs.mkdirSync(targetPhotoDirPath, { recursive: true });
-                    }
+                // 处理主图片
+                const sourcePhotosPath = path.join(sourcePhotoDirPath, 'photos');
+                const targetPhotosPath = path.join(targetPhotoDirPath, 'photos');
 
-                    // 处理主图片
-                    const sourcePhotosPath = path.join(sourcePhotoDirPath, 'photos');
-                    const targetPhotosPath = path.join(targetPhotoDirPath, 'photos');
-                    
-                    if (fs.existsSync(sourcePhotosPath)) {
-                        // 确保目标photos目录存在
-                        if (!fs.existsSync(targetPhotosPath)) {
-                            fs.mkdirSync(targetPhotosPath, { recursive: true });
-                        }
-                        
-                        await processFolder(sourcePhotosPath, targetPhotosPath);
+                if (fs.existsSync(sourcePhotosPath)) {
+                    await processFolder(sourcePhotosPath, targetPhotosPath);
 
-                        // 统计处理的图片数量
-                        const files = fs.readdirSync(sourcePhotosPath);
-                        const imageFiles = files.filter(file =>
-                            /\.(jpg|jpeg|png|gif|bmp|tiff|webp)$/i.test(file) &&
-                            !file.includes('_thumb') &&
-                            !file.includes('_preview')
-                        );
-                        totalProcessed += imageFiles.length;
-                    }
+                    const files = fs.readdirSync(sourcePhotosPath);
+                    const imageFiles = files.filter(file =>
+                        /\.(jpg|jpeg|png|gif|bmp|tiff|webp)$/i.test(file) &&
+                        !file.includes('_thumb') &&
+                        !file.includes('_preview')
+                    );
+                    totalProcessed += imageFiles.length;
+                }
 
-                    // 处理留言图片
-                    const sourceMessagePath = path.join(sourcePhotoDirPath, 'message');
-                    const targetMessagePath = path.join(targetPhotoDirPath, 'message');
-                    
-                    if (fs.existsSync(sourceMessagePath)) {
-                        // 确保目标message目录存在
-                        if (!fs.existsSync(targetMessagePath)) {
-                            fs.mkdirSync(targetMessagePath, { recursive: true });
-                        }
-                        
-                        await processFolder(sourceMessagePath, targetMessagePath);
+                // 处理留言图片
+                const sourceMessagePath = path.join(sourcePhotoDirPath, 'message');
+                const targetMessagePath = path.join(targetPhotoDirPath, 'message');
 
-                        // 统计处理的图片数量
-                        const files = fs.readdirSync(sourceMessagePath);
-                        const imageFiles = files.filter(file =>
-                            /\.(jpg|jpeg|png|gif|bmp|tiff|webp)$/i.test(file) &&
-                            !file.includes('_thumb') &&
-                            !file.includes('_preview')
-                        );
-                        totalProcessed += imageFiles.length;
-                    }
+                if (fs.existsSync(sourceMessagePath)) {
+                    await processFolder(sourceMessagePath, targetMessagePath);
+
+                    const files = fs.readdirSync(sourceMessagePath);
+                    const imageFiles = files.filter(file =>
+                        /\.(jpg|jpeg|png|gif|bmp|tiff|webp)$/i.test(file) &&
+                        !file.includes('_thumb') &&
+                        !file.includes('_preview')
+                    );
+                    totalProcessed += imageFiles.length;
                 }
             }
         }
@@ -204,8 +170,8 @@ async function main() {
     console.log(`\n✅ 第二期图片变体生成完成! 共处理了 ${totalProcessed} 张图片`);
     console.log('\n生成的文件结构:');
     console.log('  - 原图: photos/example.jpg');
-    console.log('  - 缩略图: photos/thumbnails/example.jpg (300px宽度)');
-    console.log('  - 预览图: photos/previews/example.jpg (1200px宽度)');
+    console.log('  - 缩略图: photos/example_thumb.jpg (300px宽度)');
+    console.log('  - 预览图: photos/example_preview.jpg (1200px宽度)');
     console.log('\n文件位置: public/photos/phase2/');
 }
 
@@ -214,4 +180,4 @@ if (require.main === module) {
     main().catch(console.error);
 }
 
-module.exports = { generateVariantsForImage, processFolder };
+module.exports = { generateVariantsForImage, processFolder, ensureRelayScaffold };

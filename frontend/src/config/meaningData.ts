@@ -5,6 +5,8 @@
  * 后续扩展月份时，只需要新增 monthId 对应的配置对象即可。
  */
 
+import { createRemoteImageAsset, type ImageAsset } from '../types/imageAsset';
+
 export type MeaningMonthStage = 'recruiting' | 'inProgress' | 'developing' | 'published';
 
 export type MeaningLangText = {
@@ -37,7 +39,7 @@ export interface MeaningMomentBase {
 
 export interface MeaningPhotoMoment extends MeaningMomentBase {
   type: 'photo';
-  photoSrc: string;
+  photo: ImageAsset;
   zhCaption?: string;
   enCaption?: string;
 }
@@ -59,7 +61,7 @@ export type MeaningMoment = MeaningPhotoMoment | MeaningVideoMoment | MeaningTex
 export interface MeaningFilmPack {
   id: string;
   title: MeaningLangText;
-  photos: string[];
+  photos: ImageAsset[];
 }
 
 export interface MeaningShowcaseVideo {
@@ -75,7 +77,7 @@ export interface MeaningShowcaseMessage {
 
 export interface MeaningHero {
   heroVideoSources?: MeaningVideoSource[]; // 可选：没有视频也能正常渲染
-  posterImageSrc?: string; // 可选：用于没有视频时的封面
+  posterImage?: ImageAsset; // 可选：用于没有视频时的封面
 }
 
 export type MeaningMemberStatus = 'preparing' | 'traveling' | 'returned' | 'published';
@@ -100,6 +102,14 @@ export interface MeaningRecruitContent {
   sponsor: MeaningLangText;
 }
 
+export interface MeaningOfficialContact {
+  id: 'xiaohongshu' | 'douyin';
+  label: MeaningLangText;
+  qrImageSrc: string;
+  profileUrl: string;
+  handleLine: MeaningLangText;
+}
+
 /** 问卷 URL（篇章首页与活动说明页共用） */
 export const MEANING_SURVEY_URL = 'https://wj.qq.com/s2/23193149/e58c/';
 
@@ -113,6 +123,28 @@ export const meaningRecruitDirectSignup = {
   profileUrl: '' as string,
   handleLine: { zh: '小红书账号（请在 meaningData 中填写）', en: 'Xiaohongshu handle (set in meaningData.ts)' },
 };
+
+/**
+ * 官方账号入口（路书页 + 关于页共用）
+ * - 将二维码 PNG 放入 `frontend/public/...` 后填写 `qrImageSrc`
+ * - `profileUrl` 可选：用于跳转对应主页
+ */
+export const meaningOfficialContacts: MeaningOfficialContact[] = [
+  {
+    id: 'xiaohongshu',
+    label: { zh: '小红书', en: 'Xiaohongshu' },
+    qrImageSrc: 'https://images.cameradrift.com/photos/QRcode/%E5%BE%AE%E4%BF%A1%E5%9B%BE%E7%89%87_2026-04-26_004635_876.png',
+    profileUrl: '',
+    handleLine: { zh: '安宁｜小红书号：7527914100', en: 'Anning | Xiaohongshu ID: 7527914100' },
+  },
+  {
+    id: 'douyin',
+    label: { zh: '抖音', en: 'Douyin' },
+    qrImageSrc: 'https://images.cameradrift.com/photos/QRcode/%E5%BE%AE%E4%BF%A1%E5%9B%BE%E7%89%87_2026-04-26_003912_815.png',
+    profileUrl: '',
+    handleLine: { zh: '安宁_｜抖音号：68312632891', en: 'Anning_ | Douyin ID: 68312632891' },
+  },
+];
 
 export const meaningRecruitContent: MeaningRecruitContent = {
   title: { zh: '胶片漂流 ·「旅行的意义」篇章', en: 'Film Drift · “The Meaning of Travel” Chapter' },
@@ -288,7 +320,7 @@ export const meaningMonths: MeaningMonth[] = [
     hero: {
       // 暂未提供实际视频地址时，先让页面正常工作（后续只改数据）
       heroVideoSources: [],
-      posterImageSrc: undefined,
+      posterImage: undefined,
     },
     sponsor: {
       zh: '换个研究',
@@ -315,7 +347,7 @@ export const meaningMonths: MeaningMonth[] = [
         type: 'photo',
         tags: ['风景', '海边'],
         source: { zh: '4月 · 广州', en: 'April · Guangzhou' },
-        photoSrc: '/photos/meaning/2026-04/jing/000001.jpg',
+        photo: createRemoteImageAsset('/photos/meaning/2026-04/jing/000001.jpg'),
         zhCaption: '海边傍晚，风从耳边穿过去。',
         enCaption: 'Evening by the sea, with wind brushing past my ears.'
       },
@@ -368,7 +400,7 @@ export const meaningMonths: MeaningMonth[] = [
     },
     hero: {
       heroVideoSources: [],
-      posterImageSrc: undefined,
+      posterImage: undefined,
     },
     sponsor: {
       zh: '换个研究',

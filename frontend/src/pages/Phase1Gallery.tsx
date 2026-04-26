@@ -4,6 +4,7 @@ import { X, Download, MapPin, Calendar, Search } from 'lucide-react';
 import WaterfallGallery, { PhotoItem as GalleryPhotoItem } from '../components/WaterfallGallery';
 import SmartImage from '../components/SmartImage';
 import { projectData, Relay } from '../config/projectData';
+import { downloadImageAsset } from '../utils/imageDownload';
 
 interface Phase1PhotoItem extends GalleryPhotoItem {
     relay: Relay;
@@ -29,7 +30,7 @@ const Phase1Gallery: React.FC = () => {
                 relay.photos.forEach((photo, index) => {
                     photos.push({
                         id: `${group.id}-${relay.id}-photo-${index}`,
-                        src: photo,
+                        asset: photo,
                         width: 800,
                         height: 600,
                         relay,
@@ -88,15 +89,6 @@ const Phase1Gallery: React.FC = () => {
     const closeModal = () => {
         setIsModalOpen(false);
         setSelectedPhoto(null);
-    };
-
-    const downloadImage = (src: string, filename: string) => {
-        const link = document.createElement('a');
-        link.href = src;
-        link.download = filename;
-        document.body.appendChild(link);
-        link.click();
-        document.body.removeChild(link);
     };
 
     return (
@@ -206,7 +198,7 @@ const Phase1Gallery: React.FC = () => {
                                 <div className="lg:w-2/3 flex flex-col">
                                     <div className="relative flex-1 flex items-center justify-center bg-gray-100">
                                         <SmartImage
-                                            originalPath={selectedPhoto.src}
+                                            asset={selectedPhoto.asset}
                                             variant="original"
                                             alt={`${selectedPhoto.relay.participant} - 照片`}
                                             className="w-full h-full max-h-[60vh] object-contain"
@@ -279,8 +271,8 @@ const Phase1Gallery: React.FC = () => {
 
                                         <div className="flex gap-3 mt-auto">
                                             <button
-                                                onClick={() => downloadImage(
-                                                    selectedPhoto.src,
+                                                onClick={() => void downloadImageAsset(
+                                                    selectedPhoto.asset,
                                                     `${selectedPhoto.groupId}_${selectedPhoto.relay.participant}_photo_${selectedPhoto.index + 1}.jpg`
                                                 )}
                                                 className="flex-1 flex items-center justify-center gap-2 px-4 py-2 bg-purple-500 text-white rounded-lg hover:bg-purple-600 transition-colors"

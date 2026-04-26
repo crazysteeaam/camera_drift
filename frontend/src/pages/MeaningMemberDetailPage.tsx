@@ -4,6 +4,7 @@ import { ArrowLeft } from 'lucide-react';
 import { getMeaningMemberById } from '../config/meaningData';
 import { useTranslation } from '../i18n/hooks';
 import MeaningVideoPlayer from '../components/meaning/MeaningVideoPlayer';
+import SmartImage from '../components/SmartImage';
 
 const MeaningMemberDetailPage: React.FC = () => {
   const navigate = useNavigate();
@@ -75,7 +76,7 @@ const MeaningMemberDetailPage: React.FC = () => {
                   if (item.type === 'photo') {
                     return (
                       <div key={item.id} className="rounded-2xl overflow-hidden border border-slate-200 bg-white">
-                        <img src={item.photoSrc} alt={item.zhCaption || item.enCaption || 'photo'} className="w-full h-64 object-cover" />
+                        <SmartImage asset={item.photo} alt={item.zhCaption || item.enCaption || 'photo'} className="w-full h-64 object-cover" />
                         <div className="p-4 text-sm text-slate-700">{isZh ? item.zhCaption : item.enCaption}</div>
                       </div>
                     );

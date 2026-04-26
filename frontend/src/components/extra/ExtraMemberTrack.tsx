@@ -139,7 +139,7 @@ const ExtraMemberTrack: React.FC<ExtraMemberTrackProps> = ({ member, accentColor
                   <div className="relative flex h-full flex-col p-2">
                     <div className="overflow-hidden rounded-xl border border-[#e7d6b6] bg-[#f7eedf]">
                       <SmartImage
-                        originalPath={p.photo}
+                        asset={p.photo}
                         variant="thumbnail"
                         alt={isZh ? `留言 ${i + 1}` : `Note ${i + 1}`}
                         className="h-[104px] w-full object-cover"

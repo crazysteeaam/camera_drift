@@ -119,7 +119,26 @@ export default {
     G: 'Group G',
     H: 'Group H',
     I: 'Group I',
-    J: 'Group J'
+    J: 'Group J',
+    K: 'Group K',
+    L: 'Group L',
+    M: 'Group M',
+    N: 'Group N',
+    O: 'Group O',
+    P: 'Group P',
+    Q: 'Group Q',
+    R: 'Group R',
+    S: 'Group S',
+    T: 'Group T',
+    U: 'Group U',
+    V: 'Group V',
+    W: 'Group W',
+    X: 'Group X',
+    Y: 'Group Y',
+    Z: 'Group Z',
+    AA: 'Group AA',
+    AB: 'Group AB',
+    AF: 'Group AF'
   }
 };
 

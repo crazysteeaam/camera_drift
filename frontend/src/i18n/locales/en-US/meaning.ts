@@ -96,14 +96,18 @@ export default {
     sectionSignUp: 'How to join',
     directRegionLabel: 'Shanghai · Guangdong',
     directRegionBody:
-      'If you live or depart from Shanghai or Guangdong, we welcome you to reach us on Xiaohongshu—easier for handoffs and shipping details.',
-    xhsTitle: 'Xiaohongshu',
-    xhsBody: 'Save or scan the QR code below, then DM “The Meaning of Travel” from that profile.',
-    qrAlt: 'Xiaohongshu QR code',
+      'If you live or depart from Shanghai or Guangdong, reach us through our official accounts—easier for handoffs and shipping details.',
+    officialContactTitle: 'Official accounts',
+    officialContactBody:
+      'Follow us on Xiaohongshu or Douyin, or DM “The Meaning of Travel” to ask about sign-up and future updates.',
+    officialContactHint: 'QR codes and profile links can be set in meaningOfficialContacts inside meaningData.ts.',
+    xhsTitle: 'Official contact',
+    xhsBody: 'Save or scan the QR codes below, then DM “The Meaning of Travel” from that profile.',
+    qrAlt: 'Official contact QR code',
     qrPlaceholderTitle: 'QR placeholder',
     qrPlaceholderBody:
-      'Add your PNG under frontend/public and set meaningRecruitDirectSignup.qrImageSrc in meaningData.ts.',
-    openXhsProfile: 'Open Xiaohongshu profile',
+      'Add your QR image under frontend/public and set its path in meaningData.ts.',
+    openXhsProfile: 'Open profile',
     surveyRegionLabel: 'Other cities',
     surveyCardTitle: 'Survey registration',
     surveyRegionBody:

@@ -1,10 +1,12 @@
 // 番外篇图片清单 - 由 npm run update-extra-photos 自动生成
+import { toImageAssets, type ImageAsset } from '../types/imageAsset';
+
 export type ExtraPhotoManifestEntry = {
-  photos: string[];
-  messagePhotos: string[];
+  photos: ImageAsset[];
+  messagePhotos: ImageAsset[];
 };
 
-export const EXTRA_PHOTO_MANIFEST: Record<string, ExtraPhotoManifestEntry> = {
+const RAW_EXTRA_PHOTO_MANIFEST: Record<string, { photos: string[]; messagePhotos: string[] }> = {
   "G1/G1-1": {
     "photos": [],
     "messagePhotos": [
@@ -44,3 +46,13 @@ export const EXTRA_PHOTO_MANIFEST: Record<string, ExtraPhotoManifestEntry> = {
     "messagePhotos": []
   }
 };
+
+export const EXTRA_PHOTO_MANIFEST: Record<string, ExtraPhotoManifestEntry> = Object.fromEntries(
+  Object.entries(RAW_EXTRA_PHOTO_MANIFEST).map(([folder, entry]) => [
+    folder,
+    {
+      photos: toImageAssets(entry.photos),
+      messagePhotos: toImageAssets(entry.messagePhotos)
+    }
+  ])
+);

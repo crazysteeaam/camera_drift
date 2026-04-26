@@ -1,4 +1,6 @@
 // 第二期数据配置文件 - 点亮中国 胶片漂流计划
+import { toImageAssets, type ImageAsset } from '../types/imageAsset';
+
 export interface Phase2Relay {
     id: number;
     name: string;
@@ -11,9 +13,9 @@ export interface Phase2Relay {
     weather: string;
     camera: string;
     film: string;
-    photos: string[];
+    photos: ImageAsset[];
     message: string;
-    messageImages?: string[]; // 新增：留言图片
+    messageImages?: ImageAsset[]; // 新增：留言图片
     coordinates: { lat: number; lng: number };
     tags: string[];
     nextLocation: string;
@@ -54,7 +56,7 @@ export interface Phase2Province {
 }
 
 // 第二期省份数据
-export const phase2Provinces: Phase2Province[] = [
+const phase2ProvincesRaw: any[] = [
     {
         id: 'zhejiang',
         name: '浙江省',
@@ -508,16 +510,16 @@ export const phase2Provinces: Phase2Province[] = [
                         camera: '富士一次性胶片机',
                         film: 'C400',
                         photos: [
-                            "/photos/phase2/guangdong/C/C1/photos/000001.JPG",
-                            "/photos/phase2/guangdong/C/C1/photos/000002.JPG",
-                            "/photos/phase2/guangdong/C/C1/photos/000003.JPG",
-                            "/photos/phase2/guangdong/C/C1/photos/000004.JPG",
+                            '/photos/phase2/guangdong/C/C1/photos/000001.JPG',
+                            '/photos/phase2/guangdong/C/C1/photos/000002.JPG',
+                            '/photos/phase2/guangdong/C/C1/photos/000003.JPG',
+                            '/photos/phase2/guangdong/C/C1/photos/000004.JPG'
                         ],
                         message: '云浮的山石间，清风带来玉都的回响。',
                         messageImages: [
-                            "/photos/phase2/guangdong/C/C1/message/微信图片_20251010174339_339_38.jpg",
-                            "/photos/phase2/guangdong/C/C1/message/微信图片_20251010174358_340_38.jpg",
-                            "/photos/phase2/guangdong/C/C1/message/微信图片_20251010174415_341_38.jpg",
+                            '/photos/phase2/guangdong/C/C1/message/微信图片_20251010174339_339_38.jpg',
+                            '/photos/phase2/guangdong/C/C1/message/微信图片_20251010174358_340_38.jpg',
+                            '/photos/phase2/guangdong/C/C1/message/微信图片_20251010174415_341_38.jpg'
                         ],
                         coordinates: { lat: 22.9156, lng: 112.0444 },
                         tags: ['玉都', '山风', '宁静'],
@@ -537,18 +539,18 @@ export const phase2Provinces: Phase2Province[] = [
                         camera: '富士一次性胶片机',
                         film: 'C400',
                         photos: [
-                            "/photos/phase2/guangdong/C/C2/photos/000005.JPG",
-                            "/photos/phase2/guangdong/C/C2/photos/000006.JPG",
-                            "/photos/phase2/guangdong/C/C2/photos/000007.JPG",
-                            "/photos/phase2/guangdong/C/C2/photos/000009.JPG",
-                            "/photos/phase2/guangdong/C/C2/photos/000010.JPG",
-                            "/photos/phase2/guangdong/C/C2/photos/000035.JPG",
+                            '/photos/phase2/guangdong/C/C2/photos/000005.JPG',
+                            '/photos/phase2/guangdong/C/C2/photos/000006.JPG',
+                            '/photos/phase2/guangdong/C/C2/photos/000007.JPG',
+                            '/photos/phase2/guangdong/C/C2/photos/000009.JPG',
+                            '/photos/phase2/guangdong/C/C2/photos/000010.JPG',
+                            '/photos/phase2/guangdong/C/C2/photos/000035.JPG'
                         ],
                         message: '珠江畔的天际线，在晨光中慢慢苏醒。',
                         messageImages: [
-                            "/photos/phase2/guangdong/C/C2/message/微信图片_20251010174433_342_38.jpg",
-                            "/photos/phase2/guangdong/C/C2/message/微信图片_20251010174450_343_38.jpg",
-                            "/photos/phase2/guangdong/C/C2/message/微信图片_20251010174504_344_38.jpg",
+                            '/photos/phase2/guangdong/C/C2/message/微信图片_20251010174433_342_38.jpg',
+                            '/photos/phase2/guangdong/C/C2/message/微信图片_20251010174450_343_38.jpg',
+                            '/photos/phase2/guangdong/C/C2/message/微信图片_20251010174504_344_38.jpg'
                         ],
                         coordinates: { lat: 23.1291, lng: 113.2644 },
                         tags: ['珠江', '晨光', '城市节奏'],
@@ -568,16 +570,16 @@ export const phase2Provinces: Phase2Province[] = [
                         camera: '富士一次性胶片机',
                         film: 'C400',
                         photos: [
-                            "/photos/phase2/guangdong/C/C3/photos/000015.JPG",
-                            "/photos/phase2/guangdong/C/C3/photos/000016.JPG",
-                            "/photos/phase2/guangdong/C/C3/photos/000036.JPG",
-                            "/photos/phase2/guangdong/C/C3/photos/000037.JPG",
-                            "/photos/phase2/guangdong/C/C3/photos/000038.JPG",
-                            "/photos/phase2/guangdong/C/C3/photos/000039.JPG",
+                            '/photos/phase2/guangdong/C/C3/photos/000015.JPG',
+                            '/photos/phase2/guangdong/C/C3/photos/000016.JPG',
+                            '/photos/phase2/guangdong/C/C3/photos/000036.JPG',
+                            '/photos/phase2/guangdong/C/C3/photos/000037.JPG',
+                            '/photos/phase2/guangdong/C/C3/photos/000038.JPG',
+                            '/photos/phase2/guangdong/C/C3/photos/000039.JPG'
                         ],
                         message: '龙狮在古庙边起舞，烟火里是岭南手艺。',
                         messageImages: [
-                            "/photos/phase2/guangdong/C/C3/message/微信图片_20251010174521_345_38.jpg",
+                            '/photos/phase2/guangdong/C/C3/message/微信图片_20251010174521_345_38.jpg'
                         ],
                         coordinates: { lat: 23.0215, lng: 113.1214 },
                         tags: ['岭南', '龙狮', '手艺'],
@@ -597,17 +599,17 @@ export const phase2Provinces: Phase2Province[] = [
                         camera: '富士一次性胶片机',
                         film: 'C400',
                         photos: [
-                            "/photos/phase2/guangdong/C/C4/photos/000017.JPG",
-                            "/photos/phase2/guangdong/C/C4/photos/000018.JPG",
-                            "/photos/phase2/guangdong/C/C4/photos/000019.JPG",
-                            "/photos/phase2/guangdong/C/C4/photos/000020.JPG",
-                            "/photos/phase2/guangdong/C/C4/photos/000021.JPG",
-                            "/photos/phase2/guangdong/C/C4/photos/000022.JPG",
+                            '/photos/phase2/guangdong/C/C4/photos/000017.JPG',
+                            '/photos/phase2/guangdong/C/C4/photos/000018.JPG',
+                            '/photos/phase2/guangdong/C/C4/photos/000019.JPG',
+                            '/photos/phase2/guangdong/C/C4/photos/000020.JPG',
+                            '/photos/phase2/guangdong/C/C4/photos/000021.JPG',
+                            '/photos/phase2/guangdong/C/C4/photos/000022.JPG'
                         ],
                         message: '香山古韵与现代街区交织出温度。',
                         messageImages: [
-                            "/photos/phase2/guangdong/C/C4/message/微信图片_20251010174537_346_38.jpg",
-                            "/photos/phase2/guangdong/C/C4/message/微信图片_20251010174552_347_38.jpg",
+                            '/photos/phase2/guangdong/C/C4/message/微信图片_20251010174537_346_38.jpg',
+                            '/photos/phase2/guangdong/C/C4/message/微信图片_20251010174552_347_38.jpg'
                         ],
                         coordinates: { lat: 22.5160, lng: 113.3926 },
                         tags: ['香山', '街巷', '人情'],
@@ -627,18 +629,18 @@ export const phase2Provinces: Phase2Province[] = [
                         camera: '富士一次性胶片机',
                         film: 'C400',
                         photos: [
-                            "/photos/phase2/guangdong/C/C5/photos/000023.JPG",
-                            "/photos/phase2/guangdong/C/C5/photos/000024.JPG",
-                            "/photos/phase2/guangdong/C/C5/photos/000025.JPG",
-                            "/photos/phase2/guangdong/C/C5/photos/000026.JPG",
-                            "/photos/phase2/guangdong/C/C5/photos/000027.JPG",
-                            "/photos/phase2/guangdong/C/C5/photos/000028.JPG",
+                            '/photos/phase2/guangdong/C/C5/photos/000023.JPG',
+                            '/photos/phase2/guangdong/C/C5/photos/000024.JPG',
+                            '/photos/phase2/guangdong/C/C5/photos/000025.JPG',
+                            '/photos/phase2/guangdong/C/C5/photos/000026.JPG',
+                            '/photos/phase2/guangdong/C/C5/photos/000027.JPG',
+                            '/photos/phase2/guangdong/C/C5/photos/000028.JPG'
                         ],
                         message: '情侣路的海风，让浪花唱起舒展的歌。',
                         messageImages: [
-                            "/photos/phase2/guangdong/C/C5/message/微信图片_20251010174608_348_38.jpg",
-                            "/photos/phase2/guangdong/C/C5/message/微信图片_20251010174624_349_38.jpg",
-                            "/photos/phase2/guangdong/C/C5/message/微信图片_20251010174637_350_38.jpg",
+                            '/photos/phase2/guangdong/C/C5/message/微信图片_20251010174608_348_38.jpg',
+                            '/photos/phase2/guangdong/C/C5/message/微信图片_20251010174624_349_38.jpg',
+                            '/photos/phase2/guangdong/C/C5/message/微信图片_20251010174637_350_38.jpg'
                         ],
                         coordinates: { lat: 22.2707, lng: 113.5767 },
                         tags: ['情侣路', '海风', '浪花'],
@@ -658,17 +660,17 @@ export const phase2Provinces: Phase2Province[] = [
                         camera: '富士一次性胶片机',
                         film: 'C400',
                         photos: [
-                            "/photos/phase2/guangdong/C/C6/photos/000029.JPG",
-                            "/photos/phase2/guangdong/C/C6/photos/000030.JPG",
-                            "/photos/phase2/guangdong/C/C6/photos/000040.JPG",
-                            "/photos/phase2/guangdong/C/C6/photos/000041.JPG",
-                            "/photos/phase2/guangdong/C/C6/photos/000042.JPG"
+                            '/photos/phase2/guangdong/C/C6/photos/000029.JPG',
+                            '/photos/phase2/guangdong/C/C6/photos/000030.JPG',
+                            '/photos/phase2/guangdong/C/C6/photos/000040.JPG',
+                            '/photos/phase2/guangdong/C/C6/photos/000041.JPG',
+                            '/photos/phase2/guangdong/C/C6/photos/000042.JPG'
                         ],
                         message: '侨乡江海交汇，渔火为旅程写下尾声。',
                         messageImages: [
-                            "/photos/phase2/guangdong/C/C6/message/微信图片_20251010174657_351_38.jpg",
-                            "/photos/phase2/guangdong/C/C6/message/微信图片_20251010174719_352_38.jpg",
-                            "/photos/phase2/guangdong/C/C6/message/微信图片_20251010174734_353_38.jpg",
+                            '/photos/phase2/guangdong/C/C6/message/微信图片_20251010174657_351_38.jpg',
+                            '/photos/phase2/guangdong/C/C6/message/微信图片_20251010174719_352_38.jpg',
+                            '/photos/phase2/guangdong/C/C6/message/微信图片_20251010174734_353_38.jpg'
                         ],
                         coordinates: { lat: 22.5787, lng: 113.0810 },
                         tags: ['侨乡', '江海', '渔火'],
@@ -704,17 +706,17 @@ export const phase2Provinces: Phase2Province[] = [
                         camera: '富士一次性胶片机',
                         film: 'C400',
                         photos: [
-                            "/photos/phase2/guangdong/D/D1/photos/000001.JPG",
-                            "/photos/phase2/guangdong/D/D1/photos/000002.JPG",
-                            "/photos/phase2/guangdong/D/D1/photos/000003.JPG",
-                            "/photos/phase2/guangdong/D/D1/photos/000004.JPG",
-                            "/photos/phase2/guangdong/D/D1/photos/000005.JPG",
-                            "/photos/phase2/guangdong/D/D1/photos/000006.JPG",
-                            "/photos/phase2/guangdong/D/D1/photos/000007.JPG"
+                            '/photos/phase2/guangdong/D/D1/photos/000001.JPG',
+                            '/photos/phase2/guangdong/D/D1/photos/000002.JPG',
+                            '/photos/phase2/guangdong/D/D1/photos/000003.JPG',
+                            '/photos/phase2/guangdong/D/D1/photos/000004.JPG',
+                            '/photos/phase2/guangdong/D/D1/photos/000005.JPG',
+                            '/photos/phase2/guangdong/D/D1/photos/000006.JPG',
+                            '/photos/phase2/guangdong/D/D1/photos/000007.JPG'
                         ],
                         message: '东江与西湖交汇，惠州的夜风轻拂胶片里的光。',
                         messageImages: [
-                            "/photos/phase2/guangdong/D/D1/message/微信图片_20251017194838_378_38.jpg"
+                            '/photos/phase2/guangdong/D/D1/message/微信图片_20251017194838_378_38.jpg'
                         ],
                         coordinates: { lat: 23.1107, lng: 114.4168 },
                         tags: ['惠州', '东江', '夜色'],
@@ -734,16 +736,16 @@ export const phase2Provinces: Phase2Province[] = [
                         camera: '富士一次性胶片机',
                         film: 'C400',
                         photos: [
-                            "/photos/phase2/guangdong/D/D2/photos/000007.JPG",
-                            "/photos/phase2/guangdong/D/D2/photos/000008.JPG",
-                            "/photos/phase2/guangdong/D/D2/photos/000009.JPG",
-                            "/photos/phase2/guangdong/D/D2/photos/000010.JPG",
-                            "/photos/phase2/guangdong/D/D2/photos/000011.JPG",
-                            "/photos/phase2/guangdong/D/D2/photos/000012.JPG"
+                            '/photos/phase2/guangdong/D/D2/photos/000007.JPG',
+                            '/photos/phase2/guangdong/D/D2/photos/000008.JPG',
+                            '/photos/phase2/guangdong/D/D2/photos/000009.JPG',
+                            '/photos/phase2/guangdong/D/D2/photos/000010.JPG',
+                            '/photos/phase2/guangdong/D/D2/photos/000011.JPG',
+                            '/photos/phase2/guangdong/D/D2/photos/000012.JPG'
                         ],
                         message: '摩天楼与海风交织，深圳的夜幕充满律动。',
                         messageImages: [
-                            "/photos/phase2/guangdong/D/D2/message/微信图片_20251017194853_379_38.jpg"
+                            '/photos/phase2/guangdong/D/D2/message/微信图片_20251017194853_379_38.jpg'
                         ],
                         coordinates: { lat: 22.5431, lng: 114.0579 },
                         tags: ['深圳', '都市', '海风'],
@@ -763,15 +765,15 @@ export const phase2Provinces: Phase2Province[] = [
                         camera: '富士一次性胶片机',
                         film: 'C400',
                         photos: [
-                            "/photos/phase2/guangdong/D/D3/photos/000014.JPG",
-                            "/photos/phase2/guangdong/D/D3/photos/000015.JPG",
-                            "/photos/phase2/guangdong/D/D3/photos/000016.JPG",
-                            "/photos/phase2/guangdong/D/D3/photos/000017.JPG",
-                            "/photos/phase2/guangdong/D/D3/photos/000018.JPG"
+                            '/photos/phase2/guangdong/D/D3/photos/000014.JPG',
+                            '/photos/phase2/guangdong/D/D3/photos/000015.JPG',
+                            '/photos/phase2/guangdong/D/D3/photos/000016.JPG',
+                            '/photos/phase2/guangdong/D/D3/photos/000017.JPG',
+                            '/photos/phase2/guangdong/D/D3/photos/000018.JPG'
                         ],
                         message: '松山湖畔灯火点点，东莞的工业城也有温柔一面。',
                         messageImages: [
-                            "/photos/phase2/guangdong/D/D3/message/微信图片_20251017194911_380_38.jpg"
+                            '/photos/phase2/guangdong/D/D3/message/微信图片_20251017194911_380_38.jpg'
                         ],
                         coordinates: { lat: 23.0207, lng: 113.7518 },
                         tags: ['东莞', '松山湖', '灯火'],
@@ -791,15 +793,15 @@ export const phase2Provinces: Phase2Province[] = [
                         camera: '富士一次性胶片机',
                         film: 'C400',
                         photos: [
-                            "/photos/phase2/guangdong/D/D4/photos/000019.JPG",
-                            "/photos/phase2/guangdong/D/D4/photos/000020.JPG",
-                            "/photos/phase2/guangdong/D/D4/photos/000021.JPG",
-                            "/photos/phase2/guangdong/D/D4/photos/000022.JPG",
-                            "/photos/phase2/guangdong/D/D4/photos/000023.JPG"
+                            '/photos/phase2/guangdong/D/D4/photos/000019.JPG',
+                            '/photos/phase2/guangdong/D/D4/photos/000020.JPG',
+                            '/photos/phase2/guangdong/D/D4/photos/000021.JPG',
+                            '/photos/phase2/guangdong/D/D4/photos/000022.JPG',
+                            '/photos/phase2/guangdong/D/D4/photos/000023.JPG'
                         ],
                         message: '岭南古韵与珠水交织，佛山的夜晚沉淀着烟火。',
                         messageImages: [
-                            "/photos/phase2/guangdong/D/D4/message/微信图片_20251017194928_381_38.jpg"
+                            '/photos/phase2/guangdong/D/D4/message/微信图片_20251017194928_381_38.jpg'
                         ],
                         coordinates: { lat: 23.0218, lng: 113.1214 },
                         tags: ['佛山', '岭南', '烟火气'],
@@ -819,18 +821,18 @@ export const phase2Provinces: Phase2Province[] = [
                         camera: '富士一次性胶片机',
                         film: 'C400',
                         photos: [
-                            "/photos/phase2/guangdong/D/D5/photos/000024.JPG",
-                            "/photos/phase2/guangdong/D/D5/photos/000025.JPG",
-                            "/photos/phase2/guangdong/D/D5/photos/000026.JPG",
-                            "/photos/phase2/guangdong/D/D5/photos/000027.JPG",
-                            "/photos/phase2/guangdong/D/D5/photos/000028.JPG",
-                            "/photos/phase2/guangdong/D/D5/photos/000029.JPG"
+                            '/photos/phase2/guangdong/D/D5/photos/000024.JPG',
+                            '/photos/phase2/guangdong/D/D5/photos/000025.JPG',
+                            '/photos/phase2/guangdong/D/D5/photos/000026.JPG',
+                            '/photos/phase2/guangdong/D/D5/photos/000027.JPG',
+                            '/photos/phase2/guangdong/D/D5/photos/000028.JPG',
+                            '/photos/phase2/guangdong/D/D5/photos/000029.JPG'
                         ],
                         message: '北江岸边雾气升腾，清远的山水让夜色更显灵动。',
                         messageImages: [
-                            "/photos/phase2/guangdong/D/D5/message/微信图片_20251017194949_382_38.jpg",
-                            "/photos/phase2/guangdong/D/D5/message/微信图片_20251017195007_383_38.jpg",
-                            "/photos/phase2/guangdong/D/D5/message/微信图片_20251017195023_384_38.jpg"
+                            '/photos/phase2/guangdong/D/D5/message/微信图片_20251017194949_382_38.jpg',
+                            '/photos/phase2/guangdong/D/D5/message/微信图片_20251017195007_383_38.jpg',
+                            '/photos/phase2/guangdong/D/D5/message/微信图片_20251017195023_384_38.jpg'
                         ],
                         coordinates: { lat: 23.682, lng: 113.056 },
                         tags: ['清远', '北江', '山水'],
@@ -850,19 +852,19 @@ export const phase2Provinces: Phase2Province[] = [
                         camera: '富士一次性胶片机',
                         film: 'C400',
                         photos: [
-                            "/photos/phase2/guangdong/D/D6/photos/000030.JPG",
-                            "/photos/phase2/guangdong/D/D6/photos/000031.JPG",
-                            "/photos/phase2/guangdong/D/D6/photos/000033.JPG",
-                            "/photos/phase2/guangdong/D/D6/photos/000034.JPG",
-                            "/photos/phase2/guangdong/D/D6/photos/000035.JPG"
+                            '/photos/phase2/guangdong/D/D6/photos/000030.JPG',
+                            '/photos/phase2/guangdong/D/D6/photos/000031.JPG',
+                            '/photos/phase2/guangdong/D/D6/photos/000033.JPG',
+                            '/photos/phase2/guangdong/D/D6/photos/000034.JPG',
+                            '/photos/phase2/guangdong/D/D6/photos/000035.JPG'
                         ],
                         message: '丹霞脚下灯火点亮，韶关为这段旅程写下尾声。',
                         messageImages: [
-                            "/photos/phase2/guangdong/D/D6/message/微信图片_20251017195040_385_38.jpg",
-                            "/photos/phase2/guangdong/D/D6/message/微信图片_20251017195100_386_38.jpg",
-                            "/photos/phase2/guangdong/D/D6/message/微信图片_20251017195118_387_38.jpg",
-                            "/photos/phase2/guangdong/D/D6/message/微信图片_20251017195138_388_38.jpg",
-                            "/photos/phase2/guangdong/D/D6/message/微信图片_20251017195150_389_38.jpg"
+                            '/photos/phase2/guangdong/D/D6/message/微信图片_20251017195040_385_38.jpg',
+                            '/photos/phase2/guangdong/D/D6/message/微信图片_20251017195100_386_38.jpg',
+                            '/photos/phase2/guangdong/D/D6/message/微信图片_20251017195118_387_38.jpg',
+                            '/photos/phase2/guangdong/D/D6/message/微信图片_20251017195138_388_38.jpg',
+                            '/photos/phase2/guangdong/D/D6/message/微信图片_20251017195150_389_38.jpg'
                         ],
                         coordinates: { lat: 24.8104, lng: 113.597 },
                         tags: ['韶关', '丹霞', '旅程'],
@@ -2071,17 +2073,187 @@ export const phase2Provinces: Phase2Province[] = [
             {
                 id: 'R',
                 name: 'R组',
-                description: '北京秋景线',
+                description: '北京城市漫游线',
                 province: '北京市',
                 startLocation: '北京市',
                 endLocation: '北京市',
                 color: 'from-amber-500 to-amber-600',
                 bgColor: 'from-amber-50 to-amber-100',
                 status: 'active',
-                participantCount: 6,
-                currentRelay: 2,
-                progress: 33,
-                relays: []
+                participantCount: 7,
+                currentRelay: 6,
+                progress: 86,
+                relays: [
+                    {
+                        id: 1,
+                        name: '第一棒',
+                        participant: '北京记录者1',
+                        location: '北京市',
+                        province: '北京市',
+                        city: '北京市',
+                        date: '2026-04-14',
+                        time: '待补充',
+                        weather: '待补充',
+                        camera: '待补充',
+                        film: '待补充',
+                        photos: [
+                            '/photos/phase2/beijing/R/R1/photos/000001.JPG',
+                            '/photos/phase2/beijing/R/R1/photos/000002.JPG',
+                            '/photos/phase2/beijing/R/R1/photos/000003.JPG'
+                        ],
+                        message: '北京的城市光影，从这一棒开始留在胶片里。',
+                        messageImages: [
+                            '/photos/phase2/beijing/R/R1/message/微信图片_20260414001111_304_2.jpg'
+                        ],
+                        coordinates: { lat: 39.9042, lng: 116.4074 },
+                        tags: ['北京', '城市漫游', '胶片漂流'],
+                        nextLocation: '北京市',
+                        nextParticipant: '北京记录者2'
+                    },
+                    {
+                        id: 2,
+                        name: '第二棒',
+                        participant: '北京记录者2',
+                        location: '北京市',
+                        province: '北京市',
+                        city: '北京市',
+                        date: '待补充',
+                        time: '待补充',
+                        weather: '待补充',
+                        camera: '待补充',
+                        film: '待补充',
+                        photos: [],
+                        message: '第二棒资料待补充。',
+                        coordinates: { lat: 39.9042, lng: 116.4074 },
+                        tags: ['北京', '待补充'],
+                        nextLocation: '北京市',
+                        nextParticipant: '北京记录者3'
+                    },
+                    {
+                        id: 3,
+                        name: '第三棒',
+                        participant: '北京记录者3',
+                        location: '北京市',
+                        province: '北京市',
+                        city: '北京市',
+                        date: '2026-04-14',
+                        time: '待补充',
+                        weather: '待补充',
+                        camera: '待补充',
+                        film: '待补充',
+                        photos: [
+                            '/photos/phase2/beijing/R/R3/photos/000010.JPG',
+                            '/photos/phase2/beijing/R/R3/photos/000011.JPG',
+                            '/photos/phase2/beijing/R/R3/photos/000012.JPG',
+                            '/photos/phase2/beijing/R/R3/photos/000013.JPG'
+                        ],
+                        message: '第三棒继续在北京街头收集这一卷的日常风景。',
+                        messageImages: [
+                            '/photos/phase2/beijing/R/R3/message/微信图片_20260414001112_305_2.jpg'
+                        ],
+                        coordinates: { lat: 39.9042, lng: 116.4074 },
+                        tags: ['北京', '街景', '胶片漂流'],
+                        nextLocation: '北京市',
+                        nextParticipant: '北京记录者4'
+                    },
+                    {
+                        id: 4,
+                        name: '第四棒',
+                        participant: '北京记录者4',
+                        location: '北京市',
+                        province: '北京市',
+                        city: '北京市',
+                        date: '2026-04-14',
+                        time: '待补充',
+                        weather: '待补充',
+                        camera: '待补充',
+                        film: '待补充',
+                        photos: [
+                            '/photos/phase2/beijing/R/R4/photos/000016.JPG',
+                            '/photos/phase2/beijing/R/R4/photos/000017.JPG',
+                            '/photos/phase2/beijing/R/R4/photos/000018.JPG',
+                            '/photos/phase2/beijing/R/R4/photos/000037.JPG',
+                            '/photos/phase2/beijing/R/R4/photos/000038.JPG',
+                            '/photos/phase2/beijing/R/R4/photos/000039.JPG'
+                        ],
+                        message: '第四棒把北京的片刻继续稳稳接住。',
+                        messageImages: [
+                            '/photos/phase2/beijing/R/R4/message/微信图片_20260414001113_306_2.jpg'
+                        ],
+                        coordinates: { lat: 39.9042, lng: 116.4074 },
+                        tags: ['北京', '城市', '接力'],
+                        nextLocation: '北京市',
+                        nextParticipant: '北京记录者5'
+                    },
+                    {
+                        id: 5,
+                        name: '第五棒',
+                        participant: '北京记录者5',
+                        location: '北京市',
+                        province: '北京市',
+                        city: '北京市',
+                        date: '2026-04-14',
+                        time: '待补充',
+                        weather: '待补充',
+                        camera: '待补充',
+                        film: '待补充',
+                        photos: [],
+                        message: '第五棒留言已到位，主照片待补充。',
+                        messageImages: [
+                            '/photos/phase2/beijing/R/R5/message/微信图片_20260414001114_307_2.jpg'
+                        ],
+                        coordinates: { lat: 39.9042, lng: 116.4074 },
+                        tags: ['北京', '留言', '待补充'],
+                        nextLocation: '北京市',
+                        nextParticipant: '北京记录者6'
+                    },
+                    {
+                        id: 6,
+                        name: '第六棒',
+                        participant: '北京记录者6',
+                        location: '北京市',
+                        province: '北京市',
+                        city: '北京市',
+                        date: '2026-04-14',
+                        time: '待补充',
+                        weather: '待补充',
+                        camera: '待补充',
+                        film: '待补充',
+                        photos: [
+                            '/photos/phase2/beijing/R/R6/photos/000026.JPG',
+                            '/photos/phase2/beijing/R/R6/photos/000027.JPG',
+                            '/photos/phase2/beijing/R/R6/photos/000043.JPG',
+                            '/photos/phase2/beijing/R/R6/photos/000044.JPG'
+                        ],
+                        message: '第六棒继续在北京留下属于这一卷的细节。',
+                        messageImages: [
+                            '/photos/phase2/beijing/R/R6/message/微信图片_20260414001114_308_2.jpg'
+                        ],
+                        coordinates: { lat: 39.9042, lng: 116.4074 },
+                        tags: ['北京', '胶片', '城市细节'],
+                        nextLocation: '北京市',
+                        nextParticipant: '北京记录者7'
+                    },
+                    {
+                        id: 7,
+                        name: '第七棒',
+                        participant: '北京记录者7',
+                        location: '北京市',
+                        province: '北京市',
+                        city: '北京市',
+                        date: '待补充',
+                        time: '待补充',
+                        weather: '待补充',
+                        camera: '待补充',
+                        film: '待补充',
+                        photos: [],
+                        message: '第七棒资料待补充。',
+                        coordinates: { lat: 39.9042, lng: 116.4074 },
+                        tags: ['北京', '待补充'],
+                        nextLocation: '终点',
+                        nextParticipant: '完成'
+                    }
+                ]
             }
         ],
         totalGroups: 1,
@@ -2135,10 +2307,200 @@ export const phase2Provinces: Phase2Province[] = [
         description: '表里山河，煤炭之乡',
         color: 'from-gray-500 to-gray-600',
         bgColor: 'from-gray-50 to-gray-100',
-        groups: [],
-        totalGroups: 0,
+        groups: [
+            {
+                id: 'AF',
+                name: 'AF组',
+                description: '长治-忻州-太原-晋城-吕梁-太原线',
+                province: '山西省',
+                startLocation: '长治市',
+                endLocation: '太原市',
+                color: 'from-stone-500 to-stone-600',
+                bgColor: 'from-stone-50 to-stone-100',
+                status: 'completed',
+                participantCount: 6,
+                currentRelay: 6,
+                progress: 100,
+                relays: [
+                    {
+                        id: 1,
+                        name: '第一棒',
+                        participant: '长治记录者',
+                        location: '山西省长治市',
+                        province: '山西省',
+                        city: '长治市',
+                        date: '2026-04-13',
+                        time: '待补充',
+                        weather: '待补充',
+                        camera: '待补充',
+                        film: '待补充',
+                        photos: [
+                            '/photos/phase2/shanxi/AF/AF1/photos/000001.JPG',
+                            '/photos/phase2/shanxi/AF/AF1/photos/000002.JPG',
+                            '/photos/phase2/shanxi/AF/AF1/photos/000003.JPG',
+                            '/photos/phase2/shanxi/AF/AF1/photos/000004.JPG',
+                            '/photos/phase2/shanxi/AF/AF1/photos/000005.JPG'
+                        ],
+                        message: '长治把山西这一组的开场交给了胶片。',
+                        messageImages: [
+                            '/photos/phase2/shanxi/AF/AF1/message/微信图片_20260413235412_272_2.jpg'
+                        ],
+                        coordinates: { lat: 36.1954, lng: 113.1163 },
+                        tags: ['长治', '山西', '起点'],
+                        nextLocation: '山西省忻州市',
+                        nextParticipant: '忻州记录者'
+                    },
+                    {
+                        id: 2,
+                        name: '第二棒',
+                        participant: '忻州记录者',
+                        location: '山西省忻州市',
+                        province: '山西省',
+                        city: '忻州市',
+                        date: '2026-04-13',
+                        time: '待补充',
+                        weather: '待补充',
+                        camera: '待补充',
+                        film: '待补充',
+                        photos: [
+                            '/photos/phase2/shanxi/AF/AF2/photos/000006.JPG',
+                            '/photos/phase2/shanxi/AF/AF2/photos/000007.JPG',
+                            '/photos/phase2/shanxi/AF/AF2/photos/000008.JPG',
+                            '/photos/phase2/shanxi/AF/AF2/photos/000009.JPG',
+                            '/photos/phase2/shanxi/AF/AF2/photos/000010.JPG'
+                        ],
+                        message: '忻州接过接力，把北方的风继续写进这一卷。',
+                        messageImages: [
+                            '/photos/phase2/shanxi/AF/AF2/message/微信图片_20260413235413_273_2.jpg',
+                            '/photos/phase2/shanxi/AF/AF2/message/微信图片_20260413235414_274_2.jpg'
+                        ],
+                        coordinates: { lat: 38.4167, lng: 112.7333 },
+                        tags: ['忻州', '接力', '山西'],
+                        nextLocation: '山西省太原市',
+                        nextParticipant: '太原记录者'
+                    },
+                    {
+                        id: 3,
+                        name: '第三棒',
+                        participant: '太原记录者',
+                        location: '山西省太原市',
+                        province: '山西省',
+                        city: '太原市',
+                        date: '2026-04-13',
+                        time: '待补充',
+                        weather: '待补充',
+                        camera: '待补充',
+                        film: '待补充',
+                        photos: [
+                            '/photos/phase2/shanxi/AF/AF3/photos/000011.JPG',
+                            '/photos/phase2/shanxi/AF/AF3/photos/000012.JPG',
+                            '/photos/phase2/shanxi/AF/AF3/photos/000013.JPG',
+                            '/photos/phase2/shanxi/AF/AF3/photos/000014.JPG',
+                            '/photos/phase2/shanxi/AF/AF3/photos/000015.JPG',
+                            '/photos/phase2/shanxi/AF/AF3/photos/000016.JPG',
+                            '/photos/phase2/shanxi/AF/AF3/photos/000035.JPG'
+                        ],
+                        message: '太原这一棒，让城市日常和胶片节奏慢慢重合。',
+                        messageImages: [
+                            '/photos/phase2/shanxi/AF/AF3/message/微信图片_2026-04-13_235537_398.png',
+                            '/photos/phase2/shanxi/AF/AF3/message/微信图片_2026-04-13_235606_664.png'
+                        ],
+                        coordinates: { lat: 37.8706, lng: 112.5489 },
+                        tags: ['太原', '城市', '胶片'],
+                        nextLocation: '山西省晋城市',
+                        nextParticipant: '晋城记录者'
+                    },
+                    {
+                        id: 4,
+                        name: '第四棒',
+                        participant: '晋城记录者',
+                        location: '山西省晋城市',
+                        province: '山西省',
+                        city: '晋城市',
+                        date: '2026-04-13',
+                        time: '待补充',
+                        weather: '待补充',
+                        camera: '待补充',
+                        film: '待补充',
+                        photos: [
+                            '/photos/phase2/shanxi/AF/AF4/photos/000018.JPG',
+                            '/photos/phase2/shanxi/AF/AF4/photos/000019.JPG',
+                            '/photos/phase2/shanxi/AF/AF4/photos/000020.JPG',
+                            '/photos/phase2/shanxi/AF/AF4/photos/000021.JPG',
+                            '/photos/phase2/shanxi/AF/AF4/photos/000022.JPG',
+                            '/photos/phase2/shanxi/AF/AF4/photos/000023.JPG'
+                        ],
+                        message: '晋城把这一卷继续往前送，也留住了属于自己的片刻。',
+                        messageImages: [
+                            '/photos/phase2/shanxi/AF/AF4/message/微信图片_2026-04-13_235622_522.png'
+                        ],
+                        coordinates: { lat: 35.4907, lng: 112.8513 },
+                        tags: ['晋城', '片刻', '山西'],
+                        nextLocation: '山西省吕梁市',
+                        nextParticipant: '吕梁记录者'
+                    },
+                    {
+                        id: 5,
+                        name: '第五棒',
+                        participant: '吕梁记录者',
+                        location: '山西省吕梁市',
+                        province: '山西省',
+                        city: '吕梁市',
+                        date: '2026-04-13',
+                        time: '待补充',
+                        weather: '待补充',
+                        camera: '待补充',
+                        film: '待补充',
+                        photos: [
+                            '/photos/phase2/shanxi/AF/AF5/photos/000024.JPG',
+                            '/photos/phase2/shanxi/AF/AF5/photos/000025.JPG',
+                            '/photos/phase2/shanxi/AF/AF5/photos/000026.JPG'
+                        ],
+                        message: '吕梁这一棒把山西的故事继续稳稳递出。',
+                        messageImages: [
+                            '/photos/phase2/shanxi/AF/AF5/message/微信图片_2026-04-13_235636_471.png'
+                        ],
+                        coordinates: { lat: 37.5177, lng: 111.1343 },
+                        tags: ['吕梁', '接力', '胶片'],
+                        nextLocation: '山西省太原市',
+                        nextParticipant: '太原记录者'
+                    },
+                    {
+                        id: 6,
+                        name: '第六棒',
+                        participant: '太原记录者',
+                        location: '山西省太原市',
+                        province: '山西省',
+                        city: '太原市',
+                        date: '2026-04-13',
+                        time: '待补充',
+                        weather: '待补充',
+                        camera: '待补充',
+                        film: '待补充',
+                        photos: [
+                            '/photos/phase2/shanxi/AF/AF6/photos/000027.JPG',
+                            '/photos/phase2/shanxi/AF/AF6/photos/000028.JPG',
+                            '/photos/phase2/shanxi/AF/AF6/photos/000029.JPG',
+                            '/photos/phase2/shanxi/AF/AF6/photos/000030.JPG',
+                            '/photos/phase2/shanxi/AF/AF6/photos/000031.JPG',
+                            '/photos/phase2/shanxi/AF/AF6/photos/000032.JPG',
+                            '/photos/phase2/shanxi/AF/AF6/photos/000033.JPG'
+                        ],
+                        message: '回到太原，AF 组也在这一棒完成了整段旅程。',
+                        messageImages: [
+                            '/photos/phase2/shanxi/AF/AF6/message/微信图片_2026-04-13_235649_494.png'
+                        ],
+                        coordinates: { lat: 37.8706, lng: 112.5489 },
+                        tags: ['太原', '终点', '完成'],
+                        nextLocation: '终点',
+                        nextParticipant: '完成'
+                    }
+                ]
+            }
+        ],
+        totalGroups: 1,
         activeGroups: 0,
-        completedGroups: 0,
+        completedGroups: 1,
         coordinates: { lat: 37.8706, lng: 112.5489 }
     },
     {
@@ -2220,17 +2582,139 @@ export const phase2Provinces: Phase2Province[] = [
             {
                 id: 'N',
                 name: 'N组',
-                description: '福州-莆田-泉州线',
+                description: '厦门-厦门-厦门-南平线',
                 province: '福建省',
-                startLocation: '福州市',
-                endLocation: '泉州市',
+                startLocation: '厦门市',
+                endLocation: '南平市',
                 color: 'from-lime-500 to-lime-600',
                 bgColor: 'from-lime-50 to-lime-100',
-                status: 'active',
-                participantCount: 6,
-                currentRelay: 1,
-                progress: 17,
-                relays: []
+                status: 'completed',
+                participantCount: 4,
+                currentRelay: 4,
+                progress: 100,
+                relays: [
+                    {
+                        id: 1,
+                        name: '第一棒',
+                        participant: '厦门记录者1',
+                        location: '福建省厦门市',
+                        province: '福建省',
+                        city: '厦门市',
+                        date: '2026-04-14',
+                        time: '待补充',
+                        weather: '待补充',
+                        camera: '待补充',
+                        film: '待补充',
+                        photos: [
+                            '/photos/phase2/fujian/N/N1/photos/000028.JPG',
+                            '/photos/phase2/fujian/N/N1/photos/000029.JPG',
+                            '/photos/phase2/fujian/N/N1/photos/000030.JPG',
+                            '/photos/phase2/fujian/N/N1/photos/000031.JPG',
+                            '/photos/phase2/fujian/N/N1/photos/000032.JPG',
+                            '/photos/phase2/fujian/N/N1/photos/000033.JPG'
+                        ],
+                        message: '厦门的第一棒，把海边与城市日常一起留进了胶片。',
+                        messageImages: [
+                            '/photos/phase2/fujian/N/N1/message/微信图片_20260414000925_297_2.jpg'
+                        ],
+                        coordinates: { lat: 24.4798, lng: 118.0894 },
+                        tags: ['厦门', '海边', '胶片'],
+                        nextLocation: '福建省厦门市',
+                        nextParticipant: '厦门记录者2'
+                    },
+                    {
+                        id: 2,
+                        name: '第二棒',
+                        participant: '厦门记录者2',
+                        location: '福建省厦门市',
+                        province: '福建省',
+                        city: '厦门市',
+                        date: '2026-04-14',
+                        time: '待补充',
+                        weather: '待补充',
+                        camera: '待补充',
+                        film: '待补充',
+                        photos: [
+                            '/photos/phase2/fujian/N/N2/photos/000034.JPG',
+                            '/photos/phase2/fujian/N/N2/photos/000035.JPG',
+                            '/photos/phase2/fujian/N/N2/photos/000036.JPG',
+                            '/photos/phase2/fujian/N/N2/photos/000037.JPG',
+                            '/photos/phase2/fujian/N/N2/photos/000038.JPG',
+                            '/photos/phase2/fujian/N/N2/photos/000039.JPG'
+                        ],
+                        message: '第二棒继续在厦门接力，把同一座城拍出不同光影。',
+                        messageImages: [
+                            '/photos/phase2/fujian/N/N2/message/微信图片_20260414000925_298_2.jpg',
+                            '/photos/phase2/fujian/N/N2/message/微信图片_20260414000926_299_2.jpg',
+                            '/photos/phase2/fujian/N/N2/message/微信图片_20260414000927_300_2.jpg',
+                            '/photos/phase2/fujian/N/N2/message/微信图片_20260414000928_301_2.jpg'
+                        ],
+                        coordinates: { lat: 24.4798, lng: 118.0894 },
+                        tags: ['厦门', '接力', '城市光影'],
+                        nextLocation: '福建省厦门市',
+                        nextParticipant: '厦门记录者3'
+                    },
+                    {
+                        id: 3,
+                        name: '第三棒',
+                        participant: '厦门记录者3',
+                        location: '福建省厦门市',
+                        province: '福建省',
+                        city: '厦门市',
+                        date: '2026-04-14',
+                        time: '待补充',
+                        weather: '待补充',
+                        camera: '待补充',
+                        film: '待补充',
+                        photos: [
+                            '/photos/phase2/fujian/N/N3/photos/000041.JPG',
+                            '/photos/phase2/fujian/N/N3/photos/000043.JPG',
+                            '/photos/phase2/fujian/N/N3/photos/000044.JPG',
+                            '/photos/phase2/fujian/N/N3/photos/000045.JPG',
+                            '/photos/phase2/fujian/N/N3/photos/000054.JPG',
+                            '/photos/phase2/fujian/N/N3/photos/000055.JPG'
+                        ],
+                        message: '第三棒仍在厦门，把这一卷的海风与街景继续补满。',
+                        messageImages: [
+                            '/photos/phase2/fujian/N/N3/message/微信图片_20260414000929_302_2.jpg'
+                        ],
+                        coordinates: { lat: 24.4798, lng: 118.0894 },
+                        tags: ['厦门', '海风', '街景'],
+                        nextLocation: '福建省南平市',
+                        nextParticipant: '南平记录者'
+                    },
+                    {
+                        id: 4,
+                        name: '第四棒',
+                        participant: '南平记录者',
+                        location: '福建省南平市',
+                        province: '福建省',
+                        city: '南平市',
+                        date: '2026-04-14',
+                        time: '待补充',
+                        weather: '待补充',
+                        camera: '待补充',
+                        film: '待补充',
+                        photos: [
+                            '/photos/phase2/fujian/N/N4/photos/000046.JPG',
+                            '/photos/phase2/fujian/N/N4/photos/000047.JPG',
+                            '/photos/phase2/fujian/N/N4/photos/000049.JPG',
+                            '/photos/phase2/fujian/N/N4/photos/000051.JPG',
+                            '/photos/phase2/fujian/N/N4/photos/000056.JPG',
+                            '/photos/phase2/fujian/N/N4/photos/000057.JPG',
+                            '/photos/phase2/fujian/N/N4/photos/000058.JPG',
+                            '/photos/phase2/fujian/N/N4/photos/000059.JPG'
+                        ],
+                        message: '最后一棒到了南平，N组也在山水之间顺利收官。',
+                        messageImages: [
+                            '/photos/phase2/fujian/N/N4/message/微信图片_20260414000929_303_2.jpg'
+                        ],
+                        coordinates: { lat: 26.6477, lng: 118.1785 },
+                        tags: ['南平', '山水', '完成'],
+                        nextLocation: '终点',
+                        nextParticipant: '完成'
+                    }
+                ]
             },
             {
                 id: 'O',
@@ -2249,8 +2733,8 @@ export const phase2Provinces: Phase2Province[] = [
             }
         ],
         totalGroups: 2,
-        activeGroups: 2,
-        completedGroups: 0,
+        activeGroups: 1,
+        completedGroups: 1,
         coordinates: { lat: 26.0745, lng: 119.2965 }
     },
     {
@@ -2362,17 +2846,187 @@ export const phase2Provinces: Phase2Province[] = [
             {
                 id: 'T',
                 name: 'T组',
-                description: '长沙-湘潭-长沙-长沙-郴州-永州线',
+                description: '长沙-湘潭-长沙-长沙-长沙-永州线',
                 province: '湖南省',
                 startLocation: '长沙市',
                 endLocation: '永州市',
                 color: 'from-rose-500 to-rose-600',
                 bgColor: 'from-rose-50 to-rose-100',
-                status: 'active',
+                status: 'completed',
                 participantCount: 6,
-                currentRelay: 1,
-                progress: 17,
-                relays: []
+                currentRelay: 6,
+                progress: 100,
+                relays: [
+                    {
+                        id: 1,
+                        name: '第一棒',
+                        participant: '长沙记录者',
+                        location: '湖南省长沙市',
+                        province: '湖南省',
+                        city: '长沙市',
+                        date: '2026-04-13',
+                        time: '待补充',
+                        weather: '待补充',
+                        camera: '待补充',
+                        film: '待补充',
+                        photos: [
+                            '/photos/phase2/hunan/T/T1/photos/000008.JPG',
+                            '/photos/phase2/hunan/T/T1/photos/000011.JPG',
+                            '/photos/phase2/hunan/T/T1/photos/000013.JPG',
+                            '/photos/phase2/hunan/T/T1/photos/000041.JPG',
+                            '/photos/phase2/hunan/T/T1/photos/000042.JPG',
+                            '/photos/phase2/hunan/T/T1/photos/000043.JPG',
+                            '/photos/phase2/hunan/T/T1/photos/000044.JPG'
+                        ],
+                        message: '长沙的城市节奏，被这一卷胶片慢慢收下。',
+                        messageImages: [
+                            '/photos/phase2/hunan/T/T1/message/微信图片_20260413235722_280_2.jpg'
+                        ],
+                        coordinates: { lat: 28.2278, lng: 112.9388 },
+                        tags: ['长沙', '城市', '胶片'],
+                        nextLocation: '湖南省湘潭市',
+                        nextParticipant: '湘潭记录者'
+                    },
+                    {
+                        id: 2,
+                        name: '第二棒',
+                        participant: '湘潭记录者',
+                        location: '湖南省湘潭市',
+                        province: '湖南省',
+                        city: '湘潭市',
+                        date: '2026-04-13',
+                        time: '待补充',
+                        weather: '待补充',
+                        camera: '待补充',
+                        film: '待补充',
+                        photos: [
+                            '/photos/phase2/hunan/T/T2/photos/000014.JPG',
+                            '/photos/phase2/hunan/T/T2/photos/000015.JPG',
+                            '/photos/phase2/hunan/T/T2/photos/000016.JPG',
+                            '/photos/phase2/hunan/T/T2/photos/000017.JPG',
+                            '/photos/phase2/hunan/T/T2/photos/000018.JPG'
+                        ],
+                        message: '湘潭的江风，把故事交给下一棒。',
+                        messageImages: [
+                            '/photos/phase2/hunan/T/T2/message/微信图片_20260413235722_281_2.jpg'
+                        ],
+                        coordinates: { lat: 27.8297, lng: 112.9441 },
+                        tags: ['湘潭', '江风', '接力'],
+                        nextLocation: '湖南省长沙市',
+                        nextParticipant: '长沙记录者'
+                    },
+                    {
+                        id: 3,
+                        name: '第三棒',
+                        participant: '长沙记录者',
+                        location: '湖南省长沙市',
+                        province: '湖南省',
+                        city: '长沙市',
+                        date: '2026-04-14',
+                        time: '待补充',
+                        weather: '待补充',
+                        camera: '待补充',
+                        film: '待补充',
+                        photos: [
+                            '/photos/phase2/hunan/T/T3/photos/微信图片_20260414140603_151_438.jpg',
+                            '/photos/phase2/hunan/T/T3/photos/微信图片_20260414140605_152_438.jpg',
+                            '/photos/phase2/hunan/T/T3/photos/微信图片_20260414140607_153_438.jpg',
+                            '/photos/phase2/hunan/T/T3/photos/微信图片_20260414140609_154_438.jpg',
+                            '/photos/phase2/hunan/T/T3/photos/微信图片_20260414140610_155_438.jpg'
+                        ],
+                        message: '回到长沙，熟悉的街景又有了新的光影。',
+                        messageImages: [
+                            '/photos/phase2/hunan/T/T3/message/微信图片_20260413235723_282_2.jpg',
+                            '/photos/phase2/hunan/T/T3/message/微信图片_20260413235725_284_2.jpg'
+                        ],
+                        coordinates: { lat: 28.2278, lng: 112.9388 },
+                        tags: ['长沙', '街景', '光影'],
+                        nextLocation: '湖南省长沙市',
+                        nextParticipant: '长沙记录者'
+                    },
+                    {
+                        id: 4,
+                        name: '第四棒',
+                        participant: '长沙记录者',
+                        location: '湖南省长沙市',
+                        province: '湖南省',
+                        city: '长沙市',
+                        date: '2026-04-13',
+                        time: '待补充',
+                        weather: '待补充',
+                        camera: '待补充',
+                        film: '待补充',
+                        photos: [
+                            '/photos/phase2/hunan/T/T4/photos/000001.JPG',
+                            '/photos/phase2/hunan/T/T4/photos/000002.JPG',
+                            '/photos/phase2/hunan/T/T4/photos/000003.JPG',
+                            '/photos/phase2/hunan/T/T4/photos/000004.JPG',
+                            '/photos/phase2/hunan/T/T4/photos/000005.JPG',
+                            '/photos/phase2/hunan/T/T4/photos/000006.JPG'
+                        ],
+                        message: '第三次路过长沙，胶片里多了一层日常温度。',
+                        messageImages: [
+                            '/photos/phase2/hunan/T/T4/message/微信图片_20260413235724_283_2.jpg'
+                        ],
+                        coordinates: { lat: 28.2278, lng: 112.9388 },
+                        tags: ['长沙', '日常', '城市温度'],
+                        nextLocation: '湖南省长沙市',
+                        nextParticipant: '长沙记录者'
+                    },
+                    {
+                        id: 5,
+                        name: '第五棒',
+                        participant: '长沙记录者',
+                        location: '湖南省长沙市',
+                        province: '湖南省',
+                        city: '长沙市',
+                        date: '2026-04-13',
+                        time: '待补充',
+                        weather: '待补充',
+                        camera: '待补充',
+                        film: '待补充',
+                        photos: [
+                            '/photos/phase2/hunan/T/T5/photos/000026.JPG',
+                            '/photos/phase2/hunan/T/T5/photos/000027.JPG',
+                            '/photos/phase2/hunan/T/T5/photos/000028.JPG',
+                            '/photos/phase2/hunan/T/T5/photos/000029.JPG',
+                            '/photos/phase2/hunan/T/T5/photos/000030.JPG',
+                            '/photos/phase2/hunan/T/T5/photos/000031.JPG'
+                        ],
+                        message: '长沙的片刻，继续把这一卷记忆往前传。',
+                        messageImages: [
+                            '/photos/phase2/hunan/T/T5/message/微信图片_20260413235725_285_2.jpg'
+                        ],
+                        coordinates: { lat: 28.2278, lng: 112.9388 },
+                        tags: ['长沙', '记忆', '接力'],
+                        nextLocation: '湖南省永州市',
+                        nextParticipant: '永州记录者'
+                    },
+                    {
+                        id: 6,
+                        name: '第六棒',
+                        participant: '永州记录者',
+                        location: '湖南省永州市',
+                        province: '湖南省',
+                        city: '永州市',
+                        date: '2026-04-13',
+                        time: '待补充',
+                        weather: '待补充',
+                        camera: '待补充',
+                        film: '待补充',
+                        photos: [],
+                        message: '永州收下最后一棒，也为 T 组画上句点。',
+                        messageImages: [
+                            '/photos/phase2/hunan/T/T6/message/微信图片_2026-04-13_235925_006.png',
+                            '/photos/phase2/hunan/T/T6/message/微信图片_2026-04-13_235940_695.png',
+                            '/photos/phase2/hunan/T/T6/message/微信图片_20260413235726_286_2.jpg'
+                        ],
+                        coordinates: { lat: 26.4203, lng: 111.6132 },
+                        tags: ['永州', '终点', '完成'],
+                        nextLocation: '终点',
+                        nextParticipant: '完成'
+                    }
+                ]
             },
             {
                 id: 'U',
@@ -2406,8 +3060,8 @@ export const phase2Provinces: Phase2Province[] = [
             }
         ],
         totalGroups: 3,
-        activeGroups: 1,
-        completedGroups: 0,
+        activeGroups: 0,
+        completedGroups: 1,
         coordinates: { lat: 28.2278, lng: 112.9388 }
     },
     {
@@ -2417,10 +3071,217 @@ export const phase2Provinces: Phase2Province[] = [
         description: '草原明珠，马背上的民族',
         color: 'from-gray-500 to-gray-600',
         bgColor: 'from-gray-50 to-gray-100',
-        groups: [],
-        totalGroups: 0,
+        groups: [
+            {
+                id: 'AA',
+                name: 'AA组',
+                description: '鄂尔多斯-呼和浩特-赤峰-乌海-赤峰-乌海线',
+                province: '内蒙古自治区',
+                startLocation: '鄂尔多斯市',
+                endLocation: '乌海市',
+                color: 'from-emerald-500 to-emerald-600',
+                bgColor: 'from-emerald-50 to-emerald-100',
+                status: 'completed',
+                participantCount: 6,
+                currentRelay: 6,
+                progress: 100,
+                relays: [
+                    {
+                        id: 1,
+                        name: '第一棒',
+                        participant: '鄂尔多斯记录者',
+                        location: '内蒙古自治区鄂尔多斯市',
+                        province: '内蒙古自治区',
+                        city: '鄂尔多斯市',
+                        date: '2026-04-14',
+                        time: '待补充',
+                        weather: '待补充',
+                        camera: '待补充',
+                        film: '待补充',
+                        photos: [
+                            '/photos/phase2/neimenggu/AA/AA1/photos/000001.JPG',
+                            '/photos/phase2/neimenggu/AA/AA1/photos/000002.JPG',
+                            '/photos/phase2/neimenggu/AA/AA1/photos/000003.JPG',
+                            '/photos/phase2/neimenggu/AA/AA1/photos/000004.JPG',
+                            '/photos/phase2/neimenggu/AA/AA1/photos/000005.JPG',
+                            '/photos/phase2/neimenggu/AA/AA1/photos/000006.JPG'
+                        ],
+                        message: '鄂尔多斯的开场，把草原气息先装进了这一卷。',
+                        messageImages: [
+                            '/photos/phase2/neimenggu/AA/AA1/message/微信图片_20260414000723_289_2.jpg'
+                        ],
+                        coordinates: { lat: 39.6086, lng: 109.7813 },
+                        tags: ['鄂尔多斯', '草原', '起点'],
+                        nextLocation: '内蒙古自治区呼和浩特市',
+                        nextParticipant: '呼和浩特记录者'
+                    },
+                    {
+                        id: 2,
+                        name: '第二棒',
+                        participant: '呼和浩特记录者',
+                        location: '内蒙古自治区呼和浩特市',
+                        province: '内蒙古自治区',
+                        city: '呼和浩特市',
+                        date: '2026-04-14',
+                        time: '待补充',
+                        weather: '待补充',
+                        camera: '待补充',
+                        film: '待补充',
+                        photos: [
+                            '/photos/phase2/neimenggu/AA/AA2/photos/000007.JPG',
+                            '/photos/phase2/neimenggu/AA/AA2/photos/000008.JPG',
+                            '/photos/phase2/neimenggu/AA/AA2/photos/000010.JPG',
+                            '/photos/phase2/neimenggu/AA/AA2/photos/000011.JPG',
+                            '/photos/phase2/neimenggu/AA/AA2/photos/000012.JPG'
+                        ],
+                        message: '呼和浩特接过这一棒，把北疆的城市节奏继续往前送。',
+                        messageImages: [
+                            '/photos/phase2/neimenggu/AA/AA2/message/微信图片_20260414000724_290_2.jpg'
+                        ],
+                        coordinates: { lat: 40.8426, lng: 111.7492 },
+                        tags: ['呼和浩特', '北疆', '接力'],
+                        nextLocation: '内蒙古自治区赤峰市',
+                        nextParticipant: '赤峰记录者'
+                    },
+                    {
+                        id: 3,
+                        name: '第三棒',
+                        participant: '赤峰记录者',
+                        location: '内蒙古自治区赤峰市',
+                        province: '内蒙古自治区',
+                        city: '赤峰市',
+                        date: '2026-04-14',
+                        time: '待补充',
+                        weather: '待补充',
+                        camera: '待补充',
+                        film: '待补充',
+                        photos: [
+                            '/photos/phase2/neimenggu/AA/AA3/photos/000014.JPG',
+                            '/photos/phase2/neimenggu/AA/AA3/photos/000015.JPG',
+                            '/photos/phase2/neimenggu/AA/AA3/photos/000017.JPG',
+                            '/photos/phase2/neimenggu/AA/AA3/photos/000018.JPG',
+                            '/photos/phase2/neimenggu/AA/AA3/photos/000038.JPG',
+                            '/photos/phase2/neimenggu/AA/AA3/photos/000039.JPG'
+                        ],
+                        message: '赤峰这一棒，把更辽阔的风景补进了胶片。',
+                        messageImages: [
+                            '/photos/phase2/neimenggu/AA/AA3/message/微信图片_20260414000724_291_2.jpg'
+                        ],
+                        coordinates: { lat: 42.2660, lng: 118.8892 },
+                        tags: ['赤峰', '风景', '胶片'],
+                        nextLocation: '内蒙古自治区乌海市',
+                        nextParticipant: '乌海记录者'
+                    },
+                    {
+                        id: 4,
+                        name: '第四棒',
+                        participant: '乌海记录者',
+                        location: '内蒙古自治区乌海市',
+                        province: '内蒙古自治区',
+                        city: '乌海市',
+                        date: '2026-04-14',
+                        time: '待补充',
+                        weather: '待补充',
+                        camera: '待补充',
+                        film: '待补充',
+                        photos: [
+                            '/photos/phase2/neimenggu/AA/AA4/photos/000019.JPG',
+                            '/photos/phase2/neimenggu/AA/AA4/photos/000020.JPG',
+                            '/photos/phase2/neimenggu/AA/AA4/photos/000021.JPG',
+                            '/photos/phase2/neimenggu/AA/AA4/photos/000022.JPG',
+                            '/photos/phase2/neimenggu/AA/AA4/photos/000023.JPG'
+                        ],
+                        message: '乌海把这卷胶片里的西北气息继续延长。',
+                        messageImages: [
+                            '/photos/phase2/neimenggu/AA/AA4/message/微信图片_20260414000725_292_2.jpg',
+                            '/photos/phase2/neimenggu/AA/AA4/message/微信图片_20260414000726_293_2.jpg'
+                        ],
+                        coordinates: { lat: 39.6547, lng: 106.8256 },
+                        tags: ['乌海', '西北', '接力'],
+                        nextLocation: '内蒙古自治区赤峰市',
+                        nextParticipant: '赤峰记录者'
+                    },
+                    {
+                        id: 5,
+                        name: '第五棒',
+                        participant: '赤峰记录者',
+                        location: '内蒙古自治区赤峰市',
+                        province: '内蒙古自治区',
+                        city: '赤峰市',
+                        date: '2026-04-14',
+                        time: '待补充',
+                        weather: '待补充',
+                        camera: '待补充',
+                        film: '待补充',
+                        photos: [
+                            '/photos/phase2/neimenggu/AA/AA5/photos/000024.JPG',
+                            '/photos/phase2/neimenggu/AA/AA5/photos/000025.JPG',
+                            '/photos/phase2/neimenggu/AA/AA5/photos/000027.JPG',
+                            '/photos/phase2/neimenggu/AA/AA5/photos/000040.JPG',
+                            '/photos/phase2/neimenggu/AA/AA5/photos/000041.JPG'
+                        ],
+                        message: '第五棒回到赤峰，继续把内蒙古的故事补充完整。',
+                        messageImages: [
+                            '/photos/phase2/neimenggu/AA/AA5/message/微信图片_20260414000727_294_2.jpg'
+                        ],
+                        coordinates: { lat: 42.2660, lng: 118.8892 },
+                        tags: ['赤峰', '回程', '记录'],
+                        nextLocation: '内蒙古自治区乌海市',
+                        nextParticipant: '乌海记录者'
+                    },
+                    {
+                        id: 6,
+                        name: '第六棒',
+                        participant: '乌海记录者',
+                        location: '内蒙古自治区乌海市',
+                        province: '内蒙古自治区',
+                        city: '乌海市',
+                        date: '2026-04-14',
+                        time: '待补充',
+                        weather: '待补充',
+                        camera: '待补充',
+                        film: '待补充',
+                        photos: [
+                            '/photos/phase2/neimenggu/AA/AA6/photos/000028.JPG',
+                            '/photos/phase2/neimenggu/AA/AA6/photos/000029.JPG',
+                            '/photos/phase2/neimenggu/AA/AA6/photos/000030.JPG',
+                            '/photos/phase2/neimenggu/AA/AA6/photos/000031.JPG',
+                            '/photos/phase2/neimenggu/AA/AA6/photos/000032.JPG',
+                            '/photos/phase2/neimenggu/AA/AA6/photos/000033.JPG',
+                            '/photos/phase2/neimenggu/AA/AA6/photos/000034.JPG',
+                            '/photos/phase2/neimenggu/AA/AA6/photos/000035.JPG',
+                            '/photos/phase2/neimenggu/AA/AA6/photos/000036.JPG'
+                        ],
+                        message: '最后一棒落在乌海，AA组也顺利完成整段漂流。',
+                        messageImages: [
+                            '/photos/phase2/neimenggu/AA/AA6/message/微信图片_2026-04-14_000837_765.png'
+                        ],
+                        coordinates: { lat: 39.6547, lng: 106.8256 },
+                        tags: ['乌海', '终点', '完成'],
+                        nextLocation: '终点',
+                        nextParticipant: '完成'
+                    }
+                ]
+            },
+            {
+                id: 'AB',
+                name: 'AB组',
+                description: '内蒙古 AB 组路线待补充',
+                province: '内蒙古自治区',
+                startLocation: '待补充',
+                endLocation: '待补充',
+                color: 'from-cyan-500 to-cyan-600',
+                bgColor: 'from-cyan-50 to-cyan-100',
+                status: 'planning',
+                participantCount: 6,
+                currentRelay: 0,
+                progress: 0,
+                relays: []
+            }
+        ],
+        totalGroups: 2,
         activeGroups: 0,
-        completedGroups: 0,
+        completedGroups: 1,
         coordinates: { lat: 40.818233, lng: 111.765226 }
     },
     {
@@ -2447,22 +3308,137 @@ export const phase2Provinces: Phase2Province[] = [
             {
                 id: 'M',
                 name: 'M组',
-                description: '海口-三亚环岛线',
+                description: '儋州-文昌-海口-海口线',
                 province: '海南省',
-                startLocation: '海口市',
-                endLocation: '三亚市',
+                startLocation: '儋州市',
+                endLocation: '海口市',
                 color: 'from-orange-500 to-orange-600',
                 bgColor: 'from-orange-50 to-orange-100',
-                status: 'active',
-                participantCount: 6,
-                currentRelay: 2,
-                progress: 33,
-                relays: []
+                status: 'completed',
+                participantCount: 4,
+                currentRelay: 4,
+                progress: 100,
+                relays: [
+                    {
+                        id: 1,
+                        name: '第一棒',
+                        participant: '儋州记录者',
+                        location: '海南省儋州市',
+                        province: '海南省',
+                        city: '儋州市',
+                        date: '2026-04-23',
+                        time: '待补充',
+                        weather: '待补充',
+                        camera: '待补充',
+                        film: '待补充',
+                        photos: [
+                            '/photos/phase2/hainan/M/M1/photos/000001.JPG',
+                            '/photos/phase2/hainan/M/M1/photos/000002.JPG',
+                            '/photos/phase2/hainan/M/M1/photos/000003.JPG',
+                            '/photos/phase2/hainan/M/M1/photos/000004.JPG',
+                            '/photos/phase2/hainan/M/M1/photos/000005.JPG'
+                        ],
+                        message: '儋州为海南 M 组开场，把海岛的第一段记忆交给胶片。',
+                        messageImages: [
+                            '/photos/phase2/hainan/M/M1/message/微信图片_20260423171526_350_2.jpg'
+                        ],
+                        coordinates: { lat: 19.5209, lng: 109.5807 },
+                        tags: ['儋州', '海岛', '起点'],
+                        nextLocation: '海南省文昌市',
+                        nextParticipant: '文昌记录者'
+                    },
+                    {
+                        id: 2,
+                        name: '第二棒',
+                        participant: '文昌记录者',
+                        location: '海南省文昌市',
+                        province: '海南省',
+                        city: '文昌市',
+                        date: '2026-04-23',
+                        time: '待补充',
+                        weather: '待补充',
+                        camera: '待补充',
+                        film: '待补充',
+                        photos: [
+                            '/photos/phase2/hainan/M/M2/photos/000008.JPG',
+                            '/photos/phase2/hainan/M/M2/photos/000009.JPG',
+                            '/photos/phase2/hainan/M/M2/photos/000010.JPG',
+                            '/photos/phase2/hainan/M/M2/photos/000011.JPG',
+                            '/photos/phase2/hainan/M/M2/photos/000012.JPG',
+                            '/photos/phase2/hainan/M/M2/photos/000036.JPG'
+                        ],
+                        message: '文昌接过这一卷，把海南东线的光线也一起留下。',
+                        messageImages: [
+                            '/photos/phase2/hainan/M/M2/message/微信图片_20260423171529_351_2.jpg'
+                        ],
+                        coordinates: { lat: 19.5432, lng: 110.7977 },
+                        tags: ['文昌', '东线', '接力'],
+                        nextLocation: '海南省海口市',
+                        nextParticipant: '海口记录者1'
+                    },
+                    {
+                        id: 3,
+                        name: '第三棒',
+                        participant: '海口记录者1',
+                        location: '海南省海口市',
+                        province: '海南省',
+                        city: '海口市',
+                        date: '2026-04-23',
+                        time: '待补充',
+                        weather: '待补充',
+                        camera: '待补充',
+                        film: '待补充',
+                        photos: [
+                            '/photos/phase2/hainan/M/M3/photos/000013.JPG',
+                            '/photos/phase2/hainan/M/M3/photos/000014.JPG',
+                            '/photos/phase2/hainan/M/M3/photos/000015.JPG',
+                            '/photos/phase2/hainan/M/M3/photos/000016.JPG',
+                            '/photos/phase2/hainan/M/M3/photos/000017.JPG'
+                        ],
+                        message: '第三棒回到海口，把城市生活装进这卷胶片里。',
+                        messageImages: [
+                            '/photos/phase2/hainan/M/M3/message/微信图片_20260423171621_355_2.jpg'
+                        ],
+                        coordinates: { lat: 20.0440, lng: 110.1983 },
+                        tags: ['海口', '城市', '胶片'],
+                        nextLocation: '海南省海口市',
+                        nextParticipant: '海口记录者2'
+                    },
+                    {
+                        id: 4,
+                        name: '第四棒',
+                        participant: '海口记录者2',
+                        location: '海南省海口市',
+                        province: '海南省',
+                        city: '海口市',
+                        date: '2026-04-23',
+                        time: '待补充',
+                        weather: '待补充',
+                        camera: '待补充',
+                        film: '待补充',
+                        photos: [
+                            '/photos/phase2/hainan/M/M4/photos/000019.JPG',
+                            '/photos/phase2/hainan/M/M4/photos/000020.JPG',
+                            '/photos/phase2/hainan/M/M4/photos/000021.JPG',
+                            '/photos/phase2/hainan/M/M4/photos/000022.JPG',
+                            '/photos/phase2/hainan/M/M4/photos/000038.JPG'
+                        ],
+                        message: '最后一棒仍在海口，M组也在椰风海韵里顺利收官。',
+                        messageImages: [
+                            '/photos/phase2/hainan/M/M4/message/微信图片_20260423171535_353_2.jpg',
+                            '/photos/phase2/hainan/M/M4/message/微信图片_20260423171619_354_2.jpg'
+                        ],
+                        coordinates: { lat: 20.0440, lng: 110.1983 },
+                        tags: ['海口', '椰风', '完成'],
+                        nextLocation: '终点',
+                        nextParticipant: '完成'
+                    }
+                ]
             }
         ],
         totalGroups: 1,
-        activeGroups: 1,
-        completedGroups: 0,
+        activeGroups: 0,
+        completedGroups: 1,
         coordinates: { lat: 20.0311, lng: 110.3312 }
     },
     {
@@ -2645,10 +3621,66 @@ export const phase2Provinces: Phase2Province[] = [
                 color: 'from-gray-500 to-gray-600',
                 bgColor: 'from-gray-50 to-gray-100',
                 status: 'active',
-                participantCount: 6,
-                currentRelay: 2,
-                progress: 33,
-                relays: []
+                participantCount: 2,
+                currentRelay: 1,
+                progress: 50,
+                relays: [
+                    {
+                        id: 1,
+                        name: '第一棒',
+                        participant: '香港记录者1',
+                        location: '香港特别行政区中环',
+                        province: '香港特别行政区',
+                        city: '中环',
+                        date: '2026-04-14',
+                        time: '待补充',
+                        weather: '待补充',
+                        camera: '待补充',
+                        film: '待补充',
+                        photos: [
+                            '/photos/phase2/hongkong/L/L1/photos/000001.JPG',
+                            '/photos/phase2/hongkong/L/L1/photos/000002.JPG',
+                            '/photos/phase2/hongkong/L/L1/photos/000003.JPG',
+                            '/photos/phase2/hongkong/L/L1/photos/000004.JPG',
+                            '/photos/phase2/hongkong/L/L1/photos/000006.JPG',
+                            '/photos/phase2/hongkong/L/L1/photos/000023.JPG',
+                            '/photos/phase2/hongkong/L/L1/photos/000024.JPG',
+                            '/photos/phase2/hongkong/L/L1/photos/000026.JPG',
+                            '/photos/phase2/hongkong/L/L1/photos/000027.JPG',
+                            '/photos/phase2/hongkong/L/L1/photos/微信图片_20260414171106_326_2.jpg',
+                            '/photos/phase2/hongkong/L/L1/photos/微信图片_20260414171107_327_2.jpg',
+                            '/photos/phase2/hongkong/L/L1/photos/微信图片_20260414171107_328_2.jpg',
+                            '/photos/phase2/hongkong/L/L1/photos/微信图片_20260414171108_329_2.jpg'
+                        ],
+                        message: '中环这一棒已经就位，维港边的城市光影也被一并收进胶片。',
+                        messageImages: [
+                            '/photos/phase2/hongkong/L/L1/message/微信图片_20260414000924_296_2.jpg'
+                        ],
+                        coordinates: { lat: 22.2819, lng: 114.1589 },
+                        tags: ['中环', '香港', '维港'],
+                        nextLocation: '香港特别行政区尖沙咀',
+                        nextParticipant: '香港记录者2'
+                    },
+                    {
+                        id: 2,
+                        name: '第二棒',
+                        participant: '香港记录者2',
+                        location: '香港特别行政区尖沙咀',
+                        province: '香港特别行政区',
+                        city: '尖沙咀',
+                        date: '待补充',
+                        time: '待补充',
+                        weather: '待补充',
+                        camera: '待补充',
+                        film: '待补充',
+                        photos: [],
+                        message: '尖沙咀接过下一棒，等待继续记录香港的夜色。',
+                        coordinates: { lat: 22.2965, lng: 114.1722 },
+                        tags: ['尖沙咀', '香港', '待续'],
+                        nextLocation: '终点',
+                        nextParticipant: '完成'
+                    }
+                ]
             }
         ],
         totalGroups: 1,
@@ -2692,6 +3724,18 @@ export const phase2Provinces: Phase2Province[] = [
         ]
     }
 ];
+
+export const phase2Provinces: Phase2Province[] = phase2ProvincesRaw.map((province: any) => ({
+    ...province,
+    groups: province.groups.map((group: any) => ({
+        ...group,
+        relays: group.relays.map((relay: any) => ({
+            ...relay,
+            photos: toImageAssets(relay.photos),
+            messageImages: relay.messageImages ? toImageAssets(relay.messageImages) : undefined
+        }))
+    }))
+}));
 
 // 获取所有省份
 export const getAllProvinces = () => phase2Provinces;

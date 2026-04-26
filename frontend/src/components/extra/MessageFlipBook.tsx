@@ -100,7 +100,7 @@ export const MessageFlipBook: React.FC<MessageFlipBookProps> = ({
                     <div className="rounded-[1.5rem] border border-[#eadfc9] bg-[#f6ecdc] p-3 shadow-[inset_0_1px_0_rgba(255,255,255,0.7)]">
                       <div className="overflow-hidden rounded-[1.2rem] bg-[radial-gradient(circle_at_top,rgba(255,255,255,0.9),rgba(245,236,220,0.92))] shadow-[0_16px_32px_rgba(15,23,42,0.1)]">
                         <SmartImage
-                          originalPath={current.photo}
+                          asset={current.photo}
                           variant="preview"
                           alt={current.zhText || current.enText}
                           className="max-h-[62vh] min-h-[320px] w-full object-contain bg-transparent p-1 md:min-h-[520px]"

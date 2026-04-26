@@ -3,6 +3,7 @@ import type { MeaningMoment } from '../../config/meaningData';
 import { PlayCircle } from 'lucide-react';
 import MeaningVideoPlayer from './MeaningVideoPlayer';
 import { useTranslation } from '../../i18n/hooks';
+import SmartImage from '../SmartImage';
 
 export interface MeaningMomentsMosaicProps {
   moments: MeaningMoment[];
@@ -18,7 +19,11 @@ const MeaningMomentCard: React.FC<{ moment: MeaningMoment; isZh: boolean; clipLa
   if (moment.type === 'photo') {
     return (
       <div className="relative h-full rounded-2xl overflow-hidden border border-slate-200 bg-slate-50">
-        <img src={moment.photoSrc} alt={isZh ? moment.zhCaption || 'photo' : moment.enCaption || 'photo'} className="w-full h-full object-cover opacity-90" />
+        <SmartImage
+          asset={moment.photo}
+          alt={isZh ? moment.zhCaption || 'photo' : moment.enCaption || 'photo'}
+          className="w-full h-full object-cover opacity-90"
+        />
         <div className="absolute inset-x-0 bottom-0 p-3 bg-gradient-to-t from-black/60 via-black/0 to-transparent">
           {source ? <p className="mb-1 text-[0.65rem] uppercase tracking-[0.16em] text-white/70">{source}</p> : null}
           <p className="text-xs text-white/90 line-clamp-2">{isZh ? moment.zhCaption || '' : moment.enCaption || ''}</p>

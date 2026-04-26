@@ -2,9 +2,10 @@ import React, { useEffect, useMemo, useRef, useState } from 'react';
 import { motion } from 'framer-motion';
 import SmartImage from '../SmartImage';
 import { useTranslation } from '../../i18n/hooks';
+import { resolveImageAssetUrl, type ImageAsset } from '../../types/imageAsset';
 
 export interface FilmStripGalleryProps {
-  photos: string[];
+  photos: ImageAsset[];
   accentColor?: string;
   mode?: 'full' | 'preview';
   showHint?: boolean;
@@ -110,7 +111,7 @@ export const FilmStripGallery: React.FC<FilmStripGalleryProps> = ({
 
                   return (
                     <motion.button
-                      key={`${photos[photoIndex]}-${photoIndex}`}
+                      key={`${resolveImageAssetUrl(photos[photoIndex])}-${photoIndex}`}
                       type="button"
                       onClick={() => goTo(photoIndex)}
                       animate={{
@@ -132,7 +133,7 @@ export const FilmStripGallery: React.FC<FilmStripGalleryProps> = ({
                       <div className="absolute left-0 top-1/2 z-10 h-4 w-4 -translate-x-1/2 -translate-y-1/2 rounded-full border border-slate-700/80 bg-slate-950" />
                       <div className="absolute right-0 top-1/2 z-10 h-4 w-4 translate-x-1/2 -translate-y-1/2 rounded-full border border-slate-700/80 bg-slate-950" />
                       <SmartImage
-                        originalPath={photos[photoIndex]}
+                        asset={photos[photoIndex]}
                         variant={isActive ? 'preview' : 'thumbnail'}
                         alt={t('extra.member.miniCaption', { index: photoIndex + 1 }) as string}
                         className={`h-full w-full object-cover transition-transform duration-500 ${
@@ -170,7 +171,7 @@ export const FilmStripGallery: React.FC<FilmStripGalleryProps> = ({
             <div className="flex min-w-max gap-2">
               {photos.map((path, index) => (
                 <button
-                  key={`${path}-index-${index}`}
+                  key={`${resolveImageAssetUrl(path)}-index-${index}`}
                   type="button"
                   onClick={() => goTo(index)}
                   className={`relative h-16 w-10 flex-shrink-0 overflow-hidden rounded-lg border transition ${
@@ -182,7 +183,7 @@ export const FilmStripGallery: React.FC<FilmStripGalleryProps> = ({
                   <div className="absolute left-0 top-1/2 h-2.5 w-2.5 -translate-x-1/2 -translate-y-1/2 rounded-full border border-slate-700/80 bg-slate-950" />
                   <div className="absolute right-0 top-1/2 h-2.5 w-2.5 translate-x-1/2 -translate-y-1/2 rounded-full border border-slate-700/80 bg-slate-950" />
                   <SmartImage
-                    originalPath={path}
+                    asset={path}
                     variant="thumbnail"
                     alt={t('extra.member.miniCaption', { index: index + 1 }) as string}
                     className="h-full w-full object-cover"
@@ -225,7 +226,7 @@ export const FilmStripGallery: React.FC<FilmStripGalleryProps> = ({
         <div className="relative flex gap-3 overflow-x-auto pb-4">
               {photos.map((path, i) => (
             <motion.div
-              key={path}
+              key={resolveImageAssetUrl(path)}
               initial={{ opacity: 0, y: 16, rotate: (i % 3) - 1 }}
               whileInView={{ opacity: 1, y: 0, rotate: (i % 3) - 1 }}
               viewport={{ once: true }}
@@ -241,7 +242,7 @@ export const FilmStripGallery: React.FC<FilmStripGalleryProps> = ({
               <div className="absolute right-0 top-1/2 translate-x-1/2 -translate-y-1/2 w-3 h-3 rounded-full bg-slate-950 border border-slate-700/80" />
 
               <SmartImage
-                originalPath={path}
+                asset={path}
                 variant="thumbnail"
                 alt={t('extra.member.miniCaption', { index: i + 1 }) as string}
                 className="w-full h-full object-cover"

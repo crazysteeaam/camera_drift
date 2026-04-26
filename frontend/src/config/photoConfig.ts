@@ -1,9 +1,19 @@
 // 图片配置文件 - 自动生成，请勿手动修改
 // 生成时间: 2025-08-20T08:11:22.824Z
 
+import { resolveImageAssetUrl, toImageAssets, type ImageAsset, type ImageAssetLike } from '../types/imageAsset';
+
 // 定义类型
-type PhotoGroup = {
+type RawPhotoGroup = {
     [key: number]: string[];
+};
+
+type RawPhotoConfig = {
+    [key: string]: RawPhotoGroup;
+};
+
+type PhotoGroup = {
+    [key: number]: ImageAsset[];
 };
 
 type PhotoConfig = {
@@ -11,7 +21,7 @@ type PhotoConfig = {
 };
 
 // 图片路径配置 - 基于实际文件结构
-export const PHOTO_CONFIG: PhotoConfig = {
+const RAW_PHOTO_CONFIG: RawPhotoConfig = {
     "A": {
         "1": [
             "/photos/A1/000001.JPG",
@@ -196,6 +206,15 @@ export const PHOTO_CONFIG: PhotoConfig = {
     }
 };
 
+export const PHOTO_CONFIG: PhotoConfig = Object.fromEntries(
+    Object.entries(RAW_PHOTO_CONFIG).map(([groupKey, photoGroup]) => [
+        groupKey,
+        Object.fromEntries(
+            Object.entries(photoGroup).map(([relayKey, photos]) => [relayKey, toImageAssets(photos)])
+        )
+    ])
+) as PhotoConfig;
+
 
 // 图片变体生成规则
 export const IMAGE_VARIANTS = {
@@ -210,7 +229,7 @@ export const IMAGE_VARIANTS = {
  * @param index 序号 (1-6)
  * @returns 图片路径数组
  */
-export function getPhotoPaths(group: string, index: number): string[] {
+export function getPhotoPaths(group: string, index: number): ImageAsset[] {
     return PHOTO_CONFIG[group as keyof typeof PHOTO_CONFIG]?.[index] || [];
 }
 
@@ -228,7 +247,7 @@ export function getAllPhotoConfig() {
  * @param index 序号
  * @param newPaths 新的图片路径数组
  */
-export function addPhotoPaths(group: string, index: number, newPaths: string[]) {
+export function addPhotoPaths(group: string, index: number, newPaths: ImageAssetLike[]) {
     if (!PHOTO_CONFIG[group as keyof typeof PHOTO_CONFIG]) {
         (PHOTO_CONFIG as any)[group] = {};
     }
@@ -238,8 +257,8 @@ export function addPhotoPaths(group: string, index: number, newPaths: string[]) 
     }
     
     // 添加新路径，避免重复
-    newPaths.forEach(path => {
-        if (!PHOTO_CONFIG[group as keyof typeof PHOTO_CONFIG][index].includes(path)) {
+    toImageAssets(newPaths).forEach((path) => {
+        if (!PHOTO_CONFIG[group as keyof typeof PHOTO_CONFIG][index].some((asset) => asset.original === path.original)) {
             (PHOTO_CONFIG as any)[group][index].push(path);
         }
     });
@@ -252,14 +271,16 @@ export function addPhotoPaths(group: string, index: number, newPaths: string[]) 
  * @param path 图片路径
  * @returns Promise<boolean> 是否存在
  */
-export async function validatePhotoPath(path: string): Promise<boolean> {
-    try {
-        const response = await fetch(path, { method: 'HEAD' });
-        return response.ok;
-    } catch (error) {
-        console.warn(`Failed to validate path: ${path}`, error);
-        return false;
-    }
+export async function validatePhotoPath(path: ImageAssetLike): Promise<boolean> {
+    const url = resolveImageAssetUrl(path);
+    if (!url) return false;
+
+    return new Promise((resolve) => {
+        const image = new Image();
+        image.onload = () => resolve(true);
+        image.onerror = () => resolve(false);
+        image.src = url;
+    });
 }
 
 /**
@@ -268,9 +289,9 @@ export async function validatePhotoPath(path: string): Promise<boolean> {
  * @param index 序号
  * @returns Promise<string[]> 有效的图片路径数组
  */
-export async function getValidPhotoPaths(group: string, index: number): Promise<string[]> {
+export async function getValidPhotoPaths(group: string, index: number): Promise<ImageAsset[]> {
     const paths = getPhotoPaths(group, index);
-    const validPaths: string[] = [];
+    const validPaths: ImageAsset[] = [];
     
     for (const path of paths) {
         const isValid = await validatePhotoPath(path);

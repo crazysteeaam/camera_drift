@@ -8,10 +8,11 @@ import ProgressFilmstrip from '../components/meaning/ProgressFilmstrip';
 import MeaningVideoPlayer from '../components/meaning/MeaningVideoPlayer';
 import MeaningMemberCard from '../components/meaning/MeaningMemberCard';
 import MeaningShowcaseSection from '../components/meaning/MeaningShowcaseSection';
+import { resolveImageAssetUrl, type ImageAsset } from '../types/imageAsset';
 
-const MeaningVideoHero: React.FC<{ sources: MeaningVideoSource[]; posterImageSrc?: string; videoSlot: string; videoPlaceholder: string }> = ({
+const MeaningVideoHero: React.FC<{ sources: MeaningVideoSource[]; posterImage?: ImageAsset; videoSlot: string; videoPlaceholder: string }> = ({
   sources,
-  posterImageSrc,
+  posterImage,
   videoSlot,
   videoPlaceholder,
 }) => {
@@ -22,8 +23,8 @@ const MeaningVideoHero: React.FC<{ sources: MeaningVideoSource[]; posterImageSrc
     return (
       <div className="relative w-full aspect-[16/10] md:aspect-[16/9] rounded-3xl overflow-hidden border border-emerald-100/60 bg-gradient-to-br from-emerald-50 via-sky-50 to-indigo-50 shadow-[0_30px_90px_rgba(2,132,199,0.12)]">
         <div className="absolute inset-0 opacity-90 bg-[radial-gradient(circle_at_20%_20%,rgba(16,185,129,0.18),transparent_45%),radial-gradient(circle_at_80%_0%,rgba(59,130,246,0.16),transparent_50%),radial-gradient(circle_at_90%_80%,rgba(99,102,241,0.18),transparent_50%)]" />
-        {posterImageSrc ? (
-          <img src={posterImageSrc} alt="Hero poster" className="absolute inset-0 w-full h-full object-cover opacity-70" />
+        {posterImage ? (
+          <img src={resolveImageAssetUrl(posterImage)} alt="Hero poster" className="absolute inset-0 w-full h-full object-cover opacity-70" />
         ) : null}
         <div className="absolute inset-0 flex items-center justify-center text-center px-6">
           <div className="space-y-2">
@@ -183,7 +184,7 @@ const MeaningMonthPage: React.FC = () => {
             <div className="space-y-6">
               <MeaningVideoHero
                 sources={month.hero.heroVideoSources || []}
-                posterImageSrc={month.hero.posterImageSrc}
+                posterImage={month.hero.posterImage}
                 videoSlot={t('meaning.month.videoSlot') as string}
                 videoPlaceholder={t('meaning.month.videoPlaceholder') as string}
               />

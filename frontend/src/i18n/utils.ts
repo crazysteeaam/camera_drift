@@ -171,10 +171,14 @@ export const translateGroupInfo = (
   const translatedName = t(nameKey) as string;
   const translatedDesc = t(descKey) as string;
   
-  // 如果翻译不存在，使用 common.groups 中的组名，描述返回空
-  const name = translatedName !== nameKey 
-    ? translatedName 
-    : (t(`common.groups.${groupId}`) as string) || `Group ${groupId}`;
+  // 如果翻译不存在，使用 common.groups 中的组名；仍不存在时直接用组号兜底。
+  const commonGroupKey = `common.groups.${groupId}`;
+  const translatedCommonName = t(commonGroupKey) as string;
+  const name = translatedName !== nameKey
+    ? translatedName
+    : translatedCommonName !== commonGroupKey
+      ? translatedCommonName
+      : `${groupId}组`;
   
   const description = translatedDesc !== descKey ? translatedDesc : '';
   

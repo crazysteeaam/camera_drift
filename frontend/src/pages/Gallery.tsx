@@ -1,9 +1,10 @@
 import React, { useState, useEffect } from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
-import { X, Heart, Download, MapPin, Calendar, User, Filter, Search } from 'lucide-react';
+import { X, Download, MapPin, Calendar, Search } from 'lucide-react';
 import WaterfallGallery, { PhotoItem as GalleryPhotoItem } from '../components/WaterfallGallery';
 import SmartImage from '../components/SmartImage';
 import { phase2Provinces, Phase2Relay } from '../config/phase2Data';
+import { downloadImageAsset } from '../utils/imageDownload';
 
 type Phase2PhotoItem = GalleryPhotoItem & { relay: Phase2Relay };
 
@@ -28,7 +29,7 @@ const Gallery: React.FC = () => {
                         relay.photos.forEach((photo, index) => {
                             photos.push({
                                 id: `${relay.id}-photo-${index}`,
-                                src: photo,
+                                asset: photo,
                                 width: 800, // 默认宽度，实际会通过瀑布流算法计算
                                 height: 600, // 默认高度，实际会通过瀑布流算法计算
                                 relay,
@@ -44,7 +45,7 @@ const Gallery: React.FC = () => {
                             relay.messageImages.forEach((message, index) => {
                                 photos.push({
                                     id: `${relay.id}-message-${index}`,
-                                    src: message,
+                                    asset: message,
                                     width: 800,
                                     height: 600,
                                     relay,
@@ -100,15 +101,6 @@ const Gallery: React.FC = () => {
     const closeModal = () => {
         setIsModalOpen(false);
         setSelectedPhoto(null);
-    };
-
-    const downloadImage = (src: string, filename: string) => {
-        const link = document.createElement('a');
-        link.href = src;
-        link.download = filename;
-        document.body.appendChild(link);
-        link.click();
-        document.body.removeChild(link);
     };
 
     const getUniqueProvinces = () => {
@@ -231,7 +223,7 @@ const Gallery: React.FC = () => {
                                 <div className="lg:w-2/3 flex flex-col">
                                     <div className="relative flex-1 flex items-center justify-center bg-gray-100">
                                         <SmartImage
-                                            originalPath={selectedPhoto.src}
+                                            asset={selectedPhoto.asset}
                                             variant="original"
                                             alt={`${selectedPhoto.relay.participant} - ${selectedPhoto.type === 'photo' ? '照片' : '留言'}`}
                                             className="w-full h-full max-h-[60vh] object-contain"
@@ -309,8 +301,8 @@ const Gallery: React.FC = () => {
 
                                         <div className="flex gap-3 mt-auto">
                                             <button
-                                                onClick={() => downloadImage(
-                                                    selectedPhoto.src, 
+                                                onClick={() => void downloadImageAsset(
+                                                    selectedPhoto.asset,
                                                     `${selectedPhoto.relay.participant}_${selectedPhoto.type}_${selectedPhoto.index}.jpg`
                                                 )}
                                                 className="flex-1 flex items-center justify-center gap-2 px-4 py-2 bg-blue-500 text-white rounded-lg hover:bg-blue-600 transition-colors"

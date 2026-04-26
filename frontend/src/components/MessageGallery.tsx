@@ -1,10 +1,12 @@
 import React, { useState } from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
 import { X, ChevronLeft, ChevronRight, Image as ImageIcon, MessageSquare, User, Calendar } from 'lucide-react';
+import SmartImage from './SmartImage';
+import type { ImageAsset } from '../types/imageAsset';
 
 interface MessageImage {
     id: string;
-    url: string;
+    asset: ImageAsset;
     caption?: string;
     participant: string;
     date: string;
@@ -75,13 +77,11 @@ const MessageGallery: React.FC<MessageGalleryProps> = ({ images, title = "留言
                         onClick={() => openModal(image, index)}
                     >
                         <div className="aspect-square overflow-hidden rounded-lg shadow-md group-hover:shadow-lg transition-shadow duration-300">
-                            <img
-                                src={image.url}
+                            <SmartImage
+                                asset={image.asset}
+                                fallback="/placeholder-message.jpg"
                                 alt={image.caption || `留言图片 ${index + 1}`}
                                 className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-300"
-                                onError={(e) => {
-                                    (e.target as HTMLImageElement).src = '/placeholder-message.jpg';
-                                }}
                             />
                         </div>
 
@@ -148,13 +148,11 @@ const MessageGallery: React.FC<MessageGalleryProps> = ({ images, title = "留言
 
                             {/* 图片 */}
                             <div className="relative">
-                                <img
-                                    src={selectedImage.url}
+                                <SmartImage
+                                    asset={selectedImage.asset}
+                                    fallback="/placeholder-message.jpg"
                                     alt={selectedImage.caption || `留言图片 ${currentIndex + 1}`}
                                     className="w-full h-auto max-h-[70vh] object-contain"
-                                    onError={(e) => {
-                                        (e.target as HTMLImageElement).src = '/placeholder-message.jpg';
-                                    }}
                                 />
 
                                 {/* 图片计数器 */}

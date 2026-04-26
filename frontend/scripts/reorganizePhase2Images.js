@@ -3,7 +3,7 @@ const path = require('path');
 
 /**
  * 重新组织第二期图片目录结构
- * 将缩略图和预览图分别放在独立的文件夹中
+ * 将旧的 thumbnails / previews 目录扁平化回原图同目录
  */
 async function reorganizeImages() {
     const phase2PhotosDir = path.join(__dirname, '../public/photos/phase2');
@@ -71,11 +71,11 @@ async function reorganizeImages() {
     console.log(`\n✅ 图片目录重新组织完成! 共处理了 ${totalProcessed} 张图片`);
     console.log('\n新的目录结构:');
     console.log('  - 原图: photos/example.jpg');
-    console.log('  - 缩略图: thumbnails/example.jpg');
-    console.log('  - 预览图: previews/example.jpg');
+    console.log('  - 缩略图: photos/example_thumb.jpg');
+    console.log('  - 预览图: photos/example_preview.jpg');
     console.log('  - 留言图片: message/example.jpg');
-    console.log('  - 留言缩略图: message/thumbnails/example.jpg');
-    console.log('  - 留言预览图: message/previews/example.jpg');
+    console.log('  - 留言缩略图: message/example_thumb.jpg');
+    console.log('  - 留言预览图: message/example_preview.jpg');
 }
 
 /**
@@ -105,36 +105,42 @@ async function reorganizeDirectory(dirPath, type) {
 
     console.log(`  ${type}: ${originalFiles.length}张原图, ${thumbnailFiles.length}张缩略图, ${previewFiles.length}张预览图`);
 
-    // 创建缩略图和预览图目录
     const thumbnailsDir = path.join(dirPath, 'thumbnails');
     const previewsDir = path.join(dirPath, 'previews');
 
-    if (!fs.existsSync(thumbnailsDir)) {
-        fs.mkdirSync(thumbnailsDir, { recursive: true });
-    }
-    if (!fs.existsSync(previewsDir)) {
-        fs.mkdirSync(previewsDir, { recursive: true });
-    }
+    if (fs.existsSync(thumbnailsDir)) {
+        for (const file of fs.readdirSync(thumbnailsDir)) {
+            const sourcePath = path.join(thumbnailsDir, file);
+            const ext = path.extname(file);
+            const baseName = path.basename(file, ext);
+            const targetPath = path.join(dirPath, `${baseName}_thumb${ext}`);
 
-    // 移动缩略图文件
-    for (const file of thumbnailFiles) {
-        const sourcePath = path.join(dirPath, file);
-        const targetPath = path.join(thumbnailsDir, file.replace('_thumb', ''));
+            if (fs.existsSync(sourcePath)) {
+                fs.renameSync(sourcePath, targetPath);
+                console.log(`    ✓ 扁平化缩略图: thumbnails/${file} -> ${path.basename(targetPath)}`);
+            }
+        }
 
-        if (fs.existsSync(sourcePath)) {
-            fs.renameSync(sourcePath, targetPath);
-            console.log(`    ✓ 移动缩略图: ${file} -> thumbnails/${file.replace('_thumb', '')}`);
+        if (fs.existsSync(thumbnailsDir) && fs.readdirSync(thumbnailsDir).length === 0) {
+            fs.rmdirSync(thumbnailsDir);
         }
     }
 
-    // 移动预览图文件
-    for (const file of previewFiles) {
-        const sourcePath = path.join(dirPath, file);
-        const targetPath = path.join(previewsDir, file.replace('_preview', ''));
+    if (fs.existsSync(previewsDir)) {
+        for (const file of fs.readdirSync(previewsDir)) {
+            const sourcePath = path.join(previewsDir, file);
+            const ext = path.extname(file);
+            const baseName = path.basename(file, ext);
+            const targetPath = path.join(dirPath, `${baseName}_preview${ext}`);
 
-        if (fs.existsSync(sourcePath)) {
-            fs.renameSync(sourcePath, targetPath);
-            console.log(`    ✓ 移动预览图: ${file} -> previews/${file.replace('_preview', '')}`);
+            if (fs.existsSync(sourcePath)) {
+                fs.renameSync(sourcePath, targetPath);
+                console.log(`    ✓ 扁平化预览图: previews/${file} -> ${path.basename(targetPath)}`);
+            }
+        }
+
+        if (fs.existsSync(previewsDir) && fs.readdirSync(previewsDir).length === 0) {
+            fs.rmdirSync(previewsDir);
         }
     }
 }

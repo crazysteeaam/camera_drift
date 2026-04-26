@@ -1,5 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import { getAllPhotoConfig } from '../config/photoConfig';
+import type { ImageAsset } from '../types/imageAsset';
 
 const PhotoTest: React.FC = () => {
     const [photoConfig, setPhotoConfig] = useState<any>(null);
@@ -12,13 +13,13 @@ const PhotoTest: React.FC = () => {
         setLoading(false);
     }, []);
 
-    const testImagePath = async (path: string): Promise<boolean> => {
-        try {
-            const response = await fetch(path, { method: 'HEAD' });
-            return response.ok;
-        } catch (error) {
-            return false;
-        }
+    const testImagePath = async (asset: ImageAsset): Promise<boolean> => {
+        return new Promise((resolve) => {
+            const image = new Image();
+            image.onload = () => resolve(true);
+            image.onerror = () => resolve(false);
+            image.src = asset.original;
+        });
     };
 
     const validateAllImages = async () => {
@@ -27,10 +28,10 @@ const PhotoTest: React.FC = () => {
         for (const group in photoConfig) {
             for (const index in photoConfig[group]) {
                 const photos = photoConfig[group][index];
-                for (const photo of photos) {
+                for (const photo of photos as ImageAsset[]) {
                     const isValid = await testImagePath(photo);
                     if (!isValid) {
-                        newErrors.push(`❌ ${photo} - 无法访问`);
+                        newErrors.push(`❌ ${photo.original} - 无法访问`);
                     }
                 }
             }
@@ -80,10 +81,10 @@ const PhotoTest: React.FC = () => {
                                             {group}{index} ({photos.length}张)
                                         </h3>
                                         <div className="space-y-2">
-                                            {photos.map((photo: string, photoIndex: number) => (
+                                            {photos.map((photo: ImageAsset, photoIndex: number) => (
                                                 <div key={photoIndex} className="flex items-center space-x-2">
                                                     <img 
-                                                        src={photo} 
+                                                        src={photo.original} 
                                                         alt={`${group}${index}-${photoIndex}`}
                                                         className="w-16 h-16 object-cover rounded border"
                                                         onError={(e) => {
@@ -98,7 +99,7 @@ const PhotoTest: React.FC = () => {
                                                         }}
                                                     />
                                                     <div className="flex-1 min-w-0">
-                                                        <p className="text-sm text-gray-600 truncate">{photo}</p>
+                                                        <p className="text-sm text-gray-600 truncate">{photo.original}</p>
                                                     </div>
                                                 </div>
                                             ))}

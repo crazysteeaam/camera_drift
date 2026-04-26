@@ -2,6 +2,8 @@ import React, { useState, useEffect, useRef } from 'react';
 import { motion } from 'framer-motion';
 import { Download, MapPin } from 'lucide-react';
 import SmartImage from './SmartImage';
+import type { ImageAsset } from '../types/imageAsset';
+import { downloadImageAsset } from '../utils/imageDownload';
 export interface GalleryRelayInfo {
     id: number;
     location: string;
@@ -11,7 +13,7 @@ export interface GalleryRelayInfo {
 
 export interface PhotoItem {
     id: string;
-    src: string;
+    asset: ImageAsset;
     width: number;
     height: number;
     relay: GalleryRelayInfo;
@@ -88,15 +90,6 @@ function WaterfallGallery<T extends PhotoItem>({ photos, onPhotoClick }: Waterfa
         setColumns(newColumns);
     }, [photos, columnCount, containerWidth]);
 
-    const downloadImage = (src: string, filename: string) => {
-        const link = document.createElement('a');
-        link.href = src;
-        link.download = filename;
-        document.body.appendChild(link);
-        link.click();
-        document.body.removeChild(link);
-    };
-
     return (
         <div ref={containerRef} className="w-full">
             <div className="flex gap-4">
@@ -113,7 +106,7 @@ function WaterfallGallery<T extends PhotoItem>({ photos, onPhotoClick }: Waterfa
                             >
                                 <div className="relative overflow-hidden rounded-xl shadow-lg hover:shadow-2xl transition-all duration-300 transform hover:-translate-y-1">
                                     <SmartImage
-                                        originalPath={photo.src}
+                                        asset={photo.asset}
                                         variant="thumbnail"
                                         alt={`${photo.relay.location} - ${photo.type === 'photo' ? '照片' : '留言'}`}
                                         className="w-full h-auto object-cover"
@@ -145,7 +138,7 @@ function WaterfallGallery<T extends PhotoItem>({ photos, onPhotoClick }: Waterfa
                                         <button
                                             onClick={(e) => {
                                                 e.stopPropagation();
-                                                downloadImage(photo.src, `${photo.relay.location}_${photo.type}_${photo.index}.jpg`);
+                                                void downloadImageAsset(photo.asset, `${photo.relay.location}_${photo.type}_${photo.index}.jpg`);
                                             }}
                                             className="p-2 bg-white/90 rounded-full hover:bg-white transition-colors"
                                         >

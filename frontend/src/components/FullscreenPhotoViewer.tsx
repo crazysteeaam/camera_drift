@@ -1,9 +1,11 @@
 import React, { useState, useEffect } from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
 import { X, ChevronLeft, ChevronRight, ZoomIn, ZoomOut, RotateCcw, Download, RefreshCw } from 'lucide-react';
+import { resolveImageAssetUrl, type ImageAsset } from '../types/imageAsset';
+import { downloadImageAsset } from '../utils/imageDownload';
 
 interface FullscreenPhotoViewerProps {
-    photos: string[];
+    photos: ImageAsset[];
     currentIndex: number;
     isOpen: boolean;
     onClose: () => void;
@@ -82,12 +84,7 @@ const FullscreenPhotoViewer: React.FC<FullscreenPhotoViewerProps> = ({
 
     // 下载当前照片
     const downloadCurrentPhoto = () => {
-        const link = document.createElement('a');
-        link.href = photos[currentIndex];
-        link.download = `${relayName}_${participant}_${currentIndex + 1}.jpg`;
-        document.body.appendChild(link);
-        link.click();
-        document.body.removeChild(link);
+        void downloadImageAsset(photos[currentIndex], `${relayName}_${participant}_${currentIndex + 1}.jpg`);
     };
 
     if (!isOpen) return null;
@@ -117,7 +114,7 @@ const FullscreenPhotoViewer: React.FC<FullscreenPhotoViewerProps> = ({
                 >
                     {/* 照片 */}
                     <img
-                        src={photos[currentIndex]}
+                        src={resolveImageAssetUrl(photos[currentIndex])}
                         alt={`${relayName} - 照片 ${currentIndex + 1}`}
                         className="max-w-full max-h-full object-contain"
                         style={{

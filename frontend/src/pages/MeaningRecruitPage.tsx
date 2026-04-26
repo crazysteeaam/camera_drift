@@ -2,16 +2,13 @@ import React from 'react';
 import { useNavigate } from 'react-router-dom';
 import { motion } from 'framer-motion';
 import { ArrowLeft, ClipboardList, ExternalLink, MessageCircle } from 'lucide-react';
-import { meaningRecruitContent, MEANING_SURVEY_URL, meaningRecruitDirectSignup } from '../config/meaningData';
+import { meaningOfficialContacts, meaningRecruitContent, MEANING_SURVEY_URL } from '../config/meaningData';
 import { useTranslation } from '../i18n/hooks';
 
 const MeaningRecruitPage: React.FC = () => {
   const navigate = useNavigate();
   const { language, t } = useTranslation();
   const isZh = language === 'zh-CN';
-  const qrSrc = meaningRecruitDirectSignup.qrImageSrc?.trim();
-  const profileUrl = meaningRecruitDirectSignup.profileUrl?.trim();
-  const handleLine = meaningRecruitDirectSignup.handleLine[isZh ? 'zh' : 'en'];
 
   return (
     <div className="min-h-screen bg-gradient-to-b from-emerald-50 via-sky-50 to-indigo-50 text-slate-900">
@@ -89,35 +86,47 @@ const MeaningRecruitPage: React.FC = () => {
                   <p className="text-[0.65rem] font-semibold uppercase tracking-[0.2em] text-rose-700/90">
                     {t('meaning.recruit.directRegionLabel') as string}
                   </p>
-                  <h3 className="mt-2 text-base font-bold text-slate-900">{t('meaning.recruit.xhsTitle') as string}</h3>
+                  <h3 className="mt-2 text-base font-bold text-slate-900">{t('meaning.recruit.officialContactTitle') as string}</h3>
                   <p className="mt-2 text-sm text-slate-600 leading-relaxed">{t('meaning.recruit.directRegionBody') as string}</p>
-                  <p className="mt-3 text-sm text-slate-600 leading-relaxed">{t('meaning.recruit.xhsBody') as string}</p>
+                  <p className="mt-3 text-sm text-slate-600 leading-relaxed">{t('meaning.recruit.officialContactBody') as string}</p>
 
-                  <div className="mt-6 flex flex-col items-center">
-                    {qrSrc ? (
-                      <img
-                        src={qrSrc}
-                        alt={t('meaning.recruit.qrAlt') as string}
-                        className="w-44 h-44 md:w-48 md:h-48 rounded-2xl border border-slate-200 bg-white object-cover shadow-inner"
-                      />
-                    ) : (
-                      <div className="flex h-44 w-44 md:h-48 md:w-48 flex-col items-center justify-center rounded-2xl border-2 border-dashed border-rose-200/80 bg-rose-50/40 px-4 text-center">
-                        <p className="text-xs font-semibold text-rose-800/90">{t('meaning.recruit.qrPlaceholderTitle') as string}</p>
-                        <p className="mt-2 text-[0.7rem] text-slate-500 leading-relaxed">{t('meaning.recruit.qrPlaceholderBody') as string}</p>
-                      </div>
-                    )}
-                    <p className="mt-3 text-xs font-medium text-slate-500">{handleLine}</p>
-                    {profileUrl ? (
-                      <a
-                        href={profileUrl}
-                        target="_blank"
-                        rel="noreferrer"
-                        className="mt-4 inline-flex items-center gap-1.5 text-xs font-semibold text-rose-700 hover:text-rose-900"
-                      >
-                        {t('meaning.recruit.openXhsProfile') as string}
-                        <ExternalLink className="h-3.5 w-3.5" />
-                      </a>
-                    ) : null}
+                  <div className="mt-6 grid grid-cols-1 sm:grid-cols-2 md:grid-cols-1 gap-4">
+                    {meaningOfficialContacts.map((contact) => {
+                      const qrSrc = contact.qrImageSrc.trim();
+                      const profileUrl = contact.profileUrl.trim();
+                      return (
+                        <div key={contact.id} className="rounded-2xl border border-white/75 bg-white/65 p-4">
+                          <div className="flex items-start gap-3">
+                            {qrSrc ? (
+                              <img
+                                src={qrSrc}
+                                alt={`${contact.label[isZh ? 'zh' : 'en']} ${t('meaning.recruit.qrAlt') as string}`}
+                                className="h-24 w-24 shrink-0 rounded-xl border border-slate-200 bg-white object-cover shadow-inner"
+                              />
+                            ) : (
+                              <div className="flex h-24 w-24 shrink-0 flex-col items-center justify-center rounded-xl border-2 border-dashed border-rose-200/80 bg-rose-50/40 px-3 text-center">
+                                <p className="text-[0.68rem] font-semibold text-rose-800/90">{t('meaning.recruit.qrPlaceholderTitle') as string}</p>
+                              </div>
+                            )}
+                            <div className="min-w-0 flex-1">
+                              <h4 className="text-sm font-bold text-slate-900">{contact.label[isZh ? 'zh' : 'en']}</h4>
+                              <p className="mt-1 text-xs leading-relaxed text-slate-500">{contact.handleLine[isZh ? 'zh' : 'en']}</p>
+                              {profileUrl ? (
+                                <a
+                                  href={profileUrl}
+                                  target="_blank"
+                                  rel="noreferrer"
+                                  className="mt-3 inline-flex items-center gap-1.5 text-xs font-semibold text-rose-700 hover:text-rose-900"
+                                >
+                                  {t('meaning.recruit.openXhsProfile') as string}
+                                  <ExternalLink className="h-3.5 w-3.5" />
+                                </a>
+                              ) : null}
+                            </div>
+                          </div>
+                        </div>
+                      );
+                    })}
                   </div>
                 </div>
 

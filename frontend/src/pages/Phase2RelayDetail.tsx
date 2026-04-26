@@ -1,33 +1,15 @@
 import React, { useEffect, useState } from 'react';
 import { useParams, Link, useNavigate } from 'react-router-dom';
 import { motion } from 'framer-motion';
-import { MapPin, Calendar, MessageCircle, ArrowLeft, Heart, Download, ChevronLeft, ChevronRight, ArrowRight, Eye } from 'lucide-react';
+import { MapPin, Calendar, MessageCircle, ArrowLeft, Heart, Download, ChevronLeft, ChevronRight, ArrowRight } from 'lucide-react';
 import { getGroupById, Phase2Relay } from '../config/phase2Data';
 import AmapComponent from '../components/AmapComponent';
 import FullscreenPhotoViewer from '../components/FullscreenPhotoViewer';
 import SmartImage from '../components/SmartImage';
-import MessageGallery from '../components/MessageGallery';
 import { useTranslation } from '../i18n/hooks';
 import { translateRelayName, translateCityName, translateMessage, translateTag, translateCamera, translateFilm } from '../i18n/utils';
-
-const downloadImage = (url: string, filename: string) => {
-    const link = document.createElement('a');
-    link.href = url;
-    link.download = filename;
-    document.body.appendChild(link);
-    link.click();
-    document.body.removeChild(link);
-};
-
-const downloadAllImages = async (photos: string[], relayName: string, participant: string, onProgress?: (progress: number) => void) => {
-    for (let i = 0; i < photos.length; i++) {
-        const filename = `${relayName}_${participant}_${i + 1}.jpg`;
-        downloadImage(photos[i], filename);
-        onProgress?.(((i + 1) / photos.length) * 100);
-        await new Promise(resolve => setTimeout(resolve, 500));
-    }
-    onProgress?.(100);
-};
+import type { ImageAsset } from '../types/imageAsset';
+import { downloadImageAsset, downloadImageAssets } from '../utils/imageDownload';
 
 const Phase2RelayDetail: React.FC = () => {
     const { provinceId, groupId, relayId } = useParams<{ provinceId: string; groupId: string; relayId: string }>();
@@ -44,10 +26,10 @@ const Phase2RelayDetail: React.FC = () => {
     const [downloadProgress, setDownloadProgress] = useState(0);
     const [showDownloadOptions, setShowDownloadOptions] = useState(false);
     const [isFullscreenOpen, setIsFullscreenOpen] = useState(false);
-    const [processedPhotos, setProcessedPhotos] = useState<string[]>([]);
+    const [processedPhotos, setProcessedPhotos] = useState<ImageAsset[]>([]);
 
     // 右侧：留言图片浏览状态
-    const [messagePhotos, setMessagePhotos] = useState<string[]>([]);
+    const [messagePhotos, setMessagePhotos] = useState<ImageAsset[]>([]);
     const [msgCurrentIndex, setMsgCurrentIndex] = useState(0);
     const [isMsgFullscreenOpen, setIsMsgFullscreenOpen] = useState(false);
     const [msgIsDownloading, setMsgIsDownloading] = useState(false);
@@ -57,14 +39,10 @@ const Phase2RelayDetail: React.FC = () => {
 
     useEffect(() => {
         if (relay) {
-            // 过滤掉 undefined 或空字符串的路径
-            const validPhotos = (relay.photos || []).filter(photo => photo && typeof photo === 'string' && photo.trim() !== '');
-            const validMessageImages = (relay.messageImages || []).filter(image => image && typeof image === 'string' && image.trim() !== '');
-            
-            setProcessedPhotos(validPhotos);
-            setMessagePhotos(validMessageImages);
+            setProcessedPhotos(relay.photos || []);
+            setMessagePhotos(relay.messageImages || []);
         }
-    }, [relay?.photos]);
+    }, [relay]);
 
     if (isLoading) {
         return (
@@ -203,7 +181,7 @@ const Phase2RelayDetail: React.FC = () => {
                             <div className="aspect-square overflow-hidden rounded-xl shadow-2xl cursor-pointer" onClick={() => setIsFullscreenOpen(true)}>
                                 {processedPhotos[currentPhotoIndex] ? (
                                     <SmartImage
-                                        originalPath={processedPhotos[currentPhotoIndex]}
+                                        asset={processedPhotos[currentPhotoIndex]}
                                         variant="preview"
                                         alt={t('phase2.relay.photos.alt', { name: relay.name, index: currentPhotoIndex + 1 }) as string}
                                         className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-500"
@@ -244,7 +222,7 @@ const Phase2RelayDetail: React.FC = () => {
                                         onClick={() => {
                                             if (processedPhotos.length === 1) {
                                                 const filename = `${relay.name}_${relay.participant}.jpg`;
-                                                downloadImage(processedPhotos[0], filename);
+                                                void downloadImageAsset(processedPhotos[0], filename);
                                             } else {
                                                 setShowDownloadOptions(true);
                                             }
@@ -271,7 +249,7 @@ const Phase2RelayDetail: React.FC = () => {
                                     {processedPhotos.map((photo, index) => (
                                         <div key={index} className="relative group">
                                             <button onClick={() => setCurrentPhotoIndex(index)} className={`aspect-square overflow-hidden rounded-lg transition-all duration-200 w-full ${index === currentPhotoIndex ? 'ring-2 ring-blue-500' : 'hover:scale-105'}`}>
-                                                <SmartImage originalPath={photo} variant="thumbnail" alt={t('phase2.relay.photos.thumbnailAlt', { index: index + 1 }) as string} className="w-full h-full object-cover" />
+                                                <SmartImage asset={photo} variant="thumbnail" alt={t('phase2.relay.photos.thumbnailAlt', { index: index + 1 }) as string} className="w-full h-full object-cover" />
                                             </button>
                                         </div>
                                     ))}
@@ -302,7 +280,7 @@ const Phase2RelayDetail: React.FC = () => {
                                     <div className="aspect-square overflow-hidden rounded-xl shadow-2xl cursor-pointer" onClick={() => setIsMsgFullscreenOpen(true)}>
                                         {messagePhotos[msgCurrentIndex] ? (
                                             <SmartImage
-                                                originalPath={messagePhotos[msgCurrentIndex]}
+                                                asset={messagePhotos[msgCurrentIndex]}
                                                 variant="preview"
                                                 alt={t('phase2.relay.messageImages.alt', { index: msgCurrentIndex + 1 }) as string}
                                                 className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-500"
@@ -338,7 +316,7 @@ const Phase2RelayDetail: React.FC = () => {
                                                 onClick={() => {
                                                     if (messagePhotos.length === 1) {
                                                         const filename = `${relay.name}_${relay.participant}_留言.jpg`;
-                                                        downloadImage(messagePhotos[0], filename);
+                                                        void downloadImageAsset(messagePhotos[0], filename);
                                                     } else {
                                                         setMsgShowDownloadOptions(true);
                                                     }
@@ -366,7 +344,7 @@ const Phase2RelayDetail: React.FC = () => {
                                     {messagePhotos.map((photo, index) => (
                                         <div key={index} className="relative group">
                                             <button onClick={() => setMsgCurrentIndex(index)} className={`aspect-square overflow-hidden rounded-lg transition-all duration-200 w-full ${index === msgCurrentIndex ? 'ring-2 ring-blue-500' : 'hover:scale-105'}`}>
-                                                <SmartImage originalPath={photo} variant="thumbnail" alt={t('phase2.relay.messageImages.thumbnailAlt', { index: index + 1 }) as string} className="w-full h-full object-cover" />
+                                                <SmartImage asset={photo} variant="thumbnail" alt={t('phase2.relay.messageImages.thumbnailAlt', { index: index + 1 }) as string} className="w-full h-full object-cover" />
                                             </button>
                                         </div>
                                     ))}
@@ -439,7 +417,7 @@ const Phase2RelayDetail: React.FC = () => {
                                         setIsDownloading(true);
                                         setDownloadProgress(0);
                                         try {
-                                            await downloadAllImages(processedPhotos, relay.name, relay.participant, (p) => setDownloadProgress(p));
+                                            await downloadImageAssets(processedPhotos, (_, index) => `${relay.name}_${relay.participant}_${index + 1}.jpg`, (p) => setDownloadProgress(p));
                                         } finally {
                                             setIsDownloading(false);
                                             setDownloadProgress(0);
@@ -467,7 +445,7 @@ const Phase2RelayDetail: React.FC = () => {
                                     </div>
                                 )}
 
-                                <button onClick={() => { setShowDownloadOptions(false); const filename = `${relay.name}_${relay.participant}_当前照片.jpg`; downloadImage(processedPhotos[currentPhotoIndex], filename); }} className="w-full flex items-center justify-center px-4 py-3 bg-blue-600 text-white rounded-lg hover:bg-blue-700 transition-colors duration-200">
+                                <button onClick={() => { setShowDownloadOptions(false); const filename = `${relay.name}_${relay.participant}_当前照片.jpg`; void downloadImageAsset(processedPhotos[currentPhotoIndex], filename); }} className="w-full flex items-center justify-center px-4 py-3 bg-blue-600 text-white rounded-lg hover:bg-blue-700 transition-colors duration-200">
                                     <Download className="h-5 w-5 mr-2" />
                                     {t('phase2.relay.download.current') as string}
                                 </button>
@@ -495,7 +473,7 @@ const Phase2RelayDetail: React.FC = () => {
                                         setMsgIsDownloading(true);
                                         setMsgDownloadProgress(0);
                                         try {
-                                            await downloadAllImages(messagePhotos, relay.name, relay.participant, (p) => setMsgDownloadProgress(p));
+                                            await downloadImageAssets(messagePhotos, (_, index) => `${relay.name}_${relay.participant}_留言_${index + 1}.jpg`, (p) => setMsgDownloadProgress(p));
                                         } finally {
                                             setMsgIsDownloading(false);
                                             setMsgDownloadProgress(0);
@@ -523,7 +501,7 @@ const Phase2RelayDetail: React.FC = () => {
                                     </div>
                                 )}
 
-                                <button onClick={() => { setMsgShowDownloadOptions(false); const filename = `${relay.name}_${relay.participant}_留言_${msgCurrentIndex + 1}.jpg`; downloadImage(messagePhotos[msgCurrentIndex], filename); }} className="w-full flex items-center justify-center px-4 py-3 bg-blue-600 text-white rounded-lg hover:bg-blue-700 transition-colors duration-200">
+                                <button onClick={() => { setMsgShowDownloadOptions(false); const filename = `${relay.name}_${relay.participant}_留言_${msgCurrentIndex + 1}.jpg`; void downloadImageAsset(messagePhotos[msgCurrentIndex], filename); }} className="w-full flex items-center justify-center px-4 py-3 bg-blue-600 text-white rounded-lg hover:bg-blue-700 transition-colors duration-200">
                                     <Download className="h-5 w-5 mr-2" />
                                     {t('phase2.relay.download.messageCurrent') as string}
                                 </button>
